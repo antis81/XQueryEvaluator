@@ -26,6 +26,11 @@ void XQEOutput::changeEvent(QEvent *e)
     }
 }
 
+void XQEOutput::setErrors(const QString &html)
+{
+    ui->textErrors->setHtml(html);
+}
+
 void XQEOutput::setXml(const QString &xml)
 {
     ui->textOutput->setText(xml);

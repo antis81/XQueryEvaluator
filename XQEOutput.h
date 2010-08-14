@@ -17,6 +17,7 @@ public:
     explicit XQEOutput(QWidget *parent = 0);
     ~XQEOutput();
 
+    void setErrors(const QString &html);
     void setXml(const QString &xml);
     void setHtml(const QString &html);
 

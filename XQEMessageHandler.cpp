@@ -23,10 +23,6 @@ void XQEMessageHandler::handleMessage(QtMsgType type, const QString &description
     switch (type)
     {
     case QtDebugMsg:
-//        _errLog << tr("XQuery info at line %1 column %2: \n%3")
-//                                 .arg(sourceLocation.line())
-//                                 .arg(sourceLocation.column())
-//                                 .arg(description);
         break;
 
     case QtWarningMsg:

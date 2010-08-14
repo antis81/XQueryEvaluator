@@ -34,21 +34,21 @@ XQEMainWindow::XQEMainWindow(QWidget *parent) :
 	horLayout->addWidget(lineNumbers);
 	horLayout->addWidget(_textQuery);
 
-//	QSplitter * s = new QSplitter();
+	//	QSplitter * s = new QSplitter();
 	QLayout *l = ui->myPlace->layout();
 	if (l == 0)
 		l = new QGridLayout(ui->myPlace);
-//	l->addWidget(s);
+	//	l->addWidget(s);
 	l->setContentsMargins(0,0,0,0);
 
-//	s->setOrientation(Qt::Horizontal);
-//	s->addWidget(_textXml);
+	//	s->setOrientation(Qt::Horizontal);
+	//	s->addWidget(_textXml);
 
 	//	QWidget *w1 = new QWidget(s);
 	QWidget *w2 = new QWidget();
 	w2->setLayout(horLayout);
 	l->addWidget(w2);
-//	s->addWidget(w2);
+	//	s->addWidget(w2);
 
     //_xmlInHighlighter.setDocument(_textXml->document());
     _xqueryHighlighter.setDocument(_textQuery->document());
@@ -73,19 +73,11 @@ void XQEMainWindow::changeEvent(QEvent *e)
 
 void XQEMainWindow::on_btnQuery_clicked()
 {
-    //    QBuffer input;
-    //    input.setData(ui->textSourceXml->toPlainText().toUtf8());
-    //    input.open(QIODevice::ReadOnly);
-
     const QString source = loadSourceFile( ui->textSourceFile->text() ); //_textXml->toPlainText();
     QXmlQuery query;
     XQEMessageHandler msgHandler;
     query.setMessageHandler(&msgHandler);
 
-//    QByteArray inArray(source.toUtf8());
-//    QBuffer inBuf(&inArray);
-//    inBuf.open(QIODevice::ReadOnly);
-//    query.bindVariable("inputDoc", &inBuf);
     query.setFocus(source);
 
     query.setQuery(_textQuery->toPlainText());
@@ -105,13 +97,16 @@ void XQEMainWindow::on_btnQuery_clicked()
     int duration = stopWatch.elapsed(); // time measurement
 
     XQEOutput dlg;
-    dlg.setDuration(duration);
-
-    if (!msgHandler.errLog().isEmpty())
+    dlg.setDuration(duration); // the duration of the query
+    dlg.setXml(out); // show resulting XML
+    if ( msgHandler.errLog().isEmpty() )
     {
-        dlg.setXml(msgHandler.errLog());
-    } else {
-        dlg.setXml(out);
+        QString noErrors = tr("<p style=\"background-color:#44FF44;\">XQuery parsed. Everything Ok.</p>");
+        dlg.setErrors(noErrors);
+    }
+    else
+    {
+        dlg.setErrors(msgHandler.errLog()); // show parsing errors and warnings
     }
 
     dlg.exec();
@@ -124,11 +119,11 @@ void XQEMainWindow::on_btnOpenSource_clicked()
 
 void XQEMainWindow::on_actionOpen_triggered()
 {
-//    QString sourceFile = selectSourceFile();
-//    if (!sourceFile.isEmpty())
-//    {
-//        _textXml->setText( loadSourceFile(sourceFile) );
-//    }
+    //    QString sourceFile = selectSourceFile();
+    //    if (!sourceFile.isEmpty())
+    //    {
+    //        _textXml->setText( loadSourceFile(sourceFile) );
+    //    }
 
     QString destFile = QFileDialog::getOpenFileName(0, tr("Open query file ..."), "", "*.xq");
     if (!destFile.isEmpty())
