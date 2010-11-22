@@ -8,7 +8,7 @@
 TextEditMetaBorder::TextEditMetaBorder(QTextEdit *parent)
 : QWidget(parent)
 , _parent(parent)
-, _bDebugMode(false)
+//, _bDebugMode(false)
 {
     const QFontMetrics fm = fontMetrics();
 
@@ -108,7 +108,7 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
             if ( block.userState() & etboBreakPoint )
             {
                 painter.setPen(Qt::NoPen);
-                QColor col=_bDebugMode?Qt::red:Qt::darkRed;
+                QColor col=Qt::darkRed; //_bDebugMode ? Qt::red : Qt::darkRed;
                 col.setAlpha(150);
 
                 QBrush b(col);
@@ -138,8 +138,8 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
 
 void TextEditMetaBorder::mousePressEvent ( QMouseEvent * event )
 {
-    if ( _bDebugMode )
-        return;
+//    if ( _bDebugMode )
+//        return;
 
     if (event->button() & Qt::LeftButton)
     {

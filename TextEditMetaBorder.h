@@ -27,8 +27,8 @@ public:
     //bool isBreakpoint(int line) { return _breakpoints.contains(line); }
     //QSet<int> breakpoints() const { return _breakpoints; }
 
-    void setDebugMode(bool bnew) { update(); _bDebugMode=bnew; }
-    bool debugMode() const { return _bDebugMode; }
+//    void setDebugMode(bool bnew) { update(); _bDebugMode=bnew; }
+//    bool debugMode() const { return _bDebugMode; }
 
 protected:
     virtual void paintEvent ( QPaintEvent * event ) ;
@@ -40,7 +40,7 @@ signals:
     void breakpointChanged(bool bSet);
 private:
     bool             _gradientBG;
-    bool             _bDebugMode;
+//    bool             _bDebugMode;
     int              _iBreakpointWidth;
     QTextEdit *      _parent;
     //QSet<int>        _breakpoints;
