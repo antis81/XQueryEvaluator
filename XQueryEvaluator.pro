@@ -31,3 +31,6 @@ OBJECTS_DIR = obj
 
 
 include(XQueryEvaluator.pri)
+
+RESOURCES += \
+    resources/xqe_resource.qrc
