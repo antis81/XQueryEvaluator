@@ -1,0 +1,12 @@
+# Qt Generated Files
+GeneratedFiles/*
+obj/*
+[Mm]akefile
+
+# Mac binaries
+*.app/*
+build/*
+
+# annoying files
+.DS_Store
+.[Tt]humbs.db
