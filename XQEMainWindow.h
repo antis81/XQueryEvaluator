@@ -3,8 +3,9 @@
 
 #include <QtGui/QMainWindow>
 
-#include "XmlHighlighter.h"
-#include "XQueryHighlighter.h"
+//#include "XmlHighlighter.h"
+
+class XQEditor;
 
 namespace Ui {
     class XQEMainWindow;
@@ -31,11 +32,7 @@ protected:
 private:
     Ui::XQEMainWindow *ui;
 
-    //QTextEdit *             _textXml;
-    QTextEdit *             _textQuery;
-
-    XmlHighlighter          _xmlInHighlighter;
-    XQueryHighlighter       _xqueryHighlighter;
+    XQEditor *              _textQuery;
 
     QString selectSourceFile();
     QString loadSourceFile(const QString &path) const;

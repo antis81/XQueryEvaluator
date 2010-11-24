@@ -1,62 +1,34 @@
 #include "XQEMainWindow.h"
 
 #include "ui_XQEMainWindow.h"
+
 #include "XQEOutput.h"
 #include "XQEMessageHandler.h"
-#include "TextEditMetaBorder.h"
+#include "XQEditor.h"
 
 #include <QtXmlPatterns/QtXmlPatterns>
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
-#include <QtGui/QSplitter>
 
 
-XQEMainWindow::XQEMainWindow(QWidget *parent) :
-        QMainWindow(parent),
-        ui(new Ui::XQEMainWindow)
+XQEMainWindow::XQEMainWindow(QWidget *parent)
+  : QMainWindow(parent)
+  , ui(new Ui::XQEMainWindow)
+  , _textQuery(new XQEditor)
 {
     ui->setupUi(this);
-    //_textXml = new QTextEdit(this);
-    _textQuery = new QTextEdit(this);
 
-	// Zeilennummern
-	TextEditMetaBorder  *lineNumbers = new TextEditMetaBorder(_textQuery);
-	lineNumbers->setFixedWidth(40);
-	lineNumbers->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
-	lineNumbers->setGradientBackground(false);
-
-	//	QVBoxLayout *tabLayout = new QVBoxLayout;
-	//	tabLayout->setSpacing(3);
-	//	tabLayout->setMargin(0);
-	QHBoxLayout *horLayout = new QHBoxLayout;
-	horLayout->setSpacing(0);
-	horLayout->setMargin(0);
-	horLayout->addWidget(lineNumbers);
-	horLayout->addWidget(_textQuery);
-
-	//	QSplitter * s = new QSplitter();
 	QLayout *l = ui->myPlace->layout();
 	if (l == 0)
 		l = new QGridLayout(ui->myPlace);
-	//	l->addWidget(s);
 	l->setContentsMargins(0,0,0,0);
 
-	//	s->setOrientation(Qt::Horizontal);
-	//	s->addWidget(_textXml);
-
-	//	QWidget *w1 = new QWidget(s);
-	QWidget *w2 = new QWidget();
-	w2->setLayout(horLayout);
-	l->addWidget(w2);
-	//	s->addWidget(w2);
-
-    //_xmlInHighlighter.setDocument(_textXml->document());
-    _xqueryHighlighter.setDocument(_textQuery->document());
+	l->addWidget( _textQuery );
 }
 
 XQEMainWindow::~XQEMainWindow()
 {
-    delete ui;
+	delete ui;
 }
 
 void XQEMainWindow::changeEvent(QEvent *e)
@@ -73,14 +45,14 @@ void XQEMainWindow::changeEvent(QEvent *e)
 
 void XQEMainWindow::on_btnQuery_clicked()
 {
-    const QString source = loadSourceFile( ui->textSourceFile->text() ); //_textXml->toPlainText();
+    const QString source = loadSourceFile( ui->textSourceFile->text() );
     QXmlQuery query;
     XQEMessageHandler msgHandler;
     query.setMessageHandler(&msgHandler);
 
     query.setFocus(source);
 
-    query.setQuery(_textQuery->toPlainText());
+    query.setQuery( _textQuery->xqText() );
     //    QXmlFormatter serializer(query, );
     QTime stopWatch;
     stopWatch.start();
@@ -119,34 +91,20 @@ void XQEMainWindow::on_btnOpenSource_clicked()
 
 void XQEMainWindow::on_actionOpen_triggered()
 {
-    //    QString sourceFile = selectSourceFile();
-    //    if (!sourceFile.isEmpty())
-    //    {
-    //        _textXml->setText( loadSourceFile(sourceFile) );
-    //    }
-
     QString destFile = QFileDialog::getOpenFileName(0, tr("Open query file ..."), "", "*.xq");
     if (!destFile.isEmpty())
     {
         QFile dest(destFile);
 
         if ( dest.open(QIODevice::ReadOnly) )
-            _textQuery->setText( QString::fromUtf8(dest.readAll().constData()) );
+        {
+            _textQuery->setXQText( QString(dest.readAll()) );
+        }
     }
 }
 
 void XQEMainWindow::on_actionSave_triggered()
 {
-    //    QString selectedFileExt = "*.xml";
-    //    QString sourceFile = QFileDialog::getSaveFileName(0, tr("Save XML source file ..."), "", "*.xml", &selectedFileExt);
-    //    if (!sourceFile.isEmpty())
-    //    {
-    //        QFile source(sourceFile);
-
-    //        if ( source.open(QIODevice::WriteOnly) )
-    //            source.write(ui->textSourceXml->toPlainText().toUtf8());
-    //    }
-
     //    selectedFileExt = "*.xq";
     QString destFile = QFileDialog::getSaveFileName(0, tr("Save query file ..."), QDir::homePath(), tr("XQuery file (%1)").arg("*.xq"));
     if (!destFile.isEmpty())
@@ -154,7 +112,7 @@ void XQEMainWindow::on_actionSave_triggered()
         QFile dest(destFile);
 
         if ( dest.open(QIODevice::WriteOnly) )
-            dest.write(_textQuery->toPlainText().toUtf8());
+            dest.write( _textQuery->xqText().toUtf8() );
         else
             QMessageBox::critical(0, tr("Error"), tr("Unable to save XQuery file at: %1").arg(destFile));
     }
