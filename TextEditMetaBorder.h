@@ -19,30 +19,26 @@ public:
         etboBookmark  = 0x02
     };
 
-    TextEditMetaBorder(QTextEdit *parent);
+    explicit TextEditMetaBorder(QTextEdit *doc, QWidget *parent=0);
     ~TextEditMetaBorder();
 
-    void setGradientBackground(bool enable);
-
-    //bool isBreakpoint(int line) { return _breakpoints.contains(line); }
-    //QSet<int> breakpoints() const { return _breakpoints; }
+//    bool isBreakpoint(int line) { return _breakpoints.contains(line); }
+//    QSet<int> breakpoints() const { return _breakpoints; }
 
 //    void setDebugMode(bool bnew) { update(); _bDebugMode=bnew; }
 //    bool debugMode() const { return _bDebugMode; }
 
-protected:
-    virtual void paintEvent ( QPaintEvent * event ) ;
-    virtual void drawBackground(QPainter & painter);
-    virtual void drawLineNumbers(QPainter & painter);
-    virtual void mousePressEvent ( QMouseEvent * event ) ;
+    void showEvent(QShowEvent *e);
+    void paintEvent ( QPaintEvent * event ) ;
+    void drawLineNumbers(QPainter & painter);
+    void mousePressEvent ( QMouseEvent * event ) ;
 
 signals:
     void breakpointChanged(bool bSet);
 private:
-    bool             _gradientBG;
 //    bool             _bDebugMode;
-    int              _iBreakpointWidth;
-    QTextEdit *      _parent;
+    int             _iBreakpointWidth;
+    QTextEdit *     _document;
     //QSet<int>        _breakpoints;
 
     struct LineInfo

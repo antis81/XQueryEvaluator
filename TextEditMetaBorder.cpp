@@ -5,24 +5,24 @@
 #include <QTextBlock>
 #include <QAbstractTextDocumentLayout>
 
-TextEditMetaBorder::TextEditMetaBorder(QTextEdit *parent)
-: QWidget(parent)
-, _parent(parent)
+TextEditMetaBorder::TextEditMetaBorder(QTextEdit *doc, QWidget *parent)
+    : QWidget(parent)
+    , _document(doc)
 //, _bDebugMode(false)
 {
-    const QFontMetrics fm = fontMetrics();
+    const QFontMetrics &fm = fontMetrics();
 
     _iBreakpointWidth=fm.maxWidth()*1.5;
 
-    // 4 Zeilennummern ein space und einmap breakpoint
+    // 4 Zeilennummern ein space und einmal breakpoint
     setMinimumWidth(fm.maxWidth()*6);
     //QSizePolicy policy=sizePolicy();
     //policy.setVerticalPolicy(QSizePolicy::Fixed);
 
     //connect(_parent,SIGNAL(textChanged()),this,SLOT(repaint()));
-    connect( parent->document()->documentLayout(), SIGNAL( update(const QRectF &) ),
+    connect( _document->document()->documentLayout(), SIGNAL( update(const QRectF &) ),
         this, SLOT( update() ) );
-    connect( parent->verticalScrollBar(), SIGNAL(valueChanged(int) ),
+    connect( _document->verticalScrollBar(), SIGNAL(valueChanged(int) ),
         this, SLOT( update() ) );
 }
 
@@ -31,53 +31,28 @@ TextEditMetaBorder::~TextEditMetaBorder()
 }
 
 
-/**
- * (De-)aktiviert das Zeichnen des Hintergrunds mit Farbverlauf.
- */
-void TextEditMetaBorder::setGradientBackground(bool enable)
-{
-    _gradientBG = enable;
-}
-
 void TextEditMetaBorder::paintEvent ( QPaintEvent * event )
 {
     QPainter p(this);
-    setFont( _parent->font() );
+    p.save();
 
-    drawBackground(p);
     drawLineNumbers(p);
-}
 
-
-void TextEditMetaBorder::drawBackground(QPainter & painter)
-{
-    QColor background=_parent->palette().window().color();
-    QColor textBackground=_parent->palette().base().color();
-
-    if (_gradientBG) {
-        QLinearGradient linearGrad(QPointF(0, 0), QPointF(rect().width()/2, 0));
-        linearGrad.setColorAt(0, background);
-        linearGrad.setColorAt(1, textBackground);
-
-        painter.setBrush( linearGrad );
-    }
-
-    painter.setPen(Qt::NoPen);
-    painter.drawRect( rect() );
+    p.restore();
 }
 
 void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
 {
     _visibleLineCache.clear();
-    painter.setPen(QPen(_parent->palette().text().color()));
-    QAbstractTextDocumentLayout *layout = _parent->document()->documentLayout();
-    int contentsY = _parent->verticalScrollBar()->value();
-    qreal pageBottom = contentsY + _parent->viewport()->height();
-    const QFontMetrics fm = fontMetrics();
-    const int ascent = fontMetrics().ascent() + 1; // height = ascent + descent + 1
+
+    QAbstractTextDocumentLayout *layout = _document->document()->documentLayout();
+    int contentsY = _document->verticalScrollBar()->value();
+    qreal pageBottom = contentsY + _document->viewport()->height();
+    const QFontMetrics &fm = fontMetrics();
+    const int ascent = fm.ascent() + 1; // height = ascent + descent + 1
     int lineCount = 1;
 
-    for ( QTextBlock block = _parent->document()->begin();
+    for ( QTextBlock block = _document->document()->begin();
         block.isValid(); block = block.next(), ++lineCount )
     {
 
@@ -107,27 +82,20 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
         {
             if ( block.userState() & etboBreakPoint )
             {
-                painter.setPen(Qt::NoPen);
                 QColor col=Qt::darkRed; //_bDebugMode ? Qt::red : Qt::darkRed;
                 col.setAlpha(150);
 
-                QBrush b(col);
-                painter.setBrush(b);
                 x.rect.setWidth(_iBreakpointWidth);
-                painter.drawRect(x.rect);
-                painter.setPen(QPen(_parent->palette().text().color()));
+                painter.fillRect(x.rect, col);
             }
-            if ( block.userState() & etboBookmark )
+
+            else if ( block.userState() & etboBookmark )
             {
-                painter.setPen(Qt::NoPen);
                 QColor col=Qt::darkBlue;
                 col.setAlpha(150);
 
-                QBrush b(col);
-                painter.setBrush(b);
                 x.rect.setWidth(_iBreakpointWidth);
-                painter.drawRect(x.rect);
-                painter.setPen(QPen(_parent->palette().text().color()));
+                painter.fillRect(x.rect, col);
             }
         }
 
@@ -138,9 +106,6 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
 
 void TextEditMetaBorder::mousePressEvent ( QMouseEvent * event )
 {
-//    if ( _bDebugMode )
-//        return;
-
     if (event->button() & Qt::LeftButton)
     {
         for ( int i = 0 ; i < _visibleLineCache.count() ; i++ )
@@ -166,4 +131,12 @@ void TextEditMetaBorder::mousePressEvent ( QMouseEvent * event )
             }
         } // for
     }
+}
+
+void TextEditMetaBorder::showEvent(QShowEvent *e)
+{
+    e->accept();
+
+    if (_document->font() != font())
+        setFont(_document->font());
 }
