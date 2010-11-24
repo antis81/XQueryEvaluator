@@ -8,7 +8,8 @@ SOURCES += main.cpp\
     XQEOutput.cpp \
     XQEMessageHandler.cpp \
     TextEditMetaBorder.cpp \
-    XQueryCompleter.cpp
+    XQEditor.cpp \
+    XQEdit.cpp
 
 
 HEADERS  += XQEMainWindow.h \
@@ -17,4 +18,5 @@ HEADERS  += XQEMainWindow.h \
     XQEOutput.h \
     XQEMessageHandler.h \
     TextEditMetaBorder.h \
-    XQueryCompleter.h
+    XQEditor.h \
+    XQEdit.h
