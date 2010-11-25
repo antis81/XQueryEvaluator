@@ -13,7 +13,7 @@ contains(QT_VERSION, ^4\\.[0-4]\\..*) {
     error("Use at least Qt 4.5.")
 }
 
-VERSION = 0.5.0.0
+VERSION = 0.5.1.0
 
 TARGET = XQueryEvaluator
 TEMPLATE = app
