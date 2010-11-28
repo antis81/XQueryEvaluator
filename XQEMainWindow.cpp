@@ -46,7 +46,7 @@ void XQEMainWindow::changeEvent(QEvent *e)
 void XQEMainWindow::on_btnQuery_clicked()
 {
     const QString source = loadSourceFile( ui->textSourceFile->text() );
-    QXmlQuery query;
+    QXmlQuery query( qQXmlQuery::XQuery10 );
     XQEMessageHandler msgHandler;
     query.setMessageHandler(&msgHandler);
 
