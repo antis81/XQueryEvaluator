@@ -6,15 +6,21 @@
 #include "XQEMessageHandler.h"
 #include "XQEditor.h"
 
-#include <QtXmlPatterns/QtXmlPatterns>
+#include <QtXmlPatterns/QXmlSerializer>
+
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
+#include <QtGui/QToolBar>
+#include <QtGui/QComboBox>
 
+#include <QtCore/QBuffer>
+#include <QtCore/QTime>
 
 XQEMainWindow::XQEMainWindow(QWidget *parent)
-  : QMainWindow(parent)
-  , ui(new Ui::XQEMainWindow)
-  , _textQuery(new XQEditor)
+  : QMainWindow( parent )
+  , ui( new Ui::XQEMainWindow )
+  , _textQuery( new XQEditor )
+  , _queryLanguage( QXmlQuery::XQuery10 )
 {
     ui->setupUi(this);
 
@@ -24,6 +30,8 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 	l->setContentsMargins(0,0,0,0);
 
 	l->addWidget( _textQuery );
+
+	ui->toolBar->addWidget(new QComboBox());
 }
 
 XQEMainWindow::~XQEMainWindow()
@@ -46,7 +54,7 @@ void XQEMainWindow::changeEvent(QEvent *e)
 void XQEMainWindow::on_btnQuery_clicked()
 {
     const QString source = loadSourceFile( ui->textSourceFile->text() );
-    QXmlQuery query( qQXmlQuery::XQuery10 );
+    QXmlQuery query( _queryLanguage );
     XQEMessageHandler msgHandler;
     query.setMessageHandler(&msgHandler);
 

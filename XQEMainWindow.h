@@ -2,8 +2,7 @@
 #define XQEMAINWINDOW_H
 
 #include <QtGui/QMainWindow>
-
-//#include "XmlHighlighter.h"
+#include <QtXmlPatterns/QXmlQuery>
 
 class XQEditor;
 
@@ -32,7 +31,8 @@ protected:
 private:
     Ui::XQEMainWindow *ui;
 
-    XQEditor *              _textQuery;
+    XQEditor *                  _textQuery;
+    QXmlQuery::QueryLanguage    _queryLanguage;
 
     QString selectSourceFile();
     QString loadSourceFile(const QString &path) const;
