@@ -10,3 +10,4 @@ build/*
 # annoying files
 .DS_Store
 .[Tt]humbs.db
+*.user*
