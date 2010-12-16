@@ -116,11 +116,19 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>TextHighlighting</string>
+    <string>Highlight Text</string>
+   </property>
+   <property name="toolTip">
+    <string>Control the text highlighting of the query.</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>textSourceFile</tabstop>
+  <tabstop>btnOpenSource</tabstop>
+  <tabstop>btnQuery</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
