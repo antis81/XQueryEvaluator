@@ -3,8 +3,8 @@
 #include "ui_XQEMainWindow.h"
 
 #include "XQEOutput.h"
-#include "XQEMessageHandler.h"
-#include "XQEditor.h"
+#include "Query/XQEMessageHandler.h"
+#include "TextEditing/XQEditor.h"
 
 #include <QtXmlPatterns/QXmlSerializer>
 

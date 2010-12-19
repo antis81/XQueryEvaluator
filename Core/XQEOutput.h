@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-#include "XmlHighlighter.h"
+#include "TextEditing/XmlHighlighter.h"
 
 namespace Ui {
     class XQEOutput;
