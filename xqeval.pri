@@ -13,5 +13,7 @@ UI_DIR  = $$PWD/GeneratedFiles/ui
 RCC_DIR = $$PWD/GeneratedFiles/rcc
 OBJECTS_DIR = $$PWD/GeneratedFiles/obj
 
+INCLUDEPATH += $$PWD
+
 RESOURCES *= \
     $$PWD/resources/xqe_resource.qrc

@@ -14,8 +14,6 @@ unix:LIBS += -L$$BIN_BASE \
 
 QT *= xmlpatterns
 
-INCLUDEPATH += $$PWD $$PWD/Query $$PWD/TextEditing
-
 FORMS    += XQEMainWindow.ui \
     XQEOutput.ui
 
