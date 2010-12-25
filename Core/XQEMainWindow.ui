@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>671</width>
+    <height>499</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,22 +41,6 @@
     <item row="1" column="0" colspan="4">
      <widget class="QWidget" name="myPlace" native="true"/>
     </item>
-    <item row="2" column="3">
-     <widget class="QPushButton" name="btnQuery">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>Query it!</string>
-      </property>
-      <property name="autoDefault">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -64,7 +48,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
+     <width>671</width>
      <height>22</height>
     </rect>
    </property>
@@ -127,7 +111,6 @@
  <tabstops>
   <tabstop>textSourceFile</tabstop>
   <tabstop>btnOpenSource</tabstop>
-  <tabstop>btnQuery</tabstop>
  </tabstops>
  <resources/>
  <connections/>
