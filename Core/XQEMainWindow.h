@@ -29,6 +29,8 @@ private slots:
 
     void queryLanguageSelected(int comboIndex);
 
+    void queryFileNameChanged(const QString & newFileName);
+
 protected:
     void changeEvent(QEvent *e);
 
@@ -37,6 +39,7 @@ private:
 
     QComboBox *                 _combo; //!< @todo Outsource this and connect to an action manager or something.
 
+    QString                     _queryFileName;
     XQEditor *                  _textQuery;
     QXmlQuery::QueryLanguage    _queryLanguage;
 

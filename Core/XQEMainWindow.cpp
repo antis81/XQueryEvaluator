@@ -110,10 +110,27 @@ void XQEMainWindow::on_btnOpenSource_clicked()
 
 void XQEMainWindow::on_actionOpen_triggered()
 {
-    QString destFile = QFileDialog::getOpenFileName(0, tr("Open query file ..."), "", "*.xq");
+    QString filter;
+    switch (_queryLanguage)
+    {
+    default: // XQuery 1.0
+        filter = "*.xq *.xquery";
+        break;
+    case QXmlQuery::XSLT20:
+        filter = "*.xsl *.xslt";
+        break;
+    }
+
+    QString startPath = _queryFileName;
+    if ( startPath.isEmpty() )
+        startPath = QDir::homePath();
+
+    const QString &destFile = QFileDialog::getOpenFileName(0, tr("Open query file ..."), startPath, filter);
     if (!destFile.isEmpty())
     {
-        QFile dest(destFile);
+        _queryFileName = destFile; // remember the file name
+
+        QFile dest(_queryFileName);
 
         if ( dest.open(QIODevice::ReadOnly) )
         {
@@ -124,22 +141,44 @@ void XQEMainWindow::on_actionOpen_triggered()
 
 void XQEMainWindow::on_actionSave_triggered()
 {
-    //    selectedFileExt = "*.xq";
-    QString destFile = QFileDialog::getSaveFileName(0, tr("Save query file ..."), QDir::homePath(), tr("XQuery file (%1)").arg("*.xq"));
-    if (!destFile.isEmpty())
+    QString ext;
+    switch (_queryLanguage)
     {
-        QFile dest(destFile);
-
-        if ( dest.open(QIODevice::WriteOnly) )
-            dest.write( _textQuery->xqText().toUtf8() );
-        else
-            QMessageBox::critical(0, tr("Error"), tr("Unable to save XQuery file at: %1").arg(destFile));
+    default: // XQuery 1.0
+        ext = "xq";
+        break;
+    case QXmlQuery::XSLT20:
+        ext = "xsl";
+        break;
     }
+
+    QString startPath;
+    if ( _queryFileName.isEmpty() )
+        startPath = QDir::homePath();
+    else
+        startPath = _queryFileName;
+
+    QFileDialog fd( 0, tr("Save query file ..."), startPath );
+    fd.setAcceptMode(QFileDialog::AcceptSave);
+    fd.setDefaultSuffix(ext);
+    fd.setFileMode(QFileDialog::AnyFile);
+    connect( &fd, SIGNAL( fileSelected(const QString &) ), SLOT(queryFileNameChanged(const QString &)),
+            Qt::DirectConnection );
+
+    if ( !fd.exec() )
+        return;
+
+    QFile dest(_queryFileName);
+
+    if ( dest.open(QIODevice::WriteOnly) )
+        dest.write( _textQuery->xqText().toUtf8() );
+    else
+        QMessageBox::critical(0, tr("Error"), tr("Unable to save XQuery file at: %1").arg(_queryFileName));
 }
 
 QString XQEMainWindow::selectSourceFile()
 {
-    return QDir::cleanPath( QFileDialog::getOpenFileName(0, tr("Open XML source file ..."), "", "*.xml") );
+    return QDir::cleanPath( QFileDialog::getOpenFileName(0, tr("Open XML source file ..."), QString(), "*.xml") );
 }
 
 QString XQEMainWindow::loadSourceFile(const QString &path) const
@@ -159,4 +198,9 @@ void XQEMainWindow::queryLanguageSelected(int comboIndex)
     QXmlQuery::QueryLanguage ql = static_cast<QXmlQuery::QueryLanguage>( _combo->itemData(comboIndex).toInt() );
 
     _queryLanguage = ql;
+}
+
+void XQEMainWindow::queryFileNameChanged(const QString &newFileName)
+{
+    _queryFileName = newFileName;
 }
