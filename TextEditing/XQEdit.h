@@ -20,7 +20,7 @@ public:
 
     void keyPressEvent(QKeyEvent *e);
 
-    private slots:
+private slots:
     void insertCompletion(const QString &completion);
 
 private:

@@ -97,9 +97,11 @@ void XQEdit::keyPressEvent(QKeyEvent *e)
         _completer->setCompletionPrefix(completionPrefix);
         _completer->popup()->setCurrentIndex(_completer->completionModel()->index(0, 0));
     }
+
     QRect cr = cursorRect();
     cr.setWidth(_completer->popup()->sizeHintForColumn(0)
                 + _completer->popup()->verticalScrollBar()->sizeHint().width());
-    _completer->complete(cr); // popup it up!
+
+    _completer->complete(cr); // pop it up!
 }
 
