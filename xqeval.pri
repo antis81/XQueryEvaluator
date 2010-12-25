@@ -4,6 +4,8 @@ XQEVAL_PRI_INCLUDED = 1
 XQEVAL_VERSION = 0.5.1
 message("Building $$TARGET")
 
+PROJECT_BASE = $$PWD
+
 BIN_BASE = $$PWD/build
 message("Binaries going to $$BIN_BASE")
 
