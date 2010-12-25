@@ -10,6 +10,8 @@ namespace Ui {
     class XQEMainWindow;
 }
 
+class QComboBox;
+
 class XQEMainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -25,11 +27,15 @@ private slots:
     void on_actionSave_triggered();
 
 
+    void queryLanguageSelected(int comboIndex);
+
 protected:
     void changeEvent(QEvent *e);
 
 private:
     Ui::XQEMainWindow *ui;
+
+    QComboBox *                 _combo; //!< @todo Outsource this and connect to an action manager or something.
 
     XQEditor *                  _textQuery;
     QXmlQuery::QueryLanguage    _queryLanguage;

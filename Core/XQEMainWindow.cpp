@@ -17,10 +17,10 @@
 #include <QtCore/QTime>
 
 XQEMainWindow::XQEMainWindow(QWidget *parent)
-  : QMainWindow( parent )
-  , ui( new Ui::XQEMainWindow )
-  , _textQuery( new XQEditor )
-  , _queryLanguage( QXmlQuery::XQuery10 )
+    : QMainWindow( parent )
+    , ui( new Ui::XQEMainWindow )
+    , _textQuery( new XQEditor )
+    , _queryLanguage( QXmlQuery::XQuery10 )
 {
     ui->setupUi(this);
 
@@ -31,12 +31,23 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
 	l->addWidget( _textQuery );
 
-	ui->toolBar->addWidget(new QComboBox());
+	_combo = new QComboBox();
+	_combo->addItem( "XQuery 1.0", QXmlQuery::XQuery10 );
+	_combo->addItem( "XSLT 2.0", QXmlQuery::XSLT20 );
+	connect( _combo, SIGNAL(activated(int)), this, SLOT(queryLanguageSelected(int)) );
+
+	ui->toolBar->addWidget(_combo);
+
+	QAction *a = new QAction( "Run", this );
+	a->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_R ) );
+	connect( a, SIGNAL( triggered(bool) ), this, SLOT( on_btnQuery_clicked() ) );
+	ui->toolBar->addAction(a);
+
 }
 
 XQEMainWindow::~XQEMainWindow()
 {
-	delete ui;
+    delete ui;
 }
 
 void XQEMainWindow::changeEvent(QEvent *e)
@@ -141,4 +152,11 @@ QString XQEMainWindow::loadSourceFile(const QString &path) const
         return f.readAll();
 
     return QString();
+}
+
+void XQEMainWindow::queryLanguageSelected(int comboIndex)
+{
+    QXmlQuery::QueryLanguage ql = static_cast<QXmlQuery::QueryLanguage>( _combo->itemData(comboIndex).toInt() );
+
+    _queryLanguage = ql;
 }
