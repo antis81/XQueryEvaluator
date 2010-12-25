@@ -21,3 +21,6 @@ SOURCES += \
     XQEdit.cpp \
     XmlHighlighter.cpp \
     TextEditMetaBorder.cpp
+
+RESOURCES += \
+    resources/TextEditing.qrc

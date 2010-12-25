@@ -4,6 +4,7 @@
 #include <QtGui/QWidget>
 
 class XQEdit;
+class QAbstractItemModel;
 
 
 class XQEditor : public QWidget
@@ -19,6 +20,8 @@ public:
 
 private:
     XQEdit *     _textQuery;
+
+    QAbstractItemModel * modelFromFile(QString fileName);
 };
 
 #endif // XQEDITOR_H

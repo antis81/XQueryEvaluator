@@ -1,8 +1,12 @@
 #include "XQEditor.h"
 
+#include <QtGui/QApplication>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QCompleter>
 #include <QtGui/QStringListModel>
+
+#include <QtCore/QFile>
+#include <QtCore/QDir>
 
 #include "XQEdit.h"
 #include "TextEditMetaBorder.h"
@@ -12,6 +16,8 @@ XQEditor::XQEditor(QWidget *parent)
     : QWidget(parent)
     , _textQuery( new XQEdit(this) )
 {
+    Q_INIT_RESOURCE(TextEditing);
+
 	// Zeilennummern
 	TextEditMetaBorder  *lineNumbers = new TextEditMetaBorder(_textQuery);
 	lineNumbers->setFixedWidth(40);
@@ -27,12 +33,7 @@ XQEditor::XQEditor(QWidget *parent)
 
 	QCompleter *completer = new QCompleter();
 
-	//! @todo For playing around only
-	QStringList sl;
-	sl << "return" << "local" << "lower-case";
-	sl << "declare" << "variable" << "function";
-
-	completer->setModel( new QStringListModel(sl) );
+	completer->setModel( modelFromFile(":/CompletionModels/XQuery.cpl") );
 	completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	completer->setWrapAround(false);
@@ -43,6 +44,7 @@ XQEditor::XQEditor(QWidget *parent)
 
 XQEditor::~XQEditor()
 {
+	Q_CLEANUP_RESOURCE(TextEditing);
 }
 
 QString XQEditor::xqText() const
@@ -53,4 +55,32 @@ QString XQEditor::xqText() const
 void XQEditor::setXQText(const QString &text)
 {
 	_textQuery->setText(text);
+}
+
+QAbstractItemModel * XQEditor::modelFromFile(QString fileName)
+{
+	QFile modelFile( QDir::cleanPath(fileName) );
+
+	if ( !modelFile.open(QIODevice::ReadOnly) )
+		return 0;
+
+#ifndef QT_NO_CURSOR
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+#endif
+	QStringList sl;
+
+    while (!modelFile.atEnd())
+    {
+        QString line = QString::fromUtf8( modelFile.readLine() ).trimmed();
+        if (!line.isEmpty())
+            sl << line;
+    }
+
+    modelFile.close();
+
+#ifndef QT_NO_CURSOR
+    QApplication::restoreOverrideCursor();
+#endif
+
+    return new QStringListModel(sl);
 }
