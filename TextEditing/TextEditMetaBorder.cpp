@@ -1,9 +1,9 @@
 #include "TextEditMetaBorder.h"
 
-#include <QPainter>
-#include <QScrollbar>
-#include <QTextBlock>
-#include <QAbstractTextDocumentLayout>
+#include <QtGui/QPainter>
+#include <QtGui/QScrollBar>
+#include <QtGui/QTextBlock>
+#include <QtGui/QAbstractTextDocumentLayout>
 
 TextEditMetaBorder::TextEditMetaBorder(QTextEdit *doc, QWidget *parent)
     : QWidget(parent)

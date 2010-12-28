@@ -2,10 +2,10 @@
 #define TEXTEDITMETABORDER_H
 
 
-#include <QTextEdit>
-#include <QPaintEvent>
-#include <QSet>
-#include <QTextBlock>
+#include <QtGui/QTextEdit>
+#include <QtGui/QPaintEvent>
+#include <QtCore/QSet>
+#include <QtGui/QTextBlock>
 
 class TextEditMetaBorder : public QWidget
 {
