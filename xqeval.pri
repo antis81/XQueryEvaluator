@@ -1,7 +1,7 @@
 !isEmpty(XQEVAL_PRI_INCLUDED):error("ignored: xqeval.pri already included")
 XQEVAL_PRI_INCLUDED = 1
 
-XQEVAL_VERSION = 0.5.1
+XQEVAL_VERSION = 0.5.3
 message("Building $$TARGET")
 
 PROJECT_BASE = $$PWD
