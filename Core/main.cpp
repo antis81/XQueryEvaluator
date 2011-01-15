@@ -6,6 +6,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setApplicationName("XQueryEvaluator");
 
     QFile f(":/DarkBlue.css");
     if (f.open(QIODevice::ReadOnly))
@@ -13,5 +14,6 @@ int main(int argc, char *argv[])
 
     XQEMainWindow w;
     w.show();
+
     return a.exec();
 }
