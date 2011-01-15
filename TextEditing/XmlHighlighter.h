@@ -38,7 +38,7 @@ public:
 
 protected:
     void highlightBlock(const QString &text);
-    void colorBlock( int blockState, const QString &text, const QRegExp &startExp, 
+    void colorBlock( int blockState, const QString &text, const QRegExp &startExp,
                      const QRegExp &endExp, const QTextCharFormat &fmt);
     void addHighlightingRule(const QStringList &patterns, const QTextCharFormat &format);
 
@@ -48,21 +48,21 @@ private:
         QList<QRegExp*>      patterns;
         QTextCharFormat      format;
         };
-    
-	QList<HighlightingRule*>	_highlightingRules;
+
+    QList<HighlightingRule*>	_highlightingRules;
 
     QRegExp                 _commentStartExp;
     QRegExp                 _commentEndExp;
-	QTextCharFormat		_commentFormat;
-	
+    QTextCharFormat		_commentFormat;
+
 	QRegExp					_headerStartExp;
 	QRegExp					_headerEndExp;
 	QTextCharFormat		_xmlHeadFormat;
-	
+
 	QRegExp					_cdataStartExp;
 	QRegExp					_cdataEndExp;
 	QTextCharFormat		_cdataFormat;
-	
+
 	QTextCharFormat		_keySignFormat;
 	QTextCharFormat		_xmlTagFormat;
 	QTextCharFormat		_xmlAttrFormat;
