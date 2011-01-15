@@ -11,3 +11,6 @@ build/*
 .DS_Store
 .[Tt]humbs.db
 *.user*
+
+# doxygen generated documentation
+*/doxygen/*
