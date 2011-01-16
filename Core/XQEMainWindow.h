@@ -39,7 +39,7 @@ public:
     ~XQEMainWindow();
 
 private slots:
-    void on_btnQuery_clicked();
+    void startQuery();
     void on_btnOpenSource_clicked();
 
     void on_actionOpen_triggered();

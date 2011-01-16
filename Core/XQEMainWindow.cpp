@@ -59,7 +59,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
 	QAction *a = new QAction( "Run", this );
 	a->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_R ) );
-	connect( a, SIGNAL( triggered(bool) ), this, SLOT( on_btnQuery_clicked() ) );
+	connect( a, SIGNAL( triggered(bool) ), this, SLOT( startQuery() ) );
 	ui->toolBar->addAction(a);
 
 }
@@ -81,7 +81,7 @@ void XQEMainWindow::changeEvent(QEvent *e)
     }
 }
 
-void XQEMainWindow::on_btnQuery_clicked()
+void XQEMainWindow::startQuery()
 {
     const QString source = loadSourceFile( ui->textSourceFile->text() );
     QXmlQuery query( _queryLanguage );
