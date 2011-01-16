@@ -73,7 +73,7 @@ QString XQEditor::xqText() const
 
 void XQEditor::setXQText(const QString &text)
 {
-	_textQuery->setText(text);
+	_textQuery->setPlainText(text);
 }
 
 QAbstractItemModel * XQEditor::modelFromFile(QString fileName)
