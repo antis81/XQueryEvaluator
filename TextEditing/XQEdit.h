@@ -20,7 +20,7 @@
 #ifndef XQEDIT_H
 #define XQEDIT_H
 
-#include <QTextEdit>
+#include <QtGui/QTextEdit>
 
 #include "XQueryHighlighter.h"
 

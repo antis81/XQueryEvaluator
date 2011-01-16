@@ -37,12 +37,12 @@ XQEditor::XQEditor(QWidget *parent)
 {
     Q_INIT_RESOURCE(TextEditing);
 
-	// Zeilennummern
-	TextEditMetaBorder  *lineNumbers = new TextEditMetaBorder(_textQuery);
+	// line numbers
+	TextEditMetaBorder *lineNumbers = new TextEditMetaBorder(_textQuery);
 	lineNumbers->setFixedWidth(40);
 	lineNumbers->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
 
-	QHBoxLayout *horLayout = new QHBoxLayout;
+	QHBoxLayout *horLayout = new QHBoxLayout();
 	horLayout->setSpacing(0);
 	horLayout->setMargin(0);
 	horLayout->addWidget(lineNumbers);
