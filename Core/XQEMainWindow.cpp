@@ -153,7 +153,7 @@ void XQEMainWindow::on_actionOpen_triggered()
 
         if ( dest.open(QIODevice::ReadOnly) )
         {
-            _textQuery->setXQText( QString(dest.readAll()) );
+            _textQuery->setXQText( QString::fromUtf8(dest.readAll()) );
         }
     }
 }
