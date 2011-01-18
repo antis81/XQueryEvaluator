@@ -7,7 +7,7 @@ TARGET = XQueryEvaluator
 VERSION = $$XQEVAL_VERSION
 message("XQE Version: $$VERSION")
 
-macx:ICON = $$PROJECT_BASE/resources/logo.icns
+macx:ICON = resources/logo.icns
 
 DESTDIR = $$BIN_BASE
 
@@ -27,3 +27,6 @@ HEADERS  += \
 SOURCES += main.cpp\
     XQEMainWindow.cpp \
     XQEOutput.cpp
+
+RESOURCES += \
+    resources/xqe_resource.qrc
