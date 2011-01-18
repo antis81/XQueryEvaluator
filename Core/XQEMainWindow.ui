@@ -38,8 +38,19 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="0" colspan="4">
+    <item row="1" column="0" colspan="5">
      <widget class="QWidget" name="myPlace" native="true"/>
+    </item>
+    <item row="0" column="4">
+     <widget class="QToolButton" name="btnViewSource">
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resources/xqe_resource.qrc">
+        <normaloff>:/eye.svg</normaloff>:/eye.svg</iconset>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -112,6 +123,8 @@
   <tabstop>textSourceFile</tabstop>
   <tabstop>btnOpenSource</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="resources/xqe_resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>DarkBlue.css</file>
+        <file>eye.svg</file>
     </qresource>
 </RCC>

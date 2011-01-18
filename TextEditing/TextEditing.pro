@@ -13,14 +13,16 @@ HEADERS += \
     XQEditor.h \
     XQEdit.h \
     XmlHighlighter.h \
-    TextEditMetaBorder.h
+    TextEditMetaBorder.h \
+    XMLEditor.h
 
 SOURCES += \
     XQueryHighlighter.cpp \
     XQEditor.cpp \
     XQEdit.cpp \
     XmlHighlighter.cpp \
-    TextEditMetaBorder.cpp
+    TextEditMetaBorder.cpp \
+    XMLEditor.cpp
 
 RESOURCES += \
     resources/TextEditing.qrc

@@ -24,6 +24,7 @@
 #include <QtXmlPatterns/QXmlQuery>
 
 class XQEditor;
+class XmlEditDialog;
 
 namespace Ui {
     class XQEMainWindow;
@@ -41,6 +42,7 @@ public:
 private slots:
     void startQuery();
     void on_btnOpenSource_clicked();
+    void on_btnViewSource_clicked();
 
     void on_actionOpen_triggered();
     void on_actionSave_triggered();
@@ -59,6 +61,7 @@ private:
 
     QString                     _queryFileName;
     XQEditor *                  _textQuery;
+    XmlEditDialog *             _xmlEditor;
     QXmlQuery::QueryLanguage    _queryLanguage;
 
     QString selectSourceFile();

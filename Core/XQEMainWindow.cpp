@@ -22,8 +22,12 @@
 #include "ui_XQEMainWindow.h"
 
 #include "XQEOutput.h"
+#include "XmlEditDialog.h"
+
 #include "Query/XQEMessageHandler.h"
+
 #include "TextEditing/XQEditor.h"
+#include "TextEditing/XMLEditor.h"
 
 #include <QtXmlPatterns/QXmlSerializer>
 
@@ -39,6 +43,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     : QMainWindow( parent )
     , ui( new Ui::XQEMainWindow )
     , _textQuery( new XQEditor )
+    , _xmlEditor(0)
     , _queryLanguage( QXmlQuery::XQuery10 )
 {
     ui->setupUi(this);
@@ -67,6 +72,9 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 XQEMainWindow::~XQEMainWindow()
 {
     delete ui;
+
+    if (_xmlEditor)
+        delete _xmlEditor;
 }
 
 void XQEMainWindow::changeEvent(QEvent *e)
@@ -125,6 +133,29 @@ void XQEMainWindow::startQuery()
 void XQEMainWindow::on_btnOpenSource_clicked()
 {
     ui->textSourceFile->setText(selectSourceFile());
+}
+
+void XQEMainWindow::on_btnViewSource_clicked()
+{
+    QString fileName = ui->textSourceFile->text();
+    if ( fileName.isEmpty() )
+        return;
+
+    QFile xmlFile( QDir::cleanPath(fileName) );
+    if ( !xmlFile.open(QIODevice::ReadOnly) )
+    {
+        QMessageBox::critical(
+                    this, tr("Unable to open XML file"),
+                    tr("The source document could not be opened.") );
+        return;
+    }
+
+    if ( _xmlEditor == 0 )
+        _xmlEditor = new XmlEditDialog();
+
+    _xmlEditor->setXml( QString::fromUtf8(xmlFile.readAll()) );
+
+    _xmlEditor->show();
 }
 
 void XQEMainWindow::on_actionOpen_triggered()
