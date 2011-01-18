@@ -31,14 +31,11 @@ TextEditMetaBorder::TextEditMetaBorder(QTextEdit *doc, QWidget *parent)
 {
     const QFontMetrics &fm = fontMetrics();
 
-    _iBreakpointWidth=fm.maxWidth()*1.5;
+    _iBreakpointWidth = fm.maxWidth() * 1.5;
 
-    // 4 Zeilennummern ein space und einmal breakpoint
+    // 4 line numbers + space + breakpoint
     setMinimumWidth(fm.maxWidth()*6);
-    //QSizePolicy policy=sizePolicy();
-    //policy.setVerticalPolicy(QSizePolicy::Fixed);
 
-    //connect(_parent,SIGNAL(textChanged()),this,SLOT(repaint()));
     connect( _document->document()->documentLayout(), SIGNAL( update(const QRectF &) ),
         this, SLOT( update() ) );
     connect( _document->verticalScrollBar(), SIGNAL(valueChanged(int) ),
@@ -78,10 +75,11 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
         const QRectF boundingRect = layout->blockBoundingRect( block );
 
         QPointF position = boundingRect.topLeft();
-        // zeilen vor view -> nicht sichtbar
+
+        // don't draw invisible lines
         if ( position.y() + boundingRect.height() < contentsY )
             continue;
-        // zeilen nach view auch nicht mehr sichtbar
+
         if ( position.y() > pageBottom )
             break;
 
