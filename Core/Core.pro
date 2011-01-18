@@ -18,15 +18,18 @@ unix:LIBS += -L$$BIN_BASE \
 QT *= xmlpatterns
 
 FORMS    += XQEMainWindow.ui \
-    XQEOutput.ui
+    XQEOutput.ui \
+    XmlEditDialog.ui
 
 HEADERS  += \
     XQEMainWindow.h \
-    XQEOutput.h
+    XQEOutput.h \
+    XmlEditDialog.h
 
 SOURCES += main.cpp\
     XQEMainWindow.cpp \
-    XQEOutput.cpp
+    XQEOutput.cpp \
+    XmlEditDialog.cpp
 
 RESOURCES += \
     resources/xqe_resource.qrc
