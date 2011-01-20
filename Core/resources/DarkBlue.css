@@ -25,3 +25,8 @@ QLineEdit
     border-color: gray;
     border-radius: 10px;
 }
+
+QMessageBox
+{
+    messagebox-question-icon: url(:/question.png);
+}

@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>DarkBlue.css</file>
         <file>eye.svg</file>
+        <file>question.png</file>
     </qresource>
 </RCC>
