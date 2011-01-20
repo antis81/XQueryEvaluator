@@ -37,8 +37,14 @@ public:
     QString xqText() const;
     void setXQText(const QString &text);
 
+    bool modified() const;
+
+private slots:
+    void documentModified(bool modified);
+
 private:
-    XQEdit *     _textQuery;
+    XQEdit *    _textQuery;
+    bool        _modified;
 
     QAbstractItemModel * modelFromFile(QString fileName);
 };

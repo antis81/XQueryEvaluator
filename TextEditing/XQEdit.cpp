@@ -25,9 +25,9 @@
 #include <QtGui/QScrollBar>
 
 
-XQEdit::XQEdit(QWidget *parent) :
-    QTextEdit(parent)
-  , _completer(0)
+XQEdit::XQEdit(QWidget *parent)
+    : QPlainTextEdit(parent)
+    , _completer(0)
 {
     _xqueryHighlighter.setDocument( document() );
 }
@@ -93,7 +93,7 @@ void XQEdit::keyPressEvent(QKeyEvent *e)
 
     bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space);
     if (!_completer || !isShortcut) // do not process the shortcut when we have a completer
-        QTextEdit::keyPressEvent(e);
+        QPlainTextEdit::keyPressEvent(e);
 
     const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
     if (!_completer || (ctrlOrShift && e->text().isEmpty()))

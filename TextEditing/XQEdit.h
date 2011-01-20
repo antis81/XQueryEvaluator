@@ -20,14 +20,14 @@
 #ifndef XQEDIT_H
 #define XQEDIT_H
 
-#include <QtGui/QTextEdit>
+#include <QtGui/QPlainTextEdit>
 
 #include "XQueryHighlighter.h"
 
 
 class QCompleter;
 
-class XQEdit : public QTextEdit
+class XQEdit : public QPlainTextEdit
 {
     Q_OBJECT
 public:

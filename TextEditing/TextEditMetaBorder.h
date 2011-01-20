@@ -21,7 +21,7 @@
 #define TEXTEDITMETABORDER_H
 
 
-#include <QtGui/QTextEdit>
+#include <QtGui/QPlainTextEdit>
 #include <QtGui/QPaintEvent>
 #include <QtCore/QSet>
 #include <QtGui/QTextBlock>
@@ -38,7 +38,7 @@ public:
         etboBookmark  = 0x02
     };
 
-    explicit TextEditMetaBorder(QTextEdit *doc, QWidget *parent=0);
+    explicit TextEditMetaBorder(QPlainTextEdit *doc, QWidget *parent=0);
     ~TextEditMetaBorder();
 
 //    bool isBreakpoint(int line) { return _breakpoints.contains(line); }
@@ -56,9 +56,9 @@ signals:
     void breakpointChanged(bool bSet);
 private:
 //    bool             _bDebugMode;
-    int             _iBreakpointWidth;
-    QTextEdit *     _document;
-    //QSet<int>        _breakpoints;
+//    QSet<int>        _breakpoints;
+    int                 _iBreakpointWidth;
+    QPlainTextEdit *    _document;
 
     struct LineInfo
     {

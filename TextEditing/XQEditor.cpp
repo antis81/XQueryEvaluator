@@ -34,6 +34,7 @@
 XQEditor::XQEditor(QWidget *parent)
     : QWidget(parent)
     , _textQuery( new XQEdit(this) )
+    , _modified(false)
 {
     Q_INIT_RESOURCE(TextEditing);
 
@@ -59,6 +60,7 @@ XQEditor::XQEditor(QWidget *parent)
 	completer->setCompletionMode(QCompleter::PopupCompletion);
 
 	_textQuery->setCompleter(completer);
+	connect(_textQuery, SIGNAL(modificationChanged(bool)), this, SLOT(documentModified(bool)));
 }
 
 XQEditor::~XQEditor()
@@ -102,4 +104,14 @@ QAbstractItemModel * XQEditor::modelFromFile(QString fileName)
 #endif
 
     return new QStringListModel(sl);
+}
+
+bool XQEditor::modified() const
+{
+    return _modified;
+}
+
+void XQEditor::documentModified(bool modified)
+{
+    _modified = modified;
 }

@@ -35,9 +35,11 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QToolBar>
 #include <QtGui/QComboBox>
+#include <QtGui/QCloseEvent>
 
 #include <QtCore/QBuffer>
 #include <QtCore/QTime>
+
 
 XQEMainWindow::XQEMainWindow(QWidget *parent)
     : QMainWindow( parent )
@@ -47,6 +49,11 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     , _queryLanguage( QXmlQuery::XQuery10 )
 {
     ui->setupUi(this);
+
+    //! @todo TESTING PURPOSES
+    //    QFont myFont = _textQuery->font();
+    //    myFont.setPixelSize(24);
+    //    _textQuery->setFont(myFont);
 
 	QLayout *l = ui->myPlace->layout();
 	if (l == 0)
@@ -66,7 +73,6 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 	a->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_R ) );
 	connect( a, SIGNAL( triggered(bool) ), this, SLOT( startQuery() ) );
 	ui->toolBar->addAction(a);
-
 }
 
 XQEMainWindow::~XQEMainWindow()
@@ -191,39 +197,7 @@ void XQEMainWindow::on_actionOpen_triggered()
 
 void XQEMainWindow::on_actionSave_triggered()
 {
-    QString ext;
-    switch (_queryLanguage)
-    {
-    default: // XQuery 1.0
-        ext = "xq";
-        break;
-    case QXmlQuery::XSLT20:
-        ext = "xsl";
-        break;
-    }
-
-    QString startPath;
-    if ( _queryFileName.isEmpty() )
-        startPath = QDir::homePath();
-    else
-        startPath = _queryFileName;
-
-    QFileDialog fd( 0, tr("Save query file ..."), startPath );
-    fd.setAcceptMode(QFileDialog::AcceptSave);
-    fd.setDefaultSuffix(ext);
-    fd.setFileMode(QFileDialog::AnyFile);
-    connect( &fd, SIGNAL( fileSelected(const QString &) ), SLOT(queryFileNameChanged(const QString &)),
-            Qt::DirectConnection );
-
-    if ( !fd.exec() )
-        return;
-
-    QFile dest(_queryFileName);
-
-    if ( dest.open(QIODevice::WriteOnly) )
-        dest.write( _textQuery->xqText().toUtf8() );
-    else
-        QMessageBox::critical(0, tr("Error"), tr("Unable to save XQuery file at: %1").arg(_queryFileName));
+    saveQuery();
 }
 
 QString XQEMainWindow::selectSourceFile()
@@ -253,4 +227,84 @@ void XQEMainWindow::queryLanguageSelected(int comboIndex)
 void XQEMainWindow::queryFileNameChanged(const QString &newFileName)
 {
     _queryFileName = newFileName;
+    setWindowTitle( QString("%1 - %2").arg( qApp->applicationName() ).arg( QFileInfo(newFileName).fileName() ) );
+    update();
+}
+
+void XQEMainWindow::closeEvent(QCloseEvent *e)
+{
+    bool mayQuit = true;
+    if ( _textQuery->modified() )
+    {
+        QMessageBox message;
+        //message.setIconPixmap( pixmapForSvg(":/xqe_resource/question.svg", QSize(32,32)) );
+        int btn = message.question( this, tr("Save XQuery?"), tr("Save your query?"),
+                                   QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Save );
+
+        switch ( btn )
+        {
+        case QMessageBox::Save:
+            mayQuit = saveQuery();
+            break;
+
+        case QMessageBox::Discard:
+            mayQuit = true;
+            break;
+
+        default:
+            mayQuit = false;
+        }
+    }
+
+    if (mayQuit)
+        e->accept();
+    else
+        e->ignore();
+}
+
+/**
+  Shows a dialog to save the current shown query.
+
+  @return True if query was saved, otherwise false.
+*/
+bool XQEMainWindow::saveQuery()
+{
+    QString ext;
+    switch (_queryLanguage)
+    {
+    default: // XQuery 1.0
+        ext = "xq";
+        break;
+    case QXmlQuery::XSLT20:
+        ext = "xsl";
+        break;
+    }
+
+    QString startPath;
+    if ( _queryFileName.isEmpty() )
+        startPath = QDir::homePath();
+    else
+        startPath = _queryFileName;
+
+    QFileDialog fd( 0, tr("Save query file ..."), startPath );
+    fd.setAcceptMode(QFileDialog::AcceptSave);
+    fd.setDefaultSuffix(ext);
+    fd.setFileMode(QFileDialog::AnyFile);
+    connect( &fd, SIGNAL( fileSelected(const QString &) ), SLOT(queryFileNameChanged(const QString &)) );
+
+    if ( fd.exec() == 0 )
+        return false;
+
+    QFile dest(_queryFileName);
+
+    if ( !dest.open(QIODevice::WriteOnly) )
+    {
+        // failed to save
+        QMessageBox::critical(0, tr("Error"), tr("Unable to save XQuery file at: %1").arg(_queryFileName));
+        return false;
+    }
+
+    dest.write( _textQuery->xqText().toUtf8() );
+
+    return true;
 }

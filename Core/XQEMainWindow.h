@@ -53,6 +53,7 @@ private slots:
 
 protected:
     void changeEvent(QEvent *e);
+    void closeEvent(QCloseEvent *e);
 
 private:
     Ui::XQEMainWindow *ui;
@@ -66,6 +67,8 @@ private:
 
     QString selectSourceFile();
     QString loadSourceFile(const QString &path) const;
+
+    bool saveQuery();
 };
 
 #endif // XQEMAINWINDOW_H

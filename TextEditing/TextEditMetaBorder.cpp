@@ -24,7 +24,7 @@
 #include <QtGui/QTextBlock>
 #include <QtGui/QAbstractTextDocumentLayout>
 
-TextEditMetaBorder::TextEditMetaBorder(QTextEdit *doc, QWidget *parent)
+TextEditMetaBorder::TextEditMetaBorder(QPlainTextEdit *doc, QWidget *parent)
     : QWidget(parent)
     , _document(doc)
 //, _bDebugMode(false)
