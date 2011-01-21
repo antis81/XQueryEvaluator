@@ -19,7 +19,7 @@
 
 #include "XMLEditor.h"
 
-#include <QtGui/QTextEdit>
+#include <QtGui/QPlainTextEdit>
 #include <QtGui/QHBoxLayout>
 
 #include "TextEditMetaBorder.h"
@@ -27,7 +27,7 @@
 
 XMLEditor::XMLEditor(QWidget *parent)
 	: QWidget(parent)
-	, _textXml(new QTextEdit(this))
+	, _textXml(new QPlainTextEdit(this))
 {
 	_highlighter.setDocument( _textXml->document() );
 

@@ -24,7 +24,7 @@
 
 #include "XmlHighlighter.h"
 
-class QTextEdit;
+class QPlainTextEdit;
 
 class XMLEditor : public QWidget
 {
@@ -37,7 +37,7 @@ public:
     void setXml(const QString &xml);
 
 private:
-    QTextEdit *         _textXml;
+    QPlainTextEdit *         _textXml;
     XmlHighlighter      _highlighter;
 };
 
