@@ -190,6 +190,7 @@ void XQEMainWindow::on_actionOpen_triggered()
 
         if ( dest.open(QIODevice::ReadOnly) )
         {
+            setWindowTitle( QString( "%1 - %2" ).arg( qApp->applicationName() ).arg( QFileInfo(dest).fileName() ) );
             _textQuery->setXQText( QString::fromUtf8(dest.readAll()) );
         }
     }
