@@ -234,7 +234,7 @@ void XQEMainWindow::queryFileNameChanged(const QString &newFileName)
 void XQEMainWindow::closeEvent(QCloseEvent *e)
 {
     bool mayQuit = true;
-    if ( _textQuery->modified() )
+    if ( _textQuery->modified() && !_textQuery->xqText().isEmpty() )
     {
         QMessageBox message;
         //message.setIconPixmap( pixmapForSvg(":/xqe_resource/question.svg", QSize(32,32)) );
