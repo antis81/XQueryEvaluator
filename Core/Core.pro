@@ -4,14 +4,16 @@ TEMPLATE = app
 
 TARGET = XQueryEvaluator
 
-VERSION = $$XQEVAL_VERSION
-message("XQE Version: $$VERSION")
+unix {
+    VERSION = $$XQEVAL_VERSION
+    message("XQE Version: $$VERSION")
+}
 
 macx:ICON = resources/logo.icns
 
 DESTDIR = $$BIN_BASE
 
-unix:LIBS += -L$$BIN_BASE \
+LIBS += -L$$BIN_BASE \
     -lTextEditing \
     -lQuery
 
