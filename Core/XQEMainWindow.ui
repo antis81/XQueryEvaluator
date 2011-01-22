@@ -33,6 +33,9 @@
     </item>
     <item row="0" column="3">
      <widget class="QToolButton" name="btnOpenSource">
+      <property name="toolTip">
+       <string>Open an XML source document.</string>
+      </property>
       <property name="text">
        <string>...</string>
       </property>
@@ -43,6 +46,9 @@
     </item>
     <item row="0" column="4">
      <widget class="QToolButton" name="btnViewSource">
+      <property name="toolTip">
+       <string>View the XML source document.</string>
+      </property>
       <property name="text">
        <string>...</string>
       </property>
