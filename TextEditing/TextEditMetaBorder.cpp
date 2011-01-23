@@ -24,8 +24,6 @@
 #include <QtGui/QTextBlock>
 #include <QtGui/QAbstractTextDocumentLayout>
 
-#include <QDebug>
-
 
 TextEditMetaBorder::TextEditMetaBorder(QPlainTextEdit *doc, QWidget *parent)
     : QWidget(parent)
@@ -66,8 +64,6 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
     const qreal visibleBottom = _document->viewport()->height() + scrollOffset;
     const QFontMetrics &fm = _document->fontMetrics();
 
-    qDebug() << "- - - -";
-
     for ( QTextBlock block = _document->document()->begin();
         block.isValid(); block = block.next() )
     {
@@ -84,8 +80,6 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
 
         const QString txt = QString("%1").arg( count );
         painter.drawText( width() - fm.width(txt) -3 , linePos, txt );
-
-        qDebug() << "Drawing line: " << count;
     }
 }
 
