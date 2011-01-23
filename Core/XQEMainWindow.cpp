@@ -50,6 +50,8 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    setWindowTitle( qApp->applicationName() );
+
     //! @todo TESTING PURPOSES
     //    QFont myFont = _textQuery->font();
     //    myFont.setPixelSize(24);
@@ -121,6 +123,7 @@ void XQEMainWindow::startQuery()
     int duration = stopWatch.elapsed(); // time measurement
 
     XQEOutput dlg;
+    dlg.setWindowTitle( tr("Query Result") );
     dlg.setDuration(duration); // the duration of the query
     dlg.setXml(out); // show resulting XML
     if ( msgHandler.errLog().isEmpty() )
@@ -159,6 +162,7 @@ void XQEMainWindow::on_btnViewSource_clicked()
     if ( _xmlEditor == 0 )
         _xmlEditor = new XmlEditDialog();
 
+    _xmlEditor->setWindowTitle( tr("XML Source File - %1").arg( QFileInfo(xmlFile).fileName() )  );
     _xmlEditor->setXml( QString::fromUtf8(xmlFile.readAll()) );
 
     _xmlEditor->show();
