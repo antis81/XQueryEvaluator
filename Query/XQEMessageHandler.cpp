@@ -22,11 +22,11 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QTextDocumentFragment>
 #include <QtCore/QtGlobal>
-#include <QtCore/QDebug>
+#include <QtNetwork/QUrlInfo>
 
 
-XQEMessageHandler::XQEMessageHandler(QObject *parent) :
-        QAbstractMessageHandler(parent)
+XQEMessageHandler::XQEMessageHandler(QObject *parent)
+    : QAbstractMessageHandler(parent)
 {
 }
 
@@ -39,36 +39,46 @@ void XQEMessageHandler::handleMessage(QtMsgType type, const QString &description
 {
     Q_UNUSED(identifier);
 
+    QUrl sourceUrl = sourceLocation.uri();
+    QString source;
+
+    if ( sourceUrl.scheme().toLower() == "tag" )
+        source = tr("query");
+    else
+        source = "xml source";
+
+    QString css;
+    QString msgType;
+
     switch (type)
     {
     case QtDebugMsg:
-        _errLog += tr("<p>XQuery info at line %1 column %2:<br/>%3</p><hr/>")
-                                 .arg(sourceLocation.line())
-                                 .arg(sourceLocation.column())
-                                 .arg(QTextDocumentFragment::fromHtml(description).toPlainText());
+        msgType = tr("Info");
         break;
 
     case QtWarningMsg:
-        _errLog += tr("<p style=\"background-color:#FFFF44;\">XQuery warning at line %1 column %2:<br/>%3</p><hr/>")
-                                 .arg(sourceLocation.line())
-                                 .arg(sourceLocation.column())
-                                 .arg(QTextDocumentFragment::fromHtml(description).toPlainText());
+        msgType = tr("Warning");
+        css = "background-color:#FFFF44;";
         break;
 
     case QtCriticalMsg:
-        _errLog += tr("<p style=\"background-color:#FF4444;\">XQuery error at line %1 column %2:<br/>%3</p><hr/>")
-                                 .arg(sourceLocation.line())
-                                 .arg(sourceLocation.column())
-                                 .arg(QTextDocumentFragment::fromHtml(description).toPlainText());
+        msgType = tr("Error");
+        css = "background-color:#FF4444;";
         break;
 
     case QtFatalMsg:
-        _errLog += tr("<p style=\"background-color:#FF4444;\">XQuery error at line %1 column %2:<br/>%3</p><hr/>")
-                                 .arg(sourceLocation.line())
-                                 .arg(sourceLocation.column())
-                                 .arg(QTextDocumentFragment::fromHtml(description).toPlainText());
+        msgType = tr("Error");
+        css = "background-color:#FF4444;";
         break;
+
+    default: ;
     }
 
-    qDebug() << _errLog;
+    _errLog += tr("<p style=\"%1\">%2 in %3 at line %4 column %5:<br/>%6</p><hr/>")
+            .arg(css)
+            .arg(msgType)
+            .arg(source)
+            .arg(sourceLocation.line())
+            .arg(sourceLocation.column())
+            .arg(QTextDocumentFragment::fromHtml(description).toPlainText());
 }

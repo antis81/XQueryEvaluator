@@ -24,6 +24,7 @@
 #include <QtGui/QTextBlock>
 #include <QtGui/QAbstractTextDocumentLayout>
 
+
 TextEditMetaBorder::TextEditMetaBorder(QPlainTextEdit *doc, QWidget *parent)
     : QWidget(parent)
     , _document(doc)
@@ -59,65 +60,26 @@ void TextEditMetaBorder::paintEvent ( QPaintEvent * event )
 
 void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
 {
-    _visibleLineCache.clear();
-
-    QAbstractTextDocumentLayout *layout = _document->document()->documentLayout();
-    int contentsY = _document->verticalScrollBar()->value();
-    qreal pageBottom = contentsY + _document->viewport()->height();
-    const QFontMetrics &fm = fontMetrics();
-    const int ascent = fm.ascent() + 1; // height = ascent + descent + 1
-    int lineCount = 1;
+    const int scrollOffset = _document->verticalScrollBar()->value();
+    const qreal visibleBottom = _document->viewport()->height() + scrollOffset;
+    const QFontMetrics &fm = _document->fontMetrics();
 
     for ( QTextBlock block = _document->document()->begin();
-        block.isValid(); block = block.next(), ++lineCount )
+        block.isValid(); block = block.next() )
     {
 
-        const QRectF boundingRect = layout->blockBoundingRect( block );
-
-        QPointF position = boundingRect.topLeft();
+        const int count = block.blockNumber() +1;
 
         // don't draw invisible lines
-        if ( position.y() + boundingRect.height() < contentsY )
+        if ( count-1 < scrollOffset )
             continue;
 
-        if ( position.y() > pageBottom )
+        int linePos = fm.height() * (count - scrollOffset);
+        if ( count > visibleBottom )
             break;
 
-        LineInfo x;
-        x.line     = lineCount;
-        x.textblock= block;
-        x.rect     = boundingRect;
-
-        x.rect.setX(0);
-        x.rect.setWidth(width()-3);
-        x.rect.translate(1, - contentsY);
-        x.rect.setHeight(x.rect.height()-2);
-
-        _visibleLineCache.append(x);
-
-        if (block.userState()>=0)
-        {
-            if ( block.userState() & etboBreakPoint )
-            {
-                QColor col=Qt::darkRed; //_bDebugMode ? Qt::red : Qt::darkRed;
-                col.setAlpha(150);
-
-                x.rect.setWidth(_iBreakpointWidth);
-                painter.fillRect(x.rect, col);
-            }
-
-            else if ( block.userState() & etboBookmark )
-            {
-                QColor col=Qt::darkBlue;
-                col.setAlpha(150);
-
-                x.rect.setWidth(_iBreakpointWidth);
-                painter.fillRect(x.rect, col);
-            }
-        }
-
-        const QString txt = QString("%1").arg( lineCount );
-        painter.drawText( width() - fm.width(txt) -3 , qRound( position.y() ) - contentsY + ascent, txt );
+        const QString txt = QString("%1").arg( count );
+        painter.drawText( width() - fm.width(txt) -3 , linePos, txt );
     }
 }
 

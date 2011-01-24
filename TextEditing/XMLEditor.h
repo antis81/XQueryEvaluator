@@ -37,7 +37,7 @@ public:
     void setXml(const QString &xml);
 
 private:
-    QPlainTextEdit *         _textXml;
+    QPlainTextEdit *    _textXml;
     XmlHighlighter      _highlighter;
 };
 
