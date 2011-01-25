@@ -73,6 +73,8 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
 	QAction *a = new QAction( "Run", this );
 	a->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_R ) );
+	QPixmap pm = QIcon(":/start.svg").pixmap(QSize(24,24));
+	a->setIcon( QIcon(pm) );
 	connect( a, SIGNAL( triggered(bool) ), this, SLOT( startQuery() ) );
 	ui->toolBar->addAction(a);
 }
