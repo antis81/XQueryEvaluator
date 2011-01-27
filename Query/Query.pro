@@ -11,7 +11,9 @@ INCLUDEPATH += $$PWD
 QT *= xmlpatterns
 
 HEADERS += \
-    XQEMessageHandler.h
+    XQEMessageHandler.h \
+    XQEvaluator.h
 
 SOURCES += \
-    XQEMessageHandler.cpp
+    XQEMessageHandler.cpp \
+    XQEvaluator.cpp

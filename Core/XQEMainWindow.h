@@ -23,6 +23,8 @@
 #include <QtGui/QMainWindow>
 #include <QtXmlPatterns/QXmlQuery>
 
+#include "Query/XQEvaluator.h"
+
 class XQEditor;
 class XmlEditDialog;
 
@@ -41,7 +43,7 @@ public:
 
 private slots:
     void startQuery();
-    void setFormattedOutput(bool formatted);
+    void changeFormattedOutput(bool enabled);
 
     void on_btnOpenSource_clicked();
     void on_btnViewSource_clicked();
@@ -65,8 +67,8 @@ private:
     QString                     _queryFileName;
     XQEditor *                  _textQuery;
     XmlEditDialog *             _xmlEditor;
-    QXmlQuery::QueryLanguage    _queryLanguage;
-    bool                        _formattedOutput;
+
+    XQEvaluator                 _xqeval;
 
     QString selectSourceFile();
     QString loadSourceFile(const QString &path) const;

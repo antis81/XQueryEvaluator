@@ -29,16 +29,12 @@
 #include "TextEditing/XQEditor.h"
 #include "TextEditing/XMLEditor.h"
 
-#include <QtXmlPatterns/QXmlSerializer>
-#include <QtXmlPatterns/QXmlFormatter>
-
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
 #include <QtGui/QToolBar>
 #include <QtGui/QComboBox>
 #include <QtGui/QCloseEvent>
 
-#include <QtCore/QBuffer>
 #include <QtCore/QTime>
 
 
@@ -47,8 +43,6 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     , ui( new Ui::XQEMainWindow )
     , _textQuery( new XQEditor )
     , _xmlEditor(0)
-    , _queryLanguage( QXmlQuery::XQuery10 )
-    , _formattedOutput(false)
 {
     ui->setupUi(this);
 
@@ -78,14 +72,15 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
 	QAction *a = new QAction( "Run", this );
 	a->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_R ) );
-	connect( a, SIGNAL( triggered(bool) ), this, SLOT( startQuery() ) );
+        connect( a, SIGNAL( triggered() ), this, SLOT( startQuery() ) );
 	ui->toolBar->addAction(a);
 
 	m->addAction(a); // menu action run
 
 	a = new QAction( "Indent Output", this );
 	a->setCheckable(true);
-	connect( a, SIGNAL( triggered(bool) ), this, SLOT(setFormattedOutput(bool)) );
+        a->setChecked( _xqeval.formattedOutput() );
+        QObject::connect( a, SIGNAL( triggered(bool) ), this, SLOT(changeFormattedOutput(bool)) );
 
 	m->addAction(a); // menu action indent output
 }
@@ -113,31 +108,12 @@ void XQEMainWindow::changeEvent(QEvent *e)
 void XQEMainWindow::startQuery()
 {
     const QString source = loadSourceFile( ui->textSourceFile->text() );
-    QXmlQuery query( _queryLanguage );
-    XQEMessageHandler msgHandler;
-    query.setMessageHandler(&msgHandler);
 
-    query.setFocus(source);
-
-    query.setQuery( _textQuery->xqText() );
-    //    QXmlFormatter serializer(query, );
     QTime stopWatch;
     stopWatch.start();
 
-    //QString         out;
-    QBuffer outBuffer;
-    outBuffer.open(QIODevice::WriteOnly);
-
-    if ( _formattedOutput )
-    {
-        QXmlFormatter formatter(query, &outBuffer);
-        query.evaluateTo(&formatter);
-    } else {
-        QXmlSerializer serializer(query, &outBuffer);
-        query.evaluateTo(&serializer);
-    }
-
-    QString out = QString::fromUtf8(outBuffer.data().constData());
+    QString errLog;
+    const QString &out = _xqeval.transform( source, _textQuery->xqText(), errLog );
 
     int duration = stopWatch.elapsed(); // time measurement
 
@@ -145,15 +121,7 @@ void XQEMainWindow::startQuery()
     dlg.setWindowTitle( tr("Query Result") );
     dlg.setDuration(duration); // the duration of the query
     dlg.setXml(out); // show resulting XML
-    if ( msgHandler.errLog().isEmpty() )
-    {
-        QString noErrors = tr("<p style=\"background-color:#44FF44;\">XQuery parsed. Everything Ok.</p>");
-        dlg.setErrors(noErrors);
-    }
-    else
-    {
-        dlg.setErrors(msgHandler.errLog()); // show parsing errors and warnings
-    }
+    dlg.setErrors(errLog);
 
     dlg.exec();
 }
@@ -190,7 +158,7 @@ void XQEMainWindow::on_btnViewSource_clicked()
 void XQEMainWindow::on_actionOpen_triggered()
 {
     QString filter;
-    switch (_queryLanguage)
+    switch (_xqeval.queryLanguage())
     {
     default: // XQuery 1.0
         filter = "*.xq *.xquery";
@@ -243,9 +211,10 @@ QString XQEMainWindow::loadSourceFile(const QString &path) const
 
 void XQEMainWindow::queryLanguageSelected(int comboIndex)
 {
-    QXmlQuery::QueryLanguage ql = static_cast<QXmlQuery::QueryLanguage>( _combo->itemData(comboIndex).toInt() );
+    QXmlQuery::QueryLanguage ql =
+            static_cast<QXmlQuery::QueryLanguage>( _combo->itemData(comboIndex).toInt() );
 
-    _queryLanguage = ql;
+    _xqeval.setQueryLanguage(ql);
 }
 
 void XQEMainWindow::queryFileNameChanged(const QString &newFileName)
@@ -294,7 +263,7 @@ void XQEMainWindow::closeEvent(QCloseEvent *e)
 bool XQEMainWindow::saveQuery()
 {
     QString ext;
-    switch (_queryLanguage)
+    switch ( _xqeval.queryLanguage() )
     {
     default: // XQuery 1.0
         ext = "xq";
@@ -333,7 +302,7 @@ bool XQEMainWindow::saveQuery()
     return true;
 }
 
-void XQEMainWindow::setFormattedOutput(bool formatted)
+void XQEMainWindow::changeFormattedOutput(bool enabled)
 {
-    _formattedOutput = formatted;
+    _xqeval.setFormattedOutput(enabled);
 }
