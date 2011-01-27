@@ -72,7 +72,8 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
 	QAction *a = new QAction( "Run", this );
 	a->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_R ) );
-        connect( a, SIGNAL( triggered() ), this, SLOT( startQuery() ) );
+    a->setIcon( QIcon(":/start.svg") );
+    connect( a, SIGNAL( triggered() ), this, SLOT( startQuery() ) );
 	ui->toolBar->addAction(a);
 
 	m->addAction(a); // menu action run

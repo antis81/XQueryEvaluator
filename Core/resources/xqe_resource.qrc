@@ -3,5 +3,6 @@
         <file>DarkBlue.css</file>
         <file>eye.svg</file>
         <file>question.png</file>
+        <file>start.svg</file>
     </qresource>
 </RCC>
