@@ -70,9 +70,11 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 	connect( _combo, SIGNAL(activated(int)), this, SLOT(queryLanguageSelected(int)) );
 
 	ui->toolBar->addWidget(_combo);
+	ui->toolBar->setIconSize(QSize(21,21));
 
 	QAction *a = new QAction( "Run", this );
 	a->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_R ) );
+	a->setIcon( QIcon(":/start.svg") );
 	connect( a, SIGNAL( triggered(bool) ), this, SLOT( startQuery() ) );
 	ui->toolBar->addAction(a);
 }
