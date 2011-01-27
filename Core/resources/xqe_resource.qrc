@@ -4,5 +4,6 @@
         <file>eye.svg</file>
         <file>question.png</file>
         <file>start.svg</file>
+        <file>indent.svg</file>
     </qresource>
 </RCC>

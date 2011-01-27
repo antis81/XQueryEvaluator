@@ -72,17 +72,19 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
 	QAction *a = new QAction( "Run", this );
 	a->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_R ) );
-    a->setIcon( QIcon(":/start.svg") );
-    connect( a, SIGNAL( triggered() ), this, SLOT( startQuery() ) );
+	a->setIcon( QIcon(":/start.svg") );
+	connect( a, SIGNAL( triggered() ), this, SLOT( startQuery() ) );
 	ui->toolBar->addAction(a);
 
 	m->addAction(a); // menu action run
 
 	a = new QAction( "Indent Output", this );
+	a->setIcon( QIcon(":/indent.svg") );
 	a->setCheckable(true);
-        a->setChecked( _xqeval.formattedOutput() );
-        QObject::connect( a, SIGNAL( triggered(bool) ), this, SLOT(changeFormattedOutput(bool)) );
+	a->setChecked( _xqeval.formattedOutput() );
+		QObject::connect( a, SIGNAL( triggered(bool) ), this, SLOT(changeFormattedOutput(bool)) );
 
+	ui->toolBar->addAction(a);
 	m->addAction(a); // menu action indent output
 }
 
