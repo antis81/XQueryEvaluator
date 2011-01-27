@@ -74,10 +74,20 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 	ui->toolBar->addWidget(_combo);
 	ui->toolBar->setIconSize(QSize(21,21));
 
+	QMenu *m = ui->menuBar->addMenu( tr("Query") );
+
 	QAction *a = new QAction( "Run", this );
 	a->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_R ) );
 	connect( a, SIGNAL( triggered(bool) ), this, SLOT( startQuery() ) );
 	ui->toolBar->addAction(a);
+
+	m->addAction(a); // menu action run
+
+	a = new QAction( "Indent Output", this );
+	a->setCheckable(true);
+	connect( a, SIGNAL( triggered(bool) ), this, SLOT(setFormattedOutput(bool)) );
+
+	m->addAction(a); // menu action indent output
 }
 
 XQEMainWindow::~XQEMainWindow()
