@@ -30,6 +30,7 @@
 #include "TextEditing/XMLEditor.h"
 
 #include <QtXmlPatterns/QXmlSerializer>
+#include <QtXmlPatterns/QXmlFormatter>
 
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
@@ -47,6 +48,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     , _textQuery( new XQEditor )
     , _xmlEditor(0)
     , _queryLanguage( QXmlQuery::XQuery10 )
+    , _formattedOutput(false)
 {
     ui->setupUi(this);
 
@@ -117,8 +119,14 @@ void XQEMainWindow::startQuery()
     QBuffer outBuffer;
     outBuffer.open(QIODevice::WriteOnly);
 
-    QXmlSerializer serializer(query, &outBuffer);
-    query.evaluateTo(&serializer);
+    if ( _formattedOutput )
+    {
+        QXmlFormatter formatter(query, &outBuffer);
+        query.evaluateTo(&formatter);
+    } else {
+        QXmlSerializer serializer(query, &outBuffer);
+        query.evaluateTo(&serializer);
+    }
 
     QString out = QString::fromUtf8(outBuffer.data().constData());
 
@@ -314,4 +322,9 @@ bool XQEMainWindow::saveQuery()
     dest.write( _textQuery->xqText().toUtf8() );
 
     return true;
+}
+
+void XQEMainWindow::setFormattedOutput(bool formatted)
+{
+    _formattedOutput = formatted;
 }

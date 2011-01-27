@@ -41,6 +41,8 @@ public:
 
 private slots:
     void startQuery();
+    void setFormattedOutput(bool formatted);
+
     void on_btnOpenSource_clicked();
     void on_btnViewSource_clicked();
 
@@ -64,6 +66,7 @@ private:
     XQEditor *                  _textQuery;
     XmlEditDialog *             _xmlEditor;
     QXmlQuery::QueryLanguage    _queryLanguage;
+    bool                        _formattedOutput;
 
     QString selectSourceFile();
     QString loadSourceFile(const QString &path) const;
