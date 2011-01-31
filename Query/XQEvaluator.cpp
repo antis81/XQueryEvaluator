@@ -42,7 +42,7 @@ QString XQEvaluator::transform(const QString &source, const QString &query, QStr
     XQEMessageHandler msgHandler;
     theQuery.setMessageHandler(&msgHandler);
 
-    theQuery.setFocus(source);
+    theQuery.setFocus( source );
 
     theQuery.setQuery( query );
 
