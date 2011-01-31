@@ -8,8 +8,6 @@ DESTDIR = $$BIN_BASE
 
 INCLUDEPATH += $$PWD
 
-QT *= xmlpatterns
-
 HEADERS += \
     XQEMessageHandler.h \
     XQEvaluator.h

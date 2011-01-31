@@ -17,6 +17,8 @@ LIBS += -L$$BIN_BASE \
     -lTextEditing \
     -lQuery
 
+QT += xmlpatterns
+
 FORMS    += XQEMainWindow.ui \
     XQEOutput.ui \
     XmlEditDialog.ui
