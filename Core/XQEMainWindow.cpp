@@ -70,7 +70,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
 	QMenu *m = ui->menuBar->addMenu( tr("Query") );
 
-	QAction *a = new QAction( "Run", this );
+        QAction *a = new QAction( tr("Run"), this );
 	a->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_R ) );
 	a->setIcon( QIcon(":/start.svg") );
 	connect( a, SIGNAL( triggered() ), this, SLOT( startQuery() ) );
@@ -78,7 +78,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
 	m->addAction(a); // menu action run
 
-	a = new QAction( "Indent Output", this );
+        a = new QAction( tr("Indent Output"), this );
 	a->setIcon( QIcon(":/indent.svg") );
 	a->setCheckable(true);
 	a->setChecked( _xqeval.formattedOutput() );
