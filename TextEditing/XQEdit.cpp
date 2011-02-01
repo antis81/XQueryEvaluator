@@ -30,6 +30,7 @@ XQEdit::XQEdit(QWidget *parent)
     , _completer(0)
 {
     _xqueryHighlighter.setDocument( document() );
+    setTabStopWidth(20);
 }
 
 XQEdit::~XQEdit()
