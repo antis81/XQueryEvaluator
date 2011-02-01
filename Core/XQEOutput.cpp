@@ -55,12 +55,7 @@ void XQEOutput::setErrors(const QString &html)
 
 void XQEOutput::setXml(const QString &xml)
 {
-    ui->textOutput->setText(xml);
-}
-
-void XQEOutput::setHtml(const QString &html)
-{
-    ui->textOutput->setHtml(html);
+    ui->textOutput->setPlainText(xml);
 }
 
 void XQEOutput::setDuration(int duration)

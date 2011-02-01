@@ -38,7 +38,6 @@ public:
 
     void setErrors(const QString &html);
     void setXml(const QString &xml);
-    void setHtml(const QString &html);
 
     void setDuration(int duration);
 
