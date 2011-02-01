@@ -79,7 +79,7 @@ QString XQEvaluator::transform(const QString &source, const QString &query, QStr
 
     err = msgHandler.errLog();
     if ( err.isEmpty() )
-        err = QObject::tr("<p style=\"background-color:#44FF44;\">XQuery parsed. Everything Ok.</p>");
+        err = QObject::tr("<p style=\"background-color:#44FF44;\">Query parsed. Everything Ok.</p>");
 
     return QString::fromUtf8(outBuffer.data());
 }

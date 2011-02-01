@@ -58,23 +58,23 @@ void XQEMessageHandler::handleMessage(QtMsgType type, const QString &description
 
     case QtWarningMsg:
         msgType = tr("Warning");
-        css = "background-color:#FFFF44;";
+        css = "background-color: #FFFF44; margin: 0px;";
         break;
 
     case QtCriticalMsg:
         msgType = tr("Error");
-        css = "background-color:#FF4444;";
+        css = "background-color: #FF4444; margin: 0px;";
         break;
 
     case QtFatalMsg:
         msgType = tr("Error");
-        css = "background-color:#FF4444;";
+        css = "background-color: #FF4444; margin: 0px;";
         break;
 
     default: ;
     }
 
-    _errLog += tr("<p style=\"%1\">%2 in %3 at line %4 column %5:<br/>%6</p><hr/>")
+    _errLog += tr("<p style=\"%1\">%2 in %3 at line %4 column %5:&nbsp;%6</p><hr style=\"margin: 0px;\"/>")
             .arg(css)
             .arg(msgType)
             .arg(source)
