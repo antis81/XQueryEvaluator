@@ -10,6 +10,7 @@ count
 
 data
 declare
+distinct-values
 doc
 document-uri
 
