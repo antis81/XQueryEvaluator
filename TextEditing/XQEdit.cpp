@@ -30,7 +30,9 @@ XQEdit::XQEdit(QWidget *parent)
     , _completer(0)
 {
     _xqueryHighlighter.setDocument( document() );
-    setTabStopWidth(20);
+
+    const QFontMetrics &fm = fontMetrics();
+    setTabStopWidth( fm.width(QChar(' ')) * 4 );
 }
 
 XQEdit::~XQEdit()

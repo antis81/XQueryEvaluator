@@ -31,6 +31,9 @@ XMLEditor::XMLEditor(QWidget *parent)
 {
 	_highlighter.setDocument( _textXml->document() );
 
+    const QFontMetrics &fm = fontMetrics();
+    _textXml->setTabStopWidth( fm.width(QChar(' ')) * 4 );
+
 	// line numbers
 	TextEditMetaBorder *lineNumbers = new TextEditMetaBorder(_textXml);
 	lineNumbers->setFixedWidth(40);

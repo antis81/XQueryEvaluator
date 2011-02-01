@@ -26,6 +26,9 @@ XQEOutput::XQEOutput(QWidget *parent)
 {
     ui->setupUi(this);
     //_xmlOutHighlighter.setDocument(ui->textOutput->document());
+
+    const QFontMetrics &fm = ui->textOutput->fontMetrics();
+    ui->textOutput->setTabStopWidth( fm.width(QChar(' ')) * 4 );
 }
 
 XQEOutput::~XQEOutput()
