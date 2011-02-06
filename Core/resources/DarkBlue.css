@@ -13,13 +13,9 @@ QLabel, TextEditMetaBorder
 	color: rgb(204, 204, 204);
 }
 
-QTextEdit, QPlainTextEdit, QLineEdit
-{
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.4, stop:0 rgba(255, 254, 235, 255), stop:1 rgba(255, 255, 255, 255));
-}
-
 QLineEdit
 {
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.4, stop:0 rgba(255, 254, 235, 255), stop:1 rgba(255, 255, 255, 255));
     border-style: outset;
     border-width: 2px;
     border-color: gray;
