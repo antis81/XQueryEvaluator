@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>680</width>
-    <height>386</height>
+    <height>495</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,6 +23,9 @@
          <horstretch>0</horstretch>
          <verstretch>5</verstretch>
         </sizepolicy>
+       </property>
+       <property name="lineWrapMode">
+        <enum>QPlainTextEdit::NoWrap</enum>
        </property>
        <property name="readOnly">
         <bool>true</bool>
