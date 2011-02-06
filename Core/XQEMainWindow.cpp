@@ -48,7 +48,8 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    setWindowTitle( qApp->applicationName() );
+    setWindowTitle( QString("%1 (%2)").arg( qApp->applicationName() ).arg( qApp->applicationVersion() ) );
+    qApp->setWindowIcon( QIcon(":/AppIcon.svg") );
 
     //! @todo TESTING PURPOSES
     //    QFont myFont = _textQuery->font();
@@ -62,38 +63,45 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
 	l->addWidget( _textQuery );
 
+	ui->toolBar->setIconSize(QSize(21,21));
+
 	_combo = new QComboBox();
+	_combo->setToolTip( tr("Select the type of query.") );
 	_combo->addItem( "XQuery 1.0", QXmlQuery::XQuery10 );
 	_combo->addItem( "XSLT 2.0", QXmlQuery::XSLT20 );
 	connect( _combo, SIGNAL(activated(int)), this, SLOT(queryLanguageSelected(int)) );
 
 	ui->toolBar->addWidget(_combo);
-	ui->toolBar->setIconSize(QSize(21,21));
+	ui->toolBar->addSeparator();
 
-	QMenu *m = ui->menuBar->addMenu( tr("Query") );
+	QMenu *m = menuBar()->addMenu( tr("Query") );
 
-	QAction *a = new QAction( tr("Run"), this );
-	a->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_R ) );
-	a->setIcon( QIcon(":/start.svg") );
-	connect( a, SIGNAL( triggered() ), this, SLOT( startQuery() ) );
+	QAction *a = m->addAction( tr("Open"), this, SLOT(actionOpenQuery()), QKeySequence( Qt::CTRL + Qt::Key_O ));
+	a->setToolTip( tr("Open a query file.") );
+	a = m->addAction( tr("Save"), this, SLOT(actionSaveQuery()), QKeySequence( Qt::CTRL + Qt::Key_S ) );
+	a->setToolTip( tr("Save your query.") );
+
+	m->addSeparator();
+
+	// menu action run
+	a = m->addAction( QIcon(":/start.svg"), tr("Run"), this,
+					 SLOT( startQuery() ), QKeySequence( Qt::CTRL + Qt::Key_R ) );
+
 	ui->toolBar->addAction(a);
 
-	m->addAction(a); // menu action run
-
-	a = new QAction( tr("Indent Output"), this );
-	a->setIcon( QIcon(":/indent.svg") );
+	// menu action indent output
+	a = m->addAction( QIcon(":/indent.svg"), tr("Indent Output"),
+					 this, SLOT(changeFormattedOutput(bool)) );
 	a->setCheckable(true);
 	a->setChecked( _xqeval.formattedOutput() );
-	connect( a, SIGNAL( triggered(bool) ), this, SLOT(changeFormattedOutput(bool)) );
-
 	ui->toolBar->addAction(a);
-	m->addAction(a); // menu action indent output
 
-	a = new QAction( tr("Indent Query"), this );
-	a->setShortcut(Qt::CTRL + Qt::Key_I);
-	connect( a, SIGNAL( triggered() ), this, SLOT( autoIndent() ) );
 	m->addSeparator();
-	m->addAction(a);
+	a = m->addAction( tr("Indent Query"), this, SLOT(autoIndent()), QKeySequence( Qt::CTRL + Qt::Key_I ) );
+
+	m = menuBar()->addMenu( tr("Help") );
+	m->addAction( tr("About"), this, SLOT(about()) );
+	m->addAction( tr("About &Qt"), qApp, SLOT(aboutQt()) );
 }
 
 XQEMainWindow::~XQEMainWindow()
@@ -166,7 +174,7 @@ void XQEMainWindow::on_btnViewSource_clicked()
     _xmlEditor->show();
 }
 
-void XQEMainWindow::on_actionOpen_triggered()
+void XQEMainWindow::actionOpenQuery()
 {
     QString filter;
     switch (_xqeval.queryLanguage())
@@ -198,7 +206,7 @@ void XQEMainWindow::on_actionOpen_triggered()
     }
 }
 
-void XQEMainWindow::on_actionSave_triggered()
+void XQEMainWindow::actionSaveQuery()
 {
     saveQuery();
 }
@@ -323,4 +331,17 @@ void XQEMainWindow::autoIndent()
     if (!_textQuery->hasFocus())
         _textQuery->setFocus();
     _textQuery->autoIndent();
+}
+
+void XQEMainWindow::about()
+{
+    QMessageBox::about( 0, tr("About %1").arg( qApp->applicationName() ),
+                       tr( "<h1>%1</h1>"
+                          "<h2>Version: %2</h2><hr/>"
+                          "%1 is a little editor to help writing XQuery scripts."
+                          " It features highlighting and basic auto completion and error handling."
+                          " Basic XSLT and XPath support is also included." )
+                       .arg( qApp->applicationName() )
+                       .arg( qApp->applicationVersion() )
+                       );
 }

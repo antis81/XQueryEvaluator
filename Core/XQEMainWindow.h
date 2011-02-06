@@ -49,12 +49,14 @@ private slots:
     void on_btnOpenSource_clicked();
     void on_btnViewSource_clicked();
 
-    void on_actionOpen_triggered();
-    void on_actionSave_triggered();
+    void actionOpenQuery();
+    void actionSaveQuery();
 
     void queryLanguageSelected(int comboIndex);
 
     void queryFileNameChanged(const QString & newFileName);
+
+    void about();
 
 protected:
     void changeEvent(QEvent *e);

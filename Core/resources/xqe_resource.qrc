@@ -5,5 +5,6 @@
         <file>question.png</file>
         <file>start.svg</file>
         <file>indent.svg</file>
+        <file>AppIcon.svg</file>
     </qresource>
 </RCC>

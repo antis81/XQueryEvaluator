@@ -4,10 +4,10 @@ TEMPLATE = app
 
 TARGET = XQueryEvaluator
 
-unix {
-    VERSION = $$XQEVAL_VERSION
-    message("XQE Version: $$VERSION")
-}
+unix:VERSION = $$XQEVAL_VERSION
+DEFINES += \
+    APP_VERSION=\\\"$$XQEVAL_VERSION\\\" \
+    APP_NAME=\\\"$$TARGET\\\"
 
 macx:ICON = resources/logo.icns
 

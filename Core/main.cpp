@@ -25,7 +25,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    a.setApplicationName("XQueryEvaluator");
+    a.setApplicationName( APP_NAME );
+    a.setApplicationVersion( APP_VERSION );
 
     QFile f(":/DarkBlue.css");
     if (f.open(QIODevice::ReadOnly))
