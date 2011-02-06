@@ -115,3 +115,9 @@ void XQEditor::documentModified(bool modified)
 {
     _modified = modified;
 }
+
+void XQEditor::autoIndent()
+{
+    AutoIndent ai;
+    ai.indentDocument( _textQuery->document() );
+}

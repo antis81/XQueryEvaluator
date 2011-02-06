@@ -42,6 +42,7 @@ public:
     ~XQEMainWindow();
 
 private slots:
+    void autoIndent();
     void startQuery();
     void changeFormattedOutput(bool enabled);
 

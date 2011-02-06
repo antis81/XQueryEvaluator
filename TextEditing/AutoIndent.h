@@ -17,41 +17,23 @@
 **    along with XQueryEvaluator.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef XQEDITOR_H
-#define XQEDITOR_H
+#ifndef AUTOINDENT_H
+#define AUTOINDENT_H
 
-#include <QtGui/QWidget>
+#include <QtCore/QString>
 
-#include "AutoIndent.h"
+class QTextDocument;
 
-
-class XQEdit;
-class QAbstractItemModel;
-
-
-class XQEditor : public QWidget
+class AutoIndent
 {
-    Q_OBJECT
-
 public:
-    explicit XQEditor(QWidget *parent = 0);
-    ~XQEditor();
+    AutoIndent();
 
-    QString xqText() const;
-    void setXQText(const QString &text);
-
-    bool modified() const;
-
-    void autoIndent();
-
-private slots:
-    void documentModified(bool modified);
+    void indentDocument(QTextDocument *doc);
 
 private:
-    XQEdit *    _textQuery;
-    bool        _modified;
+    void indent( QString &text, int level );
 
-    QAbstractItemModel * modelFromFile(QString fileName);
 };
 
-#endif // XQEDITOR_H
+#endif // AUTOINDENT_H

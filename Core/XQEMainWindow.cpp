@@ -29,6 +29,8 @@
 #include "TextEditing/XQEditor.h"
 #include "TextEditing/XMLEditor.h"
 
+#include "TextEditing/AutoIndent.h"
+
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
 #include <QtGui/QToolBar>
@@ -70,7 +72,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
 	QMenu *m = ui->menuBar->addMenu( tr("Query") );
 
-        QAction *a = new QAction( tr("Run"), this );
+	QAction *a = new QAction( tr("Run"), this );
 	a->setShortcut( QKeySequence( Qt::CTRL + Qt::Key_R ) );
 	a->setIcon( QIcon(":/start.svg") );
 	connect( a, SIGNAL( triggered() ), this, SLOT( startQuery() ) );
@@ -78,14 +80,20 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
 	m->addAction(a); // menu action run
 
-        a = new QAction( tr("Indent Output"), this );
+	a = new QAction( tr("Indent Output"), this );
 	a->setIcon( QIcon(":/indent.svg") );
 	a->setCheckable(true);
 	a->setChecked( _xqeval.formattedOutput() );
-		QObject::connect( a, SIGNAL( triggered(bool) ), this, SLOT(changeFormattedOutput(bool)) );
+	connect( a, SIGNAL( triggered(bool) ), this, SLOT(changeFormattedOutput(bool)) );
 
 	ui->toolBar->addAction(a);
 	m->addAction(a); // menu action indent output
+
+	a = new QAction( tr("Indent Query"), this );
+	a->setShortcut(Qt::CTRL + Qt::Key_I);
+	connect( a, SIGNAL( triggered() ), this, SLOT( autoIndent() ) );
+	m->addSeparator();
+	m->addAction(a);
 }
 
 XQEMainWindow::~XQEMainWindow()
@@ -308,4 +316,11 @@ bool XQEMainWindow::saveQuery()
 void XQEMainWindow::changeFormattedOutput(bool enabled)
 {
     _xqeval.setFormattedOutput(enabled);
+}
+
+void XQEMainWindow::autoIndent()
+{
+    if (!_textQuery->hasFocus())
+        _textQuery->setFocus();
+    _textQuery->autoIndent();
 }
