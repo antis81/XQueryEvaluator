@@ -33,6 +33,7 @@ XQEdit::XQEdit(QWidget *parent)
 
     const QFontMetrics &fm = fontMetrics();
     setTabStopWidth( fm.width(QChar(' ')) * 4 );
+    setLineWrapMode(QPlainTextEdit::NoWrap);
 }
 
 XQEdit::~XQEdit()

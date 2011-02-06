@@ -49,6 +49,7 @@ XMLEditor::XMLEditor(QWidget *parent)
 
 	//! @todo Prevent writing for the moment.
 	_textXml->setReadOnly(true);
+	_textXml->setLineWrapMode(QPlainTextEdit::NoWrap);
 }
 
 XMLEditor::~XMLEditor()
