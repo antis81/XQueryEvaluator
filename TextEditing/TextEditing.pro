@@ -6,7 +6,9 @@ CONFIG += staticlib
 TARGET = TextEditing
 DESTDIR = $$BIN_BASE
 
-INCLUDEPATH += $$PWD
+VERSION = $$XQEVAL_VERSION
+
+DEPENDPATH += .
 
 HEADERS += \
     XQueryHighlighter.h \

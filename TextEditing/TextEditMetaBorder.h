@@ -50,24 +50,24 @@ public:
     void showEvent(QShowEvent *e);
     void paintEvent ( QPaintEvent * event ) ;
     void drawLineNumbers(QPainter & painter);
-    void mousePressEvent ( QMouseEvent * event ) ;
+//    void mousePressEvent ( QMouseEvent * event ) ;
 
 signals:
     void breakpointChanged(bool bSet);
+
 private:
 //    bool             _bDebugMode;
 //    QSet<int>        _breakpoints;
-    int                 _iBreakpointWidth;
     QPlainTextEdit *    _document;
 
-    struct LineInfo
-    {
-        int        line;
-        QTextBlock textblock;
-        QRectF     rect;
-    };
+//    struct LineInfo
+//    {
+//        int        line;
+//        QTextBlock textblock;
+//        QRectF     rect;
+//    };
 
-    QList<LineInfo> _visibleLineCache;
+//    QList<LineInfo> _visibleLineCache;
 };
 
 #endif // TEXTEDITMETABORDER_H

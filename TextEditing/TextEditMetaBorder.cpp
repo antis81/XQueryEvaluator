@@ -30,17 +30,13 @@ TextEditMetaBorder::TextEditMetaBorder(QPlainTextEdit *doc, QWidget *parent)
     , _document(doc)
 //, _bDebugMode(false)
 {
-    const QFontMetrics &fm = fontMetrics();
-
-    _iBreakpointWidth = fm.maxWidth() * 1.5;
+    const QFontMetrics &fm = doc->fontMetrics();
 
     // 4 line numbers + space + breakpoint
-    setMinimumWidth(fm.maxWidth()*6);
+    setMinimumWidth(fm.maxWidth() * 10);
+    setFixedWidth(fm.maxWidth() * 10);
 
-    connect( _document->document()->documentLayout(), SIGNAL( update(const QRectF &) ),
-        this, SLOT( update() ) );
-    connect( _document->verticalScrollBar(), SIGNAL(valueChanged(int) ),
-        this, SLOT( update() ) );
+    connect( _document, SIGNAL( updateRequest(const QRect &, int) ), this, SLOT( update() ) );
 }
 
 TextEditMetaBorder::~TextEditMetaBorder()
@@ -83,34 +79,34 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
     }
 }
 
-void TextEditMetaBorder::mousePressEvent ( QMouseEvent * event )
-{
-    if (event->button() & Qt::LeftButton)
-    {
-        for ( int i = 0 ; i < _visibleLineCache.count() ; i++ )
-        {
-            if ( _visibleLineCache[i].rect.contains( event->pos() ) )
-            {
-                QTextBlock block=_visibleLineCache[i].textblock;
+//void TextEditMetaBorder::mousePressEvent ( QMouseEvent * event )
+//{
+//    if (event->button() & Qt::LeftButton)
+//    {
+//        for ( int i = 0 ; i < _visibleLineCache.count() ; i++ )
+//        {
+//            if ( _visibleLineCache[i].rect.contains( event->pos() ) )
+//            {
+//                QTextBlock block=_visibleLineCache[i].textblock;
 
-                if ( block.userState() == -1 )
-                    block.setUserState(0);
+//                if ( block.userState() == -1 )
+//                    block.setUserState(0);
 
-                block.setUserState(block.userState() ^ etboBookmark );
-                /*int line=_visibleLineCache[i].line ;
-                if ( isBreakpoint( line ) )
-                {
-                _breakpoints.remove(line);
-                }else
-                {
-                _breakpoints.insert(line);
-                }
-                */
-                update();
-            }
-        } // for
-    }
-}
+//                block.setUserState(block.userState() ^ etboBookmark );
+//                /*int line=_visibleLineCache[i].line ;
+//                if ( isBreakpoint( line ) )
+//                {
+//                _breakpoints.remove(line);
+//                }else
+//                {
+//                _breakpoints.insert(line);
+//                }
+//                */
+//                update();
+//            }
+//        } // for
+//    }
+//}
 
 void TextEditMetaBorder::showEvent(QShowEvent *e)
 {
