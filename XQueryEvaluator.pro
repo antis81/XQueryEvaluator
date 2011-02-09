@@ -12,3 +12,7 @@ SUBDIRS = \
     Query \
     TextEditing \
     Core
+
+TRANSLATIONS += \
+    languages/XQueryEvaluator_cs.ts
+
