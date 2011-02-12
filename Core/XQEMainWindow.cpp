@@ -40,6 +40,9 @@
 #include <QtCore/QTime>
 
 
+/**
+The main window´s constructor sets up the user interface.
+*/
 XQEMainWindow::XQEMainWindow(QWidget *parent)
     : QMainWindow( parent )
     , ui( new Ui::XQEMainWindow )
@@ -112,6 +115,9 @@ XQEMainWindow::~XQEMainWindow()
         delete _xmlEditor;
 }
 
+/**
+The application UI´s language changed.
+*/
 void XQEMainWindow::changeEvent(QEvent *e)
 {
     QMainWindow::changeEvent(e);
@@ -124,6 +130,9 @@ void XQEMainWindow::changeEvent(QEvent *e)
     }
 }
 
+/**
+Starts evaluations of a query.
+*/
 void XQEMainWindow::startQuery()
 {
     const QString source = loadSourceFile( ui->textSourceFile->text() );
@@ -145,11 +154,17 @@ void XQEMainWindow::startQuery()
     dlg.exec();
 }
 
+/**
+Open a source XML file.
+*/
 void XQEMainWindow::on_btnOpenSource_clicked()
 {
     ui->textSourceFile->setText(selectSourceFile());
 }
 
+/**
+The XML source should be shown.
+*/
 void XQEMainWindow::on_btnViewSource_clicked()
 {
     QString fileName = ui->textSourceFile->text();
@@ -174,6 +189,9 @@ void XQEMainWindow::on_btnViewSource_clicked()
     _xmlEditor->show();
 }
 
+/**
+Wrapper action to open a query file. The file type depends on the selected query language.
+*/
 void XQEMainWindow::actionOpenQuery()
 {
     QString filter;
@@ -196,6 +214,9 @@ void XQEMainWindow::actionOpenQuery()
     loadQuery(destFile);
 }
 
+/**
+Load a query with the given fileName.
+*/
 void XQEMainWindow::loadQuery(QString fileName)
 {
     if ( fileName.isEmpty() )
@@ -213,17 +234,25 @@ void XQEMainWindow::loadQuery(QString fileName)
     }
 }
 
-
+/**
+Action wrapper for saving a query.
+*/
 void XQEMainWindow::actionSaveQuery()
 {
     saveQuery();
 }
 
+/**
+Select a source XML file to run the query on.
+*/
 QString XQEMainWindow::selectSourceFile()
 {
     return QDir::cleanPath( QFileDialog::getOpenFileName(0, tr("Open XML source file ..."), QString(), "*.xml") );
 }
 
+/**
+Loads a source XML file and assigns it´s content to a string.
+*/
 QString XQEMainWindow::loadSourceFile(const QString &path) const
 {
     if (path.isEmpty())
@@ -236,6 +265,9 @@ QString XQEMainWindow::loadSourceFile(const QString &path) const
     return QString();
 }
 
+/**
+Changed the language type of a query.
+*/
 void XQEMainWindow::queryLanguageSelected(int comboIndex)
 {
     QXmlQuery::QueryLanguage ql =
@@ -244,13 +276,20 @@ void XQEMainWindow::queryLanguageSelected(int comboIndex)
     _xqeval.setQueryLanguage(ql);
 }
 
+/**
+The queries file name changed.
+*/
 void XQEMainWindow::queryFileNameChanged(const QString &newFileName)
 {
     _queryFileName = newFileName;
     setWindowTitle( QString("%1 - %2").arg( qApp->applicationName() ).arg( QFileInfo(newFileName).fileName() ) );
-    update();
+    //update();
 }
 
+
+/**
+The main window´s close event.
+*/
 void XQEMainWindow::closeEvent(QCloseEvent *e)
 {
     bool mayQuit = true;
@@ -329,11 +368,17 @@ bool XQEMainWindow::saveQuery()
     return true;
 }
 
+/**
+Decides if the queries output will be indented.
+*/
 void XQEMainWindow::changeFormattedOutput(bool enabled)
 {
     _xqeval.setFormattedOutput(enabled);
 }
 
+/**
+Auto indents the query text.
+*/
 void XQEMainWindow::autoIndent()
 {
     if (!_textQuery->hasFocus())
@@ -341,6 +386,9 @@ void XQEMainWindow::autoIndent()
     _textQuery->autoIndent();
 }
 
+/**
+Shows the applications about dialog.
+*/
 void XQEMainWindow::about()
 {
     QMessageBox::about( 0, tr("About %1").arg( qApp->applicationName() ),
