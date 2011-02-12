@@ -18,9 +18,22 @@
 */
 
 #include <QtGui/QApplication>
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QTranslator>
+#include <QtCore/QLocale>
+#include <QtCore/QLibraryInfo>
 #include "XQEMainWindow.h"
 
-#include <QtCore/QFile>
+
+void setupTranslators(QApplication &a)
+{
+    const QString locale = QLocale::system().name();
+    QTranslator qtTranslator(0);
+    qtTranslator.load( QString("qt_") + locale,
+                      QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
+    a.installTranslator( &qtTranslator );
+}
 
 int main(int argc, char *argv[])
 {
@@ -31,6 +44,8 @@ int main(int argc, char *argv[])
     QFile f(":/DarkBlue.css");
     if (f.open(QIODevice::ReadOnly))
         a.setStyleSheet(f.readAll());
+
+    setupTranslators(a);
 
     XQEMainWindow w;
     w.show();
