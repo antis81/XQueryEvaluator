@@ -9,7 +9,10 @@ DEFINES += \
     APP_VERSION=\\\"$$XQEVAL_VERSION\\\" \
     APP_NAME=\\\"$$TARGET\\\"
 
-macx:ICON = resources/logo.icns
+macx {
+    ICON = resources/logo.icns
+    QMAKE_INFO_PLIST = '''resources/InfoTemplate.plist'''
+}
 
 DESTDIR = $$BIN_BASE
 
@@ -26,12 +29,14 @@ FORMS    += XQEMainWindow.ui \
 HEADERS  += \
     XQEMainWindow.h \
     XQEOutput.h \
-    XmlEditDialog.h
+    XmlEditDialog.h \
+    MainApplication.h
 
 SOURCES += main.cpp\
     XQEMainWindow.cpp \
     XQEOutput.cpp \
-    XmlEditDialog.cpp
+    XmlEditDialog.cpp \
+    MainApplication.cpp
 
 RESOURCES += \
     resources/xqe_resource.qrc

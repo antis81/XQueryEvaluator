@@ -41,6 +41,9 @@ public:
     explicit XQEMainWindow(QWidget *parent = 0);
     ~XQEMainWindow();
 
+public slots:
+    void loadQuery(QString fileName);
+
 private slots:
     void autoIndent();
     void startQuery();

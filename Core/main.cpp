@@ -17,12 +17,14 @@
 **    along with XQueryEvaluator.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QtGui/QApplication>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QTranslator>
 #include <QtCore/QLocale>
 #include <QtCore/QLibraryInfo>
+
+#include "MainApplication.h"
+
 #include "XQEMainWindow.h"
 
 
@@ -37,10 +39,13 @@ void setupTranslators(QApplication &a)
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    MainApplication a(argc, argv);
     a.setApplicationName( APP_NAME );
     a.setApplicationVersion( APP_VERSION );
 
+    const QStringList args = a.arguments();
+
+    // setup style
     QFile f(":/DarkBlue.css");
     if (f.open(QIODevice::ReadOnly))
         a.setStyleSheet(f.readAll());
@@ -48,6 +53,16 @@ int main(int argc, char *argv[])
     setupTranslators(a);
 
     XQEMainWindow w;
+    QObject::connect( &a, SIGNAL(fileOpened(QString)), &w, SLOT(loadQuery(QString)), Qt::DirectConnection );
+
+    //!@todo Need to do it right! (file associations)
+    if ( args.count() > 1 )
+    {
+        const QString &queryFile = args[1].trimmed();
+        if (!queryFile.startsWith("-"))
+            w.loadQuery(queryFile);
+    }
+
     w.show();
 
     return a.exec();

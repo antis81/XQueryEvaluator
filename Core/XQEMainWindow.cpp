@@ -192,19 +192,27 @@ void XQEMainWindow::actionOpenQuery()
         startPath = QDir::homePath();
 
     const QString &destFile = QFileDialog::getOpenFileName(0, tr("Open query file ..."), startPath, filter);
-    if (!destFile.isEmpty())
+
+    loadQuery(destFile);
+}
+
+void XQEMainWindow::loadQuery(QString fileName)
+{
+    if ( fileName.isEmpty() )
+        return;
+
+    fileName = QDir::cleanPath(fileName);
+    QFile queryFile(fileName);
+
+    if ( queryFile.open(QIODevice::ReadOnly) )
     {
-        _queryFileName = destFile; // remember the file name
+        _queryFileName = fileName; // remember the file name
 
-        QFile dest(_queryFileName);
-
-        if ( dest.open(QIODevice::ReadOnly) )
-        {
-            setWindowTitle( QString( "%1 - %2" ).arg( qApp->applicationName() ).arg( QFileInfo(dest).fileName() ) );
-            _textQuery->setXQText( QString::fromUtf8(dest.readAll()) );
-        }
+        _textQuery->setXQText( QString::fromUtf8(queryFile.readAll()) );
+        setWindowTitle( QString( "%1 - %2" ).arg( qApp->applicationName() ).arg( QFileInfo(queryFile).fileName() ) );
     }
 }
+
 
 void XQEMainWindow::actionSaveQuery()
 {
