@@ -54,10 +54,13 @@ void AutoIndent::indentDocument(QTextDocument *doc)
         if (level < 0)
             level = 0;
 
-        if (foundIndent && !foundOutdent)
-            indent(t, level-1); // don't indent start tag (stays on current level)
-        else
-            indent(t, level); // we are in an indent block
+        if ( !t.isEmpty() ) // don't indent empty lines
+        {
+            if (foundIndent && !foundOutdent)
+                indent(t, level-1); // don't indent start tag (stays on current level)
+            else
+                indent(t, level); // we are in an indent block
+        }
 
         // line break when not the last line
         if ( block.next().isValid() )
