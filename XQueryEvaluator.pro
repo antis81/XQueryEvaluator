@@ -13,6 +13,6 @@ SUBDIRS = \
     TextEditing \
     Core
 
-TRANSLATIONS += \
-    languages/XQueryEvaluator_cs.ts
 
+TRANSLATIONS += \
+    translations/XQueryEvaluator_cs.ts
