@@ -39,15 +39,15 @@ public:
 protected:
     void highlightBlock(const QString &text);
     void colorBlock( int blockState, const QString &text, const QRegExp &startExp,
-                     const QRegExp &endExp, const QTextCharFormat &fmt);
+                    const QRegExp &endExp, const QTextCharFormat &fmt);
     void addHighlightingRule(const QStringList &patterns, const QTextCharFormat &format);
 
 private:
     struct HighlightingRule
-        {
+    {
         QList<QRegExp*>      patterns;
         QTextCharFormat      format;
-        };
+    };
 
     QList<HighlightingRule*>	_highlightingRules;
 

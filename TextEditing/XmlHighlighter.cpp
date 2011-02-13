@@ -22,7 +22,7 @@
 XmlHighlighter::XmlHighlighter(QTextDocument *parent)
 : QSyntaxHighlighter(parent)
 {
-    //_highlightBlockCalls = 0;
+	//_highlightBlockCalls = 0;
 
 
 	HighlightingRule rule;
@@ -142,7 +142,7 @@ void XmlHighlighter::highlightBlock(const QString &text)
 
 
 /**
- * F?rbt Textbloecke zwischen zwei Steuerzeichen ein (z.B. ein Kommentar: "<!-- ... Text ... -->").
+ * Colors text blocks between start and end tags. E.g. a comment like "<!-- ... text ... -->").
  */
 void XmlHighlighter::colorBlock(int blockState, const QString &text, const QRegExp &startExp,
                                   const QRegExp &endExp, const QTextCharFormat &fmt)
@@ -169,7 +169,7 @@ void XmlHighlighter::colorBlock(int blockState, const QString &text, const QRegE
 			setCurrentBlockState(-1);
 		}
 
-        setFormat(start, length, fmt); // einfaerben
+		setFormat(start, length, fmt); // einfaerben
 
         // Search for further textblocks in the current block
         if (end > -1)
