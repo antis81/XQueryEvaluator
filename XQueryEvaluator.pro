@@ -13,6 +13,7 @@ SUBDIRS = \
     TextEditing \
     Core
 
+Core.depends = Query TextEditing
 
 TRANSLATIONS += \
     translations/XQueryEvaluator_cs.ts
