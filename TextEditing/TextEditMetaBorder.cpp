@@ -59,6 +59,7 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
     const int scrollOffset = _document->verticalScrollBar()->value();
     const qreal visibleBottom = _document->viewport()->height() + scrollOffset;
     const QFontMetrics &fm = _document->fontMetrics();
+    const int textBaseLine = fm.lineSpacing();
 
     for ( QTextBlock block = _document->document()->begin();
         block.isValid(); block = block.next() )
@@ -70,12 +71,14 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
         if ( count-1 < scrollOffset )
             continue;
 
-        int linePos = fm.height() * (count - scrollOffset);
         if ( count > visibleBottom )
             break;
 
+        // calculate pixel position of a text line´s base line
+        const int lineBottom = textBaseLine * (count - scrollOffset) + fm.leading();
+
         const QString txt = QString("%1").arg( count );
-        painter.drawText( width() - fm.width(txt) -3 , linePos, txt );
+        painter.drawText( width() - fm.width(txt) -3 , lineBottom, txt );
     }
 }
 
