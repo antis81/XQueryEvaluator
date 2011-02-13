@@ -27,6 +27,11 @@
 
 #include "XQEMainWindow.h"
 
+#ifdef Q_OS_MAC
+#  define SHARE_PATH "/../Resources"
+#else
+#  define SHARE_PATH "/../share/" APP_NAME
+#endif
 
 void setupTranslators(QApplication &a)
 {
@@ -35,6 +40,13 @@ void setupTranslators(QApplication &a)
     qtTranslator.load( QString("qt_") + locale,
                       QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
     a.installTranslator( &qtTranslator );
+
+    QTranslator translator(0);
+    translator.load( QString( "%1_%2" )
+                    .arg( APP_NAME )
+                    .arg( locale ),
+                    QCoreApplication::applicationDirPath() + QLatin1String( SHARE_PATH "/translations" ) );
+    a.installTranslator( &translator );
 }
 
 int main(int argc, char *argv[])
