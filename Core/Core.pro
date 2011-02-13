@@ -9,6 +9,8 @@ DEFINES += \
     APP_VERSION=\\\"$$XQEVAL_VERSION\\\" \
     APP_NAME=\\\"$$TARGET\\\"
 
+CONFIG += qt
+
 macx {
     ICON = resources/logo.icns
     QMAKE_INFO_PLIST = '''resources/InfoTemplate.plist'''
