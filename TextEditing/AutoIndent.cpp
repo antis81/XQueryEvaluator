@@ -23,8 +23,6 @@
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextLayout>
 
-#include <QDebug>
-
 
 AutoIndent::AutoIndent()
 {
