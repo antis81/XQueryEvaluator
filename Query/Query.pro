@@ -6,7 +6,7 @@ CONFIG += staticlib
 TARGET = Query
 DESTDIR = $$BIN_BASE
 
-INCLUDEPATH += $$PWD
+VERSION = $$XQEVAL_VERSION
 
 HEADERS += \
     XQEMessageHandler.h \
