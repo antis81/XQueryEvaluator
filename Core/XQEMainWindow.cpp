@@ -194,6 +194,10 @@ Wrapper action to open a query file. The file type depends on the selected query
 */
 void XQEMainWindow::actionOpenQuery()
 {
+    // check for modified query first
+    if ( !queryCanClose() )
+        return;
+
     QString filter;
     switch (_xqeval.queryLanguage())
     {
@@ -292,7 +296,15 @@ The main window´s close event.
 */
 void XQEMainWindow::closeEvent(QCloseEvent *e)
 {
-    bool mayQuit = true;
+    if ( queryCanClose() )
+        e->accept();
+    else
+        e->ignore();
+}
+
+bool XQEMainWindow::queryCanClose()
+{
+    bool mayClose = true;
     if ( _textQuery->modified() && !_textQuery->xqText().isEmpty() )
     {
         QMessageBox message;
@@ -303,22 +315,19 @@ void XQEMainWindow::closeEvent(QCloseEvent *e)
         switch ( btn )
         {
         case QMessageBox::Save:
-            mayQuit = saveQuery();
+            mayClose = saveQuery();
             break;
 
         case QMessageBox::Discard:
-            mayQuit = true;
+            mayClose = true;
             break;
 
         default:
-            mayQuit = false;
+            mayClose = false;
         }
     }
 
-    if (mayQuit)
-        e->accept();
-    else
-        e->ignore();
+    return mayClose;
 }
 
 /**

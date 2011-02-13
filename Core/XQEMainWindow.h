@@ -80,6 +80,7 @@ private:
     QString loadSourceFile(const QString &path) const;
 
     bool saveQuery();
+    bool queryCanClose();
 };
 
 #endif // XQEMAINWINDOW_H
