@@ -337,32 +337,33 @@ bool XQEMainWindow::queryCanClose()
 */
 bool XQEMainWindow::saveQuery()
 {
-    QString ext;
-    switch ( _xqeval.queryLanguage() )
-    {
-    default: // XQuery 1.0
-        ext = "xq";
-        break;
-    case QXmlQuery::XSLT20:
-        ext = "xsl";
-        break;
-    }
-
     QString startPath;
     if ( _queryFileName.isEmpty() )
+    {
         startPath = QDir::homePath();
-    else
-        startPath = _queryFileName;
 
-    QFileDialog fd( 0, tr("Save query file ..."), startPath );
-    fd.setAcceptMode(QFileDialog::AcceptSave);
-    fd.setDefaultSuffix(ext);
-    fd.setFileMode(QFileDialog::AnyFile);
-    connect( &fd, SIGNAL( fileSelected(const QString &) ), SLOT(queryFileNameChanged(const QString &)) );
+        QString ext;
+        switch ( _xqeval.queryLanguage() )
+        {
+        default: // XQuery 1.0
+            ext = "xq";
+            break;
+        case QXmlQuery::XSLT20:
+            ext = "xsl";
+            break;
+        }
 
-    if ( fd.exec() == 0 )
-        return false;
+        QFileDialog fd( 0, tr("Save query file ..."), startPath );
+        fd.setAcceptMode(QFileDialog::AcceptSave);
+        fd.setDefaultSuffix(ext);
+        fd.setFileMode(QFileDialog::AnyFile);
+        connect( &fd, SIGNAL( fileSelected(const QString &) ), SLOT(queryFileNameChanged(const QString &)) );
 
+        if ( fd.exec() == 0 )
+            return false;
+    }
+
+    // write to file
     QFile dest(_queryFileName);
 
     if ( !dest.open(QIODevice::WriteOnly) )
