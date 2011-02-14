@@ -33,36 +33,44 @@
 #  define SHARE_PATH "/../share/" APP_NAME
 #endif
 
-void setupTranslators(QApplication &a)
-{
-    const QString locale = QLocale::system().name();
-    QTranslator qtTranslator(0);
-    qtTranslator.load( QString("qt_") + locale,
-                      QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
-    a.installTranslator( &qtTranslator );
+//void setupTranslators(QApplication &a)
+//{
+//    const QString locale = QLocale::system().name();
+//    QTranslator qtTranslator;
+//    qtTranslator.load( QLatin1String("qt_") + locale,
+//                      QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
+//    a.installTranslator( &qtTranslator );
 
-    QTranslator translator(0);
-    translator.load( QString( "%1_%2" )
-                    .arg( APP_NAME )
-                    .arg( locale ),
-                    QCoreApplication::applicationDirPath() + QLatin1String( SHARE_PATH "/translations" ) );
-    a.installTranslator( &translator );
-}
+//    QTranslator translator;
+//    bool ok = translator.load( QLatin1String("xqeval_") + locale
+//                    , QDir::cleanPath( QCoreApplication::applicationDirPath() + QLatin1String( SHARE_PATH "/translations" ) ) );
+//    a.installTranslator( &translator );
+//}
 
 int main(int argc, char *argv[])
 {
     MainApplication a(argc, argv);
-    a.setApplicationName( APP_NAME );
+    a.setApplicationName( QLatin1String(APP_NAME) );
     a.setApplicationVersion( APP_VERSION );
 
-    const QStringList args = a.arguments();
+    QStringList args = a.arguments();
 
     // setup style
     QFile f(":/DarkBlue.css");
     if (f.open(QIODevice::ReadOnly))
         a.setStyleSheet(f.readAll());
 
-    setupTranslators(a);
+//    setupTranslators(a);
+    const QString locale = QLocale::system().name();
+    QTranslator qtTranslator;
+    qtTranslator.load( QLatin1String("qt_") + locale,
+                      QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
+    a.installTranslator( &qtTranslator );
+
+    QTranslator translator;
+    bool ok = translator.load( QLatin1String("xqeval_") + locale
+                    , QDir::cleanPath( QCoreApplication::applicationDirPath() + QLatin1String( SHARE_PATH "/translations" ) ) );
+    a.installTranslator( &translator );
 
     XQEMainWindow w;
     QObject::connect( &a, SIGNAL(fileOpened(QString)), &w, SLOT(loadQuery(QString)), Qt::DirectConnection );
