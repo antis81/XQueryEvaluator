@@ -22,14 +22,14 @@
 #include <QtGui/QFileOpenEvent>
 
 
-MainApplication::MainApplication(int argc, char ** argv) :
-    QApplication(argc, argv)
+MainApplication::MainApplication(int &argc, char **argv, bool GUIenabled) :
+    QApplication(argc, argv, GUIenabled)
 {
 }
 
 bool MainApplication::event(QEvent *ev)
 {
-    bool eaten;
+    bool eaten = false;
 
     switch (ev->type())
     {

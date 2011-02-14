@@ -27,7 +27,7 @@ class MainApplication : public QApplication
 {
     Q_OBJECT
 public:
-    explicit MainApplication(int argc, char ** argv);
+    explicit MainApplication(int &argc, char **argv, bool GUIenabled=true);
 
 protected:
     bool event(QEvent *ev);
