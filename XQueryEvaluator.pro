@@ -16,4 +16,5 @@ SUBDIRS = \
 Core.depends = Query TextEditing
 
 TRANSLATIONS += \
-    translations/XQueryEvaluator_cs.ts
+    translations/xqeval_cs.ts \
+    translations/xqeval_de.ts
