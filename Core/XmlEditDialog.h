@@ -24,11 +24,7 @@
 
 class XMLEditor;
 
-namespace Ui {
-    class XmlEditDialog;
-}
-
-class XmlEditDialog : public QDialog
+class XmlEditDialog : public QWidget
 {
     Q_OBJECT
 
@@ -40,8 +36,6 @@ public:
     void setXml(const QString &xml);
 
 private:
-    Ui::XmlEditDialog *     ui;
-
     XMLEditor *             _textXml;
 };
 

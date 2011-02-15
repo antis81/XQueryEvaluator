@@ -26,15 +26,12 @@
 
 
 XmlEditDialog::XmlEditDialog(QWidget *parent)
-    : QDialog(parent)
-    , ui(new Ui::XmlEditDialog)
+    : QWidget(parent)
     , _textXml(new XMLEditor())
 {
-    ui->setupUi(this);
-
-	QLayout *l = ui->myPlace->layout();
+	QLayout *l = layout();
 	if (l == 0)
-		l = new QGridLayout(ui->myPlace);
+		l = new QGridLayout(this);
 	l->setContentsMargins(0,0,0,0);
 
 	l->addWidget( _textXml );
@@ -42,7 +39,6 @@ XmlEditDialog::XmlEditDialog(QWidget *parent)
 
 XmlEditDialog::~XmlEditDialog()
 {
-	delete ui;
 }
 
 QString XmlEditDialog::xml() const

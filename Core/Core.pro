@@ -25,8 +25,7 @@ LIBS += -L$$BIN_BASE \
 QT += xmlpatterns
 
 FORMS    += XQEMainWindow.ui \
-    XQEOutput.ui \
-    XmlEditDialog.ui
+    XQEOutput.ui
 
 HEADERS  += \
     XQEMainWindow.h \
