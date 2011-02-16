@@ -44,11 +44,10 @@ XQEditor::XQEditor(QWidget *parent)
 	lineNumbers->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
 
 	QHBoxLayout *horLayout = new QHBoxLayout();
-	horLayout->setSpacing(0);
-	horLayout->setMargin(0);
 	horLayout->addWidget(lineNumbers);
 	horLayout->addWidget(_textQuery);
 
+	horLayout->setContentsMargins(0,0,0,0);
 	setLayout(horLayout);
 
 	QCompleter *completer = new QCompleter();
