@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     a.installTranslator( &qtTranslator );
 
     QTranslator translator;
-    bool ok = translator.load( QLatin1String("xqeval_") + locale
+    translator.load( QLatin1String("xqeval_") + locale
                     , QDir::cleanPath( QCoreApplication::applicationDirPath() + QLatin1String( SHARE_PATH "/translations" ) ) );
     a.installTranslator( &translator );
 
