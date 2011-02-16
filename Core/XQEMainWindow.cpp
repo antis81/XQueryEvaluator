@@ -56,13 +56,8 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     setWindowTitle( QString("%1 (%2)").arg( qApp->applicationName() ).arg( qApp->applicationVersion() ) );
     qApp->setWindowIcon( QIcon(":/AppIcon.svg") );
 
-    //! @todo TESTING PURPOSES
-    //    QFont myFont = _textQuery->font();
-    //    myFont.setPixelSize(24);
-    //    _textQuery->setFont(myFont);
 
 
-	l->addWidget( _textQuery );
 	setCentralWidget( _textQuery );
 
 	ui->toolBar->setIconSize(QSize(21,21));
