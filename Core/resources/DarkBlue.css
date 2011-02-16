@@ -1,4 +1,4 @@
-QMainWindow, QDialog, QMessageBox
+QMainWindow, QDialog, QMessageBox, XmlEditor
 {
 	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgba(42, 59, 93, 255), stop:1 rgba(0, 0, 0, 255));
 }

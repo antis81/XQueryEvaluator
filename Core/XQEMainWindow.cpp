@@ -22,7 +22,6 @@
 #include "ui_XQEMainWindow.h"
 
 #include "XQEOutput.h"
-#include "XmlEditDialog.h"
 
 #include "Query/XQEMessageHandler.h"
 
@@ -47,7 +46,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     : QMainWindow( parent )
     , ui( new Ui::XQEMainWindow )
     , _textQuery( new XQEditor )
-    , _xmlEditor(0)
+    , _xmlEditor( new XmlEditor )
 {
     ui->setupUi(this);
 
@@ -160,33 +159,6 @@ Open a source XML file.
 void XQEMainWindow::on_btnOpenSource_clicked()
 {
     ui->textSourceFile->setText(selectSourceFile());
-}
-
-/**
-The XML source should be shown.
-*/
-void XQEMainWindow::on_btnViewSource_clicked()
-{
-    QString fileName = ui->textSourceFile->text();
-    if ( fileName.isEmpty() )
-        return;
-
-    QFile xmlFile( QDir::cleanPath(fileName) );
-    if ( !xmlFile.open(QIODevice::ReadOnly) )
-    {
-        QMessageBox::critical(
-                    this, tr("Unable to open XML file"),
-                    tr("The source document could not be opened.") );
-        return;
-    }
-
-    if ( _xmlEditor == 0 )
-        _xmlEditor = new XmlEditDialog();
-
-    _xmlEditor->setWindowTitle( tr("XML Source File - %1").arg( QFileInfo(xmlFile).fileName() )  );
-    _xmlEditor->setXml( QString::fromUtf8(xmlFile.readAll()) );
-
-    _xmlEditor->show();
 }
 
 /**
@@ -410,4 +382,29 @@ void XQEMainWindow::about()
                        .arg( qApp->applicationName() )
                        .arg( qApp->applicationVersion() )
                        );
+}
+
+/**
+The XML source should be shown.
+*/
+void XQEMainWindow::actionViewSource()
+{
+    if ( _xmlEditor == 0 )
+        return;
+
+    QFile xmlFile( _xmlSource->sourceFile() );
+    if ( !xmlFile.open(QIODevice::ReadOnly) || _xmlSource->sourceFile().isEmpty() )
+    {
+        QMessageBox::critical(
+                    this, tr("Unable to open XML file"),
+                    tr("The source document could not be opened.") );
+        return;
+    }
+
+    _xmlEditor->setWindowTitle( tr("XML Source File - %1").arg( QFileInfo(xmlFile).fileName() ) );
+    _xmlEditor->setXml( QString::fromUtf8(xmlFile.readAll()) );
+
+    xmlFile.close();
+
+    _xmlEditor->show();
 }

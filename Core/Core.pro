@@ -30,13 +30,11 @@ FORMS    += XQEMainWindow.ui \
 HEADERS  += \
     XQEMainWindow.h \
     XQEOutput.h \
-    XmlEditDialog.h \
     MainApplication.h
 
 SOURCES += main.cpp\
     XQEMainWindow.cpp \
     XQEOutput.cpp \
-    XmlEditDialog.cpp \
     MainApplication.cpp
 
 RESOURCES += \

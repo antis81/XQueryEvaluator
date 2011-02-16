@@ -26,12 +26,12 @@
 
 class QPlainTextEdit;
 
-class XMLEditor : public QWidget
+class XmlEditor : public QWidget
 {
     Q_OBJECT
 public:
-    explicit XMLEditor(QWidget *parent = 0);
-    ~XMLEditor();
+    explicit XmlEditor(QWidget *parent = 0);
+    ~XmlEditor();
 
     QString xml() const;
     void setXml(const QString &xml);

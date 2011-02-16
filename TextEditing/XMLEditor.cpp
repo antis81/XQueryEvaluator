@@ -17,7 +17,7 @@
 **    along with XQueryEvaluator. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "XMLEditor.h"
+#include "XmlEditor.h"
 
 #include <QtGui/QPlainTextEdit>
 #include <QtGui/QHBoxLayout>
@@ -25,7 +25,7 @@
 #include "TextEditMetaBorder.h"
 
 
-XMLEditor::XMLEditor(QWidget *parent)
+XmlEditor::XmlEditor(QWidget *parent)
 	: QWidget(parent)
 	, _textXml(new QPlainTextEdit(this))
 {
@@ -40,8 +40,8 @@ XMLEditor::XMLEditor(QWidget *parent)
 	lineNumbers->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
 
 	QHBoxLayout *horLayout = new QHBoxLayout();
-	horLayout->setSpacing(0);
 	horLayout->setMargin(0);
+	horLayout->setSpacing(0);
 	horLayout->addWidget(lineNumbers);
 	horLayout->addWidget(_textXml);
 
@@ -52,16 +52,16 @@ XMLEditor::XMLEditor(QWidget *parent)
 	_textXml->setLineWrapMode(QPlainTextEdit::NoWrap);
 }
 
-XMLEditor::~XMLEditor()
+XmlEditor::~XmlEditor()
 {
 }
 
-QString XMLEditor::xml() const
+QString XmlEditor::xml() const
 {
 	return _textXml->toPlainText();
 }
 
-void XMLEditor::setXml(const QString &xml)
+void XmlEditor::setXml(const QString &xml)
 {
 	_textXml->setPlainText(xml);
 }

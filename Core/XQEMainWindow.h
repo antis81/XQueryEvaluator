@@ -25,13 +25,13 @@
 
 #include "Query/XQEvaluator.h"
 
-class XQEditor;
-class XmlEditDialog;
 
 namespace Ui {
     class XQEMainWindow;
 }
 
+class XQEditor;
+class XmlEditor;
 class QComboBox;
 
 class XQEMainWindow : public QMainWindow
@@ -72,7 +72,7 @@ private:
 
     QString                     _queryFileName;
     XQEditor *                  _textQuery;
-    XmlEditDialog *             _xmlEditor;
+    XmlEditor *                 _xmlEditor;
 
     XQEvaluator                 _xqeval;
 
