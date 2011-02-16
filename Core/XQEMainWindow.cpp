@@ -96,9 +96,9 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 	m->addSeparator();
 	a = m->addAction( tr("Indent Query"), this, SLOT(autoIndent()), QKeySequence( Qt::CTRL + Qt::Key_I ) );
 
-	m = menuBar()->addMenu( tr("Help") );
-	m->addAction( tr("About"), this, SLOT(about()) );
-	m->addAction( tr("About &Qt"), qApp, SLOT(aboutQt()) );
+	m = menuBar()->addMenu( QString("Help") );
+	m->addAction( QString("About"), this, SLOT(about()) );
+	m->addAction( QString("About &Qt"), qApp, SLOT(aboutQt()) );
 
 	ui->toolBar->addSeparator();
 	ui->toolBar->addWidget( _xmlSource );
