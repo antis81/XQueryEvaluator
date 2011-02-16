@@ -25,17 +25,20 @@ LIBS += -L$$BIN_BASE \
 QT += xmlpatterns
 
 FORMS    += XQEMainWindow.ui \
-    XQEOutput.ui
+    XQEOutput.ui \
+    XmlSource.ui
 
 HEADERS  += \
     XQEMainWindow.h \
     XQEOutput.h \
-    MainApplication.h
+    MainApplication.h \
+    XmlSource.h
 
 SOURCES += main.cpp\
     XQEMainWindow.cpp \
     XQEOutput.cpp \
-    MainApplication.cpp
+    MainApplication.cpp \
+    XmlSource.cpp
 
 RESOURCES += \
     resources/xqe_resource.qrc

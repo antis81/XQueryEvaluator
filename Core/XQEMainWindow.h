@@ -30,6 +30,7 @@ namespace Ui {
     class XQEMainWindow;
 }
 
+class XmlSource;
 class XQEditor;
 class XmlEditor;
 class QComboBox;
@@ -49,8 +50,7 @@ private slots:
     void startQuery();
     void changeFormattedOutput(bool enabled);
 
-    void on_btnOpenSource_clicked();
-    void on_btnViewSource_clicked();
+    void actionViewSource();
 
     void actionOpenQuery();
     void actionSaveQuery();
@@ -72,6 +72,7 @@ private:
 
     QString                     _queryFileName;
     XQEditor *                  _textQuery;
+    XmlSource *                 _xmlSource;
     XmlEditor *                 _xmlEditor;
 
     XQEvaluator                 _xqeval;

@@ -23,6 +23,8 @@
 
 #include "XQEOutput.h"
 
+#include "XmlSource.h"
+
 #include "Query/XQEMessageHandler.h"
 
 #include "TextEditing/XQEditor.h"
@@ -45,6 +47,7 @@ The main window´s constructor sets up the user interface.
 XQEMainWindow::XQEMainWindow(QWidget *parent)
     : QMainWindow( parent )
     , ui( new Ui::XQEMainWindow )
+    , _xmlSource( new XmlSource )
     , _textQuery( new XQEditor )
     , _xmlEditor( new XmlEditor )
 {
@@ -58,12 +61,9 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     //    myFont.setPixelSize(24);
     //    _textQuery->setFont(myFont);
 
-	QLayout *l = ui->myPlace->layout();
-	if (l == 0)
-		l = new QGridLayout(ui->myPlace);
-	l->setContentsMargins(0,0,0,0);
 
 	l->addWidget( _textQuery );
+	setCentralWidget( _textQuery );
 
 	ui->toolBar->setIconSize(QSize(21,21));
 
@@ -104,6 +104,14 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 	m = menuBar()->addMenu( tr("Help") );
 	m->addAction( tr("About"), this, SLOT(about()) );
 	m->addAction( tr("About &Qt"), qApp, SLOT(aboutQt()) );
+
+	ui->toolBar->addSeparator();
+	ui->toolBar->addWidget( _xmlSource );
+
+	a = new QAction( QIcon(":/eye.svg"), tr("View Source"), 0 );
+	connect( a, SIGNAL(triggered()), this, SLOT(actionViewSource()) );
+
+	ui->toolBar->addAction(a);
 }
 
 XQEMainWindow::~XQEMainWindow()
@@ -134,7 +142,7 @@ Starts evaluations of a query.
 */
 void XQEMainWindow::startQuery()
 {
-    const QString source = loadSourceFile( ui->textSourceFile->text() );
+    const QString source = loadSourceFile( _xmlSource->sourceFile() );
 
     QTime stopWatch;
     stopWatch.start();
@@ -151,14 +159,6 @@ void XQEMainWindow::startQuery()
     dlg.setErrors(errLog);
 
     dlg.exec();
-}
-
-/**
-Open a source XML file.
-*/
-void XQEMainWindow::on_btnOpenSource_clicked()
-{
-    ui->textSourceFile->setText(selectSourceFile());
 }
 
 /**
@@ -216,14 +216,6 @@ Action wrapper for saving a query.
 void XQEMainWindow::actionSaveQuery()
 {
     saveQuery();
-}
-
-/**
-Select a source XML file to run the query on.
-*/
-QString XQEMainWindow::selectSourceFile()
-{
-    return QDir::cleanPath( QFileDialog::getOpenFileName(0, tr("Open XML source file ..."), QString(), "*.xml") );
 }
 
 /**
