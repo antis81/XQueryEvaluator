@@ -2,9 +2,10 @@
     <qresource prefix="/">
         <file>DarkBlue.css</file>
         <file>eye.svg</file>
-        <file>question.png</file>
         <file>start.svg</file>
         <file>indent.svg</file>
         <file>AppIcon.svg</file>
+        <file>down-arrow.svg</file>
+        <file>question.png</file>
     </qresource>
 </RCC>

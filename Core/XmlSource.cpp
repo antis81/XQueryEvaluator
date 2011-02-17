@@ -34,8 +34,8 @@ XmlSource::XmlSource(QWidget *parent) :
     if (l == 0)
         l = new QHBoxLayout(this);
 
-    l->setSpacing(3);
-    l->setContentsMargins(9,1,9,1);
+    l->setSpacing(0);
+    l->setContentsMargins(3,1,3,1);
 
     connect( ui->textSourceFile, SIGNAL(textChanged(QString)), this, SLOT(setSourceFile(QString)) );
 }
