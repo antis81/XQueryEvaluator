@@ -37,13 +37,14 @@ public:
     ~XmlSource();
 
     QString sourceFile() const;
-    void setSourceFile(QString sourceFile);
 
     QWidget * editor() const { return _editor; }
     void setEditor(QWidget *w) { _editor = w; }
 
 private slots:
     void on_btnOpenSource_clicked();
+
+    void setSourceFile(QString sourceFile);
 
 private:
     Ui::XmlSource *ui;

@@ -36,6 +36,8 @@ XmlSource::XmlSource(QWidget *parent) :
 
     l->setSpacing(3);
     l->setContentsMargins(9,1,9,1);
+
+    connect( ui->textSourceFile, SIGNAL(textChanged(QString)), this, SLOT(setSourceFile(QString)) );
 }
 
 XmlSource::~XmlSource()
@@ -51,7 +53,7 @@ void XmlSource::on_btnOpenSource_clicked()
     const QString &fileName = selectSourceFile();
 
     if ( !fileName.isEmpty() )
-        setSourceFile( fileName );
+        ui->textSourceFile->setText( fileName );
 }
 
 /**
@@ -70,5 +72,4 @@ QString XmlSource::sourceFile() const
 void XmlSource::setSourceFile(QString sourceFile)
 {
     _sourceFile = QDir::cleanPath( sourceFile );
-    ui->textSourceFile->setText( _sourceFile );
 }
