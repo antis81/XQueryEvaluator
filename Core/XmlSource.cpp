@@ -34,8 +34,8 @@ XmlSource::XmlSource(QWidget *parent) :
     if (l == 0)
         l = new QHBoxLayout(this);
 
-    l->setMargin(0);
-    l->setSpacing(0);
+    l->setSpacing(3);
+    l->setContentsMargins(9,1,9,1);
 }
 
 XmlSource::~XmlSource()
