@@ -68,22 +68,9 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
     ui->toolBar->addWidget(_combo);
 
-    QMenu *m = menuBar()->addMenu( QString("Help") );
-    m->addAction( QString("About"), this, SLOT(about()) );
-    m->addAction( QString("About &Qt"), qApp, SLOT(aboutQt()) );
+    QMenu *m = menuBar()->addMenu( tr("Query") );
 
-    ui->toolBar->addSeparator();
-    ui->toolBar->addWidget( _xmlSource );
-
-    QAction *a = new QAction( QIcon(":/eye.svg"), tr("View Source"), 0 );
-    connect( a, SIGNAL(triggered()), this, SLOT(actionViewSource()) );
-
-    ui->toolBar->addAction(a);
-    ui->toolBar->addSeparator();
-
-    m = menuBar()->addMenu( tr("Query") );
-
-    a = m->addAction( tr("Open"), this, SLOT(actionOpenQuery()), QKeySequence( Qt::CTRL + Qt::Key_O ));
+    QAction *a = m->addAction( tr("Open"), this, SLOT(actionOpenQuery()), QKeySequence( Qt::CTRL + Qt::Key_O ));
     a->setToolTip( tr("Open a query file.") );
     a = m->addAction( tr("Save"), this, SLOT(actionSaveQuery()), QKeySequence( Qt::CTRL + Qt::Key_S ) );
     a->setToolTip( tr("Save your query.") );
@@ -105,6 +92,18 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
     m->addSeparator();
     a = m->addAction( tr("Indent Query"), this, SLOT(autoIndent()), QKeySequence( Qt::CTRL + Qt::Key_I ) );
+
+    ui->toolBar->addSeparator();
+    ui->toolBar->addWidget( _xmlSource );
+
+    a = new QAction( QIcon(":/eye.svg"), tr("View Source"), 0 );
+    connect( a, SIGNAL(triggered()), this, SLOT(actionViewSource()) );
+
+    ui->toolBar->addAction(a);
+
+    m = menuBar()->addMenu( QString("Help") );
+    m->addAction( QString("About"), this, SLOT(about()) );
+    m->addAction( QString("About &Qt"), qApp, SLOT(aboutQt()) );
 }
 
 XQEMainWindow::~XQEMainWindow()
