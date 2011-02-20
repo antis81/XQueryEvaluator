@@ -73,7 +73,11 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     // -- Query menu
     QMenu *m = menuBar()->addMenu( tr("Query") );
 
-    QAction *a = m->addAction( tr("Open"), this, SLOT(actionOpenQuery()), QKeySequence( Qt::CTRL + Qt::Key_O ));
+    QAction *a = 0;
+
+    a = m->addAction( tr("New"), this, SLOT(actionNewQuery()), QKeySequence( Qt::CTRL + Qt::Key_N ) );
+    a->setToolTip( tr("Create a new query.") );
+    a = m->addAction( tr("Open"), this, SLOT(actionOpenQuery()), QKeySequence( Qt::CTRL + Qt::Key_O ) );
     a->setToolTip( tr("Open a query file.") );
     a = m->addAction( tr("Save"), this, SLOT(actionSaveQuery()), QKeySequence( Qt::CTRL + Qt::Key_S ) );
     a->setToolTip( tr("Save your query.") );
@@ -87,7 +91,6 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     a->setChecked( _xqeval.formattedOutput() );
     ui->toolBar->addAction(a);
 
-    // menu action run
     a = m->addAction( QIcon(":/start.svg"), tr("Run"), this,
                      SLOT( startQuery() ), QKeySequence( Qt::CTRL + Qt::Key_R ) );
 
@@ -103,6 +106,10 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     connect( a, SIGNAL(triggered()), this, SLOT(actionViewSource()) );
 
     ui->toolBar->addAction(a);
+
+    // -- Edit menu
+    m = menuBar()->addMenu( tr("Edit") );
+    m->addActions( _textQuery->textEdit()->createStandardContextMenu()->actions() );
 
     // -- Help menu
     m = menuBar()->addMenu( QString("Help") );
@@ -248,8 +255,12 @@ The queries file name changed.
 void XQEMainWindow::queryFileNameChanged(const QString &newFileName)
 {
     _queryFileName = newFileName;
-    setWindowTitle( QString("%1 - %2").arg( qApp->applicationName() ).arg( QFileInfo(newFileName).fileName() ) );
-    //update();
+
+    QString visibleFileName = QFileInfo(_queryFileName).fileName();
+    if (visibleFileName.isEmpty())
+        visibleFileName = tr("New Query");
+
+    setWindowTitle( QString("%1 (%2) - %3").arg( APP_NAME ).arg( APP_VERSION ).arg( visibleFileName ) );
 }
 
 
@@ -433,4 +444,13 @@ void XQEMainWindow::writeSettings()
     settings.setValue( "type", _textQueryType->currentText() );
     settings.setValue( "queryFile", _queryFileName );
     settings.endGroup();
+}
+
+void XQEMainWindow::actionNewQuery()
+{
+    if ( queryCanClose() )
+    {
+        _textQuery->setXQText( QString() );
+        queryFileNameChanged( QString() );
+    }
 }

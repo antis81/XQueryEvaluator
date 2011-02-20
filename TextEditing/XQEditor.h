@@ -44,6 +44,8 @@ public:
 
     void autoIndent();
 
+    XQEdit * textEdit() const;
+
 private slots:
     void documentModified(bool modified);
 

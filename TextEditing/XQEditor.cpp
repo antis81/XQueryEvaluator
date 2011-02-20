@@ -120,3 +120,8 @@ void XQEditor::autoIndent()
     AutoIndent ai;
     ai.indentDocument( _textQuery->document() );
 }
+
+XQEdit * XQEditor::textEdit() const
+{
+    return _textQuery;
+}

@@ -52,6 +52,7 @@ private slots:
 
     void actionViewSource();
 
+    void actionNewQuery();
     void actionOpenQuery();
     void actionSaveQuery();
 
