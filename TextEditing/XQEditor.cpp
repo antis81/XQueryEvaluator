@@ -44,6 +44,8 @@ XQEditor::XQEditor(QWidget *parent)
 	lineNumbers->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
 
 	QHBoxLayout *horLayout = new QHBoxLayout();
+	horLayout->setMargin(0);
+	horLayout->setSpacing(3);
 	horLayout->addWidget(lineNumbers);
 	horLayout->addWidget(_textQuery);
 

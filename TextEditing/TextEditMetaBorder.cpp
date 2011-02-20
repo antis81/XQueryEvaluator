@@ -78,7 +78,7 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
         const int lineBottom = textBaseLine * (count - scrollOffset) + fm.leading();
 
         const QString txt = QString("%1").arg( count );
-        painter.drawText( width() - fm.width(txt) -3 , lineBottom, txt );
+        painter.drawText( width() - fm.width(txt), lineBottom, txt );
     }
 }
 

@@ -44,7 +44,7 @@ XmlEditor::XmlEditor(QWidget *parent)
 
 	QHBoxLayout *horLayout = new QHBoxLayout();
 	horLayout->setMargin(0);
-	horLayout->setSpacing(0);
+	horLayout->setSpacing(3);
 	horLayout->addWidget(lineNumbers);
 	horLayout->addWidget(_textXml);
 
