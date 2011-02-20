@@ -5,7 +5,7 @@ QMainWindow, XQEOutput, QMessageBox, XmlEditor
 
 XQEdit
 {
-	font: 11px Menlo;
+	font: 12px Menlo;
 }
 
 QLabel, TextEditMetaBorder
@@ -24,28 +24,26 @@ QLineEdit#textSourceFile
 }
 
 QComboBox {
-     border: 1px solid gray;
-     border-radius: 3px;
-     padding: 1px 18px 1px 3px;
-     min-width: 6em;
+    border: 1px solid gray;
+    border-bottom-left-radius: 10px;
+    padding: 1px 18px 1px 3px;
+    min-width: 4em;
 }
 
 QComboBox::drop-down
 {
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(200, 200, 200), stop: 1.0 rgb(128, 128, 128));
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(230, 230, 230), stop: 1.0 rgb(128, 128, 128));
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 20px;
 
     border-left-color: gray;
     border-left-style: solid;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
 }
 
-QComboBox::drop-down:on
+QComboBox::drop-down:pressed, QComboBox::drop-down:on
 {
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(128, 128, 128), stop:1 rgb(200, 200, 200));
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(128, 128, 128), stop:1 rgb(230, 230, 230));
 }
 
 QComboBox::down-arrow
