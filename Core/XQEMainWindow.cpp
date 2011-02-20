@@ -28,6 +28,7 @@
 #include "Query/XQEMessageHandler.h"
 
 #include "TextEditing/XQEditor.h"
+#include "TextEditing/XQEdit.h"
 #include "TextEditing/XMLEditor.h"
 
 #include "TextEditing/AutoIndent.h"
@@ -39,6 +40,7 @@
 #include <QtGui/QCloseEvent>
 
 #include <QtCore/QTime>
+#include <QtCore/QSettings>
 
 
 /**
@@ -68,6 +70,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
     ui->toolBar->addWidget(_combo);
 
+    // -- Query menu
     QMenu *m = menuBar()->addMenu( tr("Query") );
 
     QAction *a = m->addAction( tr("Open"), this, SLOT(actionOpenQuery()), QKeySequence( Qt::CTRL + Qt::Key_O ));
@@ -101,9 +104,12 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
     ui->toolBar->addAction(a);
 
+    // -- Help menu
     m = menuBar()->addMenu( QString("Help") );
     m->addAction( QString("About"), this, SLOT(about()) );
     m->addAction( QString("About &Qt"), qApp, SLOT(aboutQt()) );
+
+    readSettings();
 }
 
 XQEMainWindow::~XQEMainWindow()
@@ -253,7 +259,10 @@ The main window´s close event.
 void XQEMainWindow::closeEvent(QCloseEvent *e)
 {
     if ( queryCanClose() )
+    {
+        writeSettings();
         e->accept();
+    }
     else
         e->ignore();
 }
@@ -391,4 +400,32 @@ void XQEMainWindow::actionViewSource()
     xmlFile.close();
 
     _xmlEditor->show();
+}
+
+void XQEMainWindow::readSettings()
+{
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, qApp->organizationName(), APP_NAME);
+
+    settings.beginGroup( "MainWindow" );
+    move( settings.value("pos", pos()).toPoint() );
+    resize( settings.value("size", size()).toSize() ) ;
+    settings.endGroup();
+
+    settings.beginGroup( "Query" );
+    loadQuery( settings.value( "queryFile" ).toString() );
+    settings.endGroup();
+}
+
+void XQEMainWindow::writeSettings()
+{
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, qApp->organizationName(), APP_NAME);
+
+    settings.beginGroup( "MainWindow" );
+    settings.setValue( "pos", pos() );
+    settings.setValue( "size", size() );
+    settings.endGroup();
+
+    settings.beginGroup( "Query" );
+    settings.setValue( "queryFile", _queryFileName );
+    settings.endGroup();
 }

@@ -20,8 +20,12 @@
 #include "XmlSource.h"
 #include "ui_XmlSource.h"
 
+#include <QtCore/QSettings>
+
 #include <QtGui/QMessageBox>
 #include <QtGui/QFileDialog>
+#include <QtGui/QHideEvent>
+
 
 XmlSource::XmlSource(QWidget *parent) :
     QWidget(parent)
@@ -38,6 +42,8 @@ XmlSource::XmlSource(QWidget *parent) :
     l->setContentsMargins(3,1,3,1);
 
     connect( ui->textSourceFile, SIGNAL(textChanged(QString)), this, SLOT(setSourceFile(QString)) );
+
+    readSettings();
 }
 
 XmlSource::~XmlSource()
@@ -72,4 +78,30 @@ QString XmlSource::sourceFile() const
 void XmlSource::setSourceFile(QString sourceFile)
 {
     _sourceFile = QDir::cleanPath( sourceFile );
+
+    emit sourceFileAvailable( !_sourceFile.isEmpty() );
+}
+
+void XmlSource::hideEvent(QHideEvent *ev)
+{
+    writeSettings();
+    ev->accept();
+}
+
+void XmlSource::readSettings()
+{
+    QSettings settings( QSettings::IniFormat, QSettings::UserScope, qApp->organizationName(), APP_NAME );
+
+    settings.beginGroup("XmlSource");
+    ui->textSourceFile->setText( settings.value("sourceFile", QString()).toString() );
+    settings.endGroup();
+}
+
+void XmlSource::writeSettings()
+{
+    QSettings settings( QSettings::IniFormat, QSettings::UserScope, qApp->organizationName(), APP_NAME);
+
+    settings.beginGroup("XmlSource");
+    settings.setValue( "sourceFile", _sourceFile );
+    settings.endGroup();
 }

@@ -22,6 +22,7 @@
 #include <QtCore/QTranslator>
 #include <QtCore/QLocale>
 #include <QtCore/QLibraryInfo>
+#include <QtCore/QSettings>
 
 #include "MainApplication.h"
 
@@ -50,6 +51,7 @@
 int main(int argc, char *argv[])
 {
     MainApplication a(argc, argv);
+    a.setOrganizationName("FenNils");
     a.setApplicationName( QLatin1String(APP_NAME) );
     a.setApplicationVersion( APP_VERSION );
 

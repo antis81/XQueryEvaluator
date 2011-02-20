@@ -41,10 +41,16 @@ public:
     QWidget * editor() const { return _editor; }
     void setEditor(QWidget *w) { _editor = w; }
 
+signals:
+    void sourceFileAvailable(bool yes);
+
 private slots:
     void on_btnOpenSource_clicked();
 
     void setSourceFile(QString sourceFile);
+
+protected:
+    void hideEvent(QHideEvent * ev);
 
 private:
     Ui::XmlSource *ui;
@@ -53,6 +59,9 @@ private:
     QWidget *       _editor;
 
     QString selectSourceFile();
+
+    void readSettings();
+    void writeSettings();
 
 };
 

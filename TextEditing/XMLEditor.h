@@ -34,11 +34,17 @@ public:
     ~XmlEditor();
 
     QString xml() const;
-    void setXml(const QString &xml);
+    void setXml(const QString & xml);
+
+protected:
+    virtual void hideEvent(QHideEvent * ev);
 
 private:
     QPlainTextEdit *    _textXml;
     XmlHighlighter      _highlighter;
+
+    void readSettings();
+    void writeSettings();
 };
 
 #endif // XMLEDITOR_H

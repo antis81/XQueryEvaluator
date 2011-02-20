@@ -19,8 +19,11 @@
 
 #include "XmlEditor.h"
 
+#include <QtCore/QCoreApplication>
 #include <QtGui/QPlainTextEdit>
 #include <QtGui/QHBoxLayout>
+
+#include <QtCore/QSettings>
 
 #include "TextEditMetaBorder.h"
 
@@ -50,6 +53,8 @@ XmlEditor::XmlEditor(QWidget *parent)
 	//! @todo Prevent writing for the moment.
 	_textXml->setReadOnly(true);
 	_textXml->setLineWrapMode(QPlainTextEdit::NoWrap);
+
+	readSettings();
 }
 
 XmlEditor::~XmlEditor()
@@ -64,4 +69,32 @@ QString XmlEditor::xml() const
 void XmlEditor::setXml(const QString &xml)
 {
 	_textXml->setPlainText(xml);
+}
+
+void XmlEditor::readSettings()
+{
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope,
+                       QCoreApplication::organizationName(), QCoreApplication::applicationName());
+
+    settings.beginGroup("XmlEditor");
+    move( settings.value( "pos", pos() ).toPoint() );
+    resize( settings.value( "size", size() ).toSize() );
+    settings.endGroup();
+}
+
+void XmlEditor::writeSettings()
+{
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope,
+                       QCoreApplication::organizationName(), QCoreApplication::applicationName());
+
+    settings.beginGroup("XmlEditor");
+    settings.setValue( "pos", pos() );
+    settings.setValue( "size", size() );
+    settings.endGroup();
+}
+
+void XmlEditor::hideEvent(QHideEvent *ev)
+{
+    writeSettings();
+    ev->accept();
 }

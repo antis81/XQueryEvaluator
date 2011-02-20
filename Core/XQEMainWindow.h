@@ -71,11 +71,14 @@ private:
     QComboBox *                 _combo; //!< @todo Outsource this and connect to an action manager or something.
 
     QString                     _queryFileName;
-    XQEditor *                  _textQuery;
     XmlSource *                 _xmlSource;
+    XQEditor *                  _textQuery;
     XmlEditor *                 _xmlEditor;
 
     XQEvaluator                 _xqeval;
+
+    void readSettings();
+    void writeSettings();
 
     QString selectSourceFile();
     QString loadSourceFile(const QString &path) const;
