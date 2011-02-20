@@ -104,7 +104,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
     a = new QAction( QIcon(":/eye.svg"), tr("View Source"), 0 );
     connect( a, SIGNAL(triggered()), this, SLOT(actionViewSource()) );
-
+    connect( _xmlSource, SIGNAL(sourceFileAvailable(bool)), a, SLOT(setEnabled(bool)) );
     ui->toolBar->addAction(a);
 
     // -- Edit menu
@@ -332,7 +332,7 @@ bool XQEMainWindow::saveQuery()
         QFileDialog fd( 0, tr("Save query file ..."), startPath );
         fd.setAcceptMode(QFileDialog::AcceptSave);
         fd.setDefaultSuffix(ext);
-        fd.setFileMode(QFileDialog::AnyFile);
+        fd.setFileMode(QFileDialog::ExistingFile);
         connect( &fd, SIGNAL( fileSelected(const QString &) ), SLOT(queryFileNameChanged(const QString &)) );
 
         if ( fd.exec() == 0 )
