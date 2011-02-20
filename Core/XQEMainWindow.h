@@ -68,7 +68,7 @@ protected:
 private:
     Ui::XQEMainWindow *ui;
 
-    QComboBox *                 _combo; //!< @todo Outsource this and connect to an action manager or something.
+    QComboBox *                 _textQueryType;
 
     QString                     _queryFileName;
     XmlSource *                 _xmlSource;

@@ -62,13 +62,13 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
     ui->toolBar->setIconSize(QSize(21,21));
 
-    _combo = new QComboBox();
-    _combo->setToolTip( tr("Select the type of query.") );
-    _combo->addItem( "XQuery 1.0", QXmlQuery::XQuery10 );
-    _combo->addItem( "XSLT 2.0", QXmlQuery::XSLT20 );
-    connect( _combo, SIGNAL(activated(int)), this, SLOT(queryLanguageSelected(int)) );
+    _textQueryType = new QComboBox();
+    _textQueryType->setToolTip( tr("Select the type of query.") );
+    _textQueryType->addItem( "XQuery 1.0", QXmlQuery::XQuery10 );
+    _textQueryType->addItem( "XSLT 2.0", QXmlQuery::XSLT20 );
+    connect( _textQueryType, SIGNAL(activated(int)), this, SLOT(queryLanguageSelected(int)) );
 
-    ui->toolBar->addWidget(_combo);
+    ui->toolBar->addWidget(_textQueryType);
 
     // -- Query menu
     QMenu *m = menuBar()->addMenu( tr("Query") );
@@ -237,7 +237,7 @@ Changed the language type of a query.
 void XQEMainWindow::queryLanguageSelected(int comboIndex)
 {
     QXmlQuery::QueryLanguage ql =
-            static_cast<QXmlQuery::QueryLanguage>( _combo->itemData(comboIndex).toInt() );
+            static_cast<QXmlQuery::QueryLanguage>( _textQueryType->itemData(comboIndex).toInt() );
 
     _xqeval.setQueryLanguage(ql);
 }
@@ -412,6 +412,10 @@ void XQEMainWindow::readSettings()
     settings.endGroup();
 
     settings.beginGroup( "Query" );
+    const int i = _textQueryType->findText( settings.value( "type" ).toString() );
+    if ( i >= 0 )
+        _textQueryType->setCurrentIndex( i );
+
     loadQuery( settings.value( "queryFile" ).toString() );
     settings.endGroup();
 }
@@ -426,6 +430,7 @@ void XQEMainWindow::writeSettings()
     settings.endGroup();
 
     settings.beginGroup( "Query" );
+    settings.setValue( "type", _textQueryType->currentText() );
     settings.setValue( "queryFile", _queryFileName );
     settings.endGroup();
 }
