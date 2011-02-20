@@ -33,8 +33,10 @@ TextEditMetaBorder::TextEditMetaBorder(QPlainTextEdit *doc, QWidget *parent)
     const QFontMetrics &fm = doc->fontMetrics();
 
     // 4 line numbers + space + breakpoint
-    setMinimumWidth(fm.maxWidth() * 10);
-    setFixedWidth(fm.maxWidth() * 10);
+    setMinimumWidth(fm.maxWidth() * 6);
+
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+    setFixedWidth(60);
 
     connect( _document, SIGNAL( updateRequest(const QRect &, int) ), this, SLOT( update() ) );
 }

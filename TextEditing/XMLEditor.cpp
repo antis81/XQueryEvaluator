@@ -39,8 +39,6 @@ XmlEditor::XmlEditor(QWidget *parent)
 
 	// line numbers
 	TextEditMetaBorder *lineNumbers = new TextEditMetaBorder(_textXml);
-	lineNumbers->setFixedWidth(40);
-	lineNumbers->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
 
 	QHBoxLayout *horLayout = new QHBoxLayout();
 	horLayout->setMargin(0);

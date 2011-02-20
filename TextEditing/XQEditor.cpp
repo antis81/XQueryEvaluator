@@ -40,8 +40,6 @@ XQEditor::XQEditor(QWidget *parent)
 
 	// line numbers
 	TextEditMetaBorder *lineNumbers = new TextEditMetaBorder(_textQuery);
-	lineNumbers->setFixedWidth(40);
-	lineNumbers->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
 
 	QHBoxLayout *horLayout = new QHBoxLayout();
 	horLayout->setMargin(0);
