@@ -418,8 +418,13 @@ void XQEMainWindow::readSettings()
     QSettings settings(QSettings::IniFormat, QSettings::UserScope, qApp->organizationName(), APP_NAME);
 
     settings.beginGroup( "MainWindow" );
+
     move( settings.value("pos", pos()).toPoint() );
     resize( settings.value("size", size()).toSize() ) ;
+
+    if ( settings.value("maximized", false).toBool() )
+        setWindowState( windowState() | Qt::WindowMaximized );
+
     settings.endGroup();
 
     settings.beginGroup( "Query" );
@@ -436,8 +441,14 @@ void XQEMainWindow::writeSettings()
     QSettings settings(QSettings::IniFormat, QSettings::UserScope, qApp->organizationName(), APP_NAME);
 
     settings.beginGroup( "MainWindow" );
-    settings.setValue( "pos", pos() );
-    settings.setValue( "size", size() );
+
+    settings.setValue( "maximized", isMaximized() );
+    if ( !isMaximized() )
+    {
+        settings.setValue( "pos", pos() );
+        settings.setValue( "size", size() );
+    }
+
     settings.endGroup();
 
     settings.beginGroup( "Query" );
