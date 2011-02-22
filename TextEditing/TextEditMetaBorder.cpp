@@ -32,7 +32,7 @@ TextEditMetaBorder::TextEditMetaBorder(QPlainTextEdit *doc, QWidget *parent)
 {
     const QFontMetrics &fm = doc->fontMetrics();
 
-    // 4 line numbers + space + breakpoint
+    // set the minimum width to 4 line numbers + space + breakpoint
     setMinimumWidth(fm.maxWidth() * 6);
 
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
