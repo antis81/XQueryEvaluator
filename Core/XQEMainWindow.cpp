@@ -81,6 +81,8 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     a->setToolTip( tr("Open a query file.") );
     a = m->addAction( tr("Save"), this, SLOT(actionSaveQuery()), QKeySequence( Qt::CTRL + Qt::Key_S ) );
     a->setToolTip( tr("Save your query.") );
+//    a = m->addAction( tr("Save as..."), this, SLOT(actionSaveQueryAs()), QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_S ) );
+//    a->setToolTip( tr("Save your query at another location.") );
 
     m->addSeparator();
 
@@ -311,10 +313,10 @@ bool XQEMainWindow::queryCanClose()
 
   @return True if query was saved, otherwise false.
 */
-bool XQEMainWindow::saveQuery()
+bool XQEMainWindow::saveQuery(bool saveAs)
 {
     QString startPath;
-    if ( _queryFileName.isEmpty() )
+    if ( _queryFileName.isEmpty() || saveAs )
     {
         startPath = QDir::homePath();
 
@@ -433,7 +435,7 @@ void XQEMainWindow::readSettings()
 
 void XQEMainWindow::writeSettings()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, qApp->organizationName(), APP_NAME);
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(), APP_NAME);
 
     settings.beginGroup( "MainWindow" );
     settings.setValue( "pos", pos() );
@@ -454,3 +456,8 @@ void XQEMainWindow::actionNewQuery()
         queryFileNameChanged( QString() );
     }
 }
+
+//void XQEMainWindow::actionSaveQueryAs()
+//{
+//    saveQuery( true );
+//}
