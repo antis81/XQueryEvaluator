@@ -20,46 +20,18 @@
 #ifndef XQUERYHIGHLIGHTER_H
 #define XQUERYHIGHLIGHTER_H
 
-#include <QtCore/QList>
-#include <QtGui/QSyntaxHighlighter>
+#include "XmlHighlighter.h"
 
-class XQueryHighlighter : public QSyntaxHighlighter
+#include <QtCore/QList>
+
+class XQueryHighlighter : public XmlHighlighter
 {
 public:
-    struct HighlightBlock
-    {
-        QRegExp startExp;
-        QRegExp endExp;
-        QTextCharFormat textFormat;
-    };
-
-    XQueryHighlighter(QTextDocument *parent =0);
-    virtual ~XQueryHighlighter();
-
-protected:
-    void highlightBlock(const QString &text);
-    void colorBlock( int blockState, const QString &text, const HighlightBlock &blockFormat);
-    void addHighlightingRule(const QStringList &patterns, const QTextCharFormat &format);
-    void addHighlightingRule(const QString &pattern, const QTextCharFormat &format);
-
-    void setupHighlightBlocks();
+    explicit XQueryHighlighter(QTextDocument *parent =0);
 
 private:
-    struct HighlightingRule
-    {
-        QList<QRegExp>      patterns;
-        QTextCharFormat     format;
-    };
+    void setupHighlightBlocks();
 
-    QList<HighlightingRule>         _highlightingRules;
-    QMap<QString, HighlightBlock>   _blocks;
-
-//	QTextCharFormat		_keySignFormat;
-//	QTextCharFormat		_xmlTagFormat;
-//	QTextCharFormat		_xmlAttrFormat;
-
-//	QTextCharFormat		_keyWordFormat;
-//	QTextCharFormat		_varNameFormat;
 };
 
 #endif // XQUERYHIGHLIGHTER_H
