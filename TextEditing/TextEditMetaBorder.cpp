@@ -23,6 +23,7 @@
 #include <QtGui/QScrollBar>
 #include <QtGui/QTextBlock>
 #include <QtGui/QAbstractTextDocumentLayout>
+#include <QtGui/QLayout>
 
 
 TextEditMetaBorder::TextEditMetaBorder(QPlainTextEdit *doc, QWidget *parent)
@@ -68,7 +69,7 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
         topMargin = qRound( _document->document()->documentMargin() );
 
     for ( QTextBlock block = _document->document()->begin();
-        block.isValid(); block = block.next() )
+         block.isValid(); block = block.next() )
     {
         const int count = block.blockNumber() +1;
 
