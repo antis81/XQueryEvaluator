@@ -48,44 +48,44 @@ XQEditor::XQEditor(QWidget *parent)
 
     setLayout(horLayout);
 
-	QCompleter *completer = new QCompleter();
+    QCompleter *completer = new QCompleter();
 
-	completer->setModel( modelFromFile(":/CompletionModels/XQuery.cpl") );
-	completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
-	completer->setCaseSensitivity(Qt::CaseInsensitive);
-	completer->setWrapAround(false);
-	completer->setCompletionMode(QCompleter::PopupCompletion);
+    completer->setModel( modelFromFile(":/CompletionModels/XQuery.cpl") );
+    completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    completer->setWrapAround(false);
+    completer->setCompletionMode(QCompleter::PopupCompletion);
 
-	_textQuery->setCompleter(completer);
-	connect(_textQuery, SIGNAL(modificationChanged(bool)), this, SLOT(documentModified(bool)));
+    _textQuery->setCompleter(completer);
+    connect(_textQuery, SIGNAL(modificationChanged(bool)), this, SLOT(documentModified(bool)));
 }
 
 XQEditor::~XQEditor()
 {
-	Q_CLEANUP_RESOURCE(TextEditing);
+    Q_CLEANUP_RESOURCE(TextEditing);
 }
 
 QString XQEditor::xqText() const
 {
-	return _textQuery->toPlainText();
+    return _textQuery->toPlainText();
 }
 
 void XQEditor::setXQText(const QString &text)
 {
-	_textQuery->setPlainText(text);
+    _textQuery->setPlainText(text);
 }
 
 QAbstractItemModel * XQEditor::modelFromFile(QString fileName)
 {
-	QFile modelFile( QDir::cleanPath(fileName) );
+    QFile modelFile( QDir::cleanPath(fileName) );
 
-	if ( !modelFile.open(QIODevice::ReadOnly) )
-		return 0;
+    if ( !modelFile.open(QIODevice::ReadOnly) )
+        return 0;
 
 #ifndef QT_NO_CURSOR
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 #endif
-	QStringList sl;
+    QStringList sl;
 
     while (!modelFile.atEnd())
     {

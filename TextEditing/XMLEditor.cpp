@@ -29,10 +29,10 @@
 
 
 XmlEditor::XmlEditor(QWidget *parent)
-	: QWidget(parent)
-	, _textXml(new QPlainTextEdit(this))
+    : QWidget(parent)
+    , _textXml(new QPlainTextEdit(this))
 {
-	_highlighter.setDocument( _textXml->document() );
+    _highlighter.setDocument( _textXml->document() );
 
     const QFontMetrics &fm = fontMetrics();
     _textXml->setTabStopWidth( fm.width(QChar(' ')) * 4 );
@@ -47,11 +47,11 @@ XmlEditor::XmlEditor(QWidget *parent)
 
     setLayout(horLayout);
 
-	//! @todo Prevent writing for the moment.
-	_textXml->setReadOnly(true);
-	_textXml->setLineWrapMode(QPlainTextEdit::NoWrap);
+    //! @todo Prevent writing for the moment.
+    _textXml->setReadOnly(true);
+    _textXml->setLineWrapMode(QPlainTextEdit::NoWrap);
 
-	readSettings();
+    readSettings();
 }
 
 XmlEditor::~XmlEditor()
@@ -60,12 +60,12 @@ XmlEditor::~XmlEditor()
 
 QString XmlEditor::xml() const
 {
-	return _textXml->toPlainText();
+    return _textXml->toPlainText();
 }
 
 void XmlEditor::setXml(const QString &xml)
 {
-	_textXml->setPlainText(xml);
+    _textXml->setPlainText(xml);
 }
 
 void XmlEditor::readSettings()
