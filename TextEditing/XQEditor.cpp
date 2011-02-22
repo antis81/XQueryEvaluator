@@ -108,6 +108,11 @@ bool XQEditor::modified() const
     return _modified;
 }
 
+void XQEditor::setModified(bool modified)
+{
+    _modified = modified;
+}
+
 void XQEditor::documentModified(bool modified)
 {
     _modified = modified;
