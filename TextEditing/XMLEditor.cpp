@@ -37,16 +37,15 @@ XmlEditor::XmlEditor(QWidget *parent)
     const QFontMetrics &fm = fontMetrics();
     _textXml->setTabStopWidth( fm.width(QChar(' ')) * 4 );
 
-	// line numbers
-	TextEditMetaBorder *lineNumbers = new TextEditMetaBorder(_textXml);
+    QHBoxLayout *horLayout = new QHBoxLayout();
+    horLayout->setMargin(0);
+    horLayout->setSpacing(3);
 
-	QHBoxLayout *horLayout = new QHBoxLayout();
-	horLayout->setMargin(0);
-	horLayout->setSpacing(3);
-	horLayout->addWidget(lineNumbers);
-	horLayout->addWidget(_textXml);
+    // add line numbers and text edit
+    horLayout->addWidget( new TextEditMetaBorder(_textXml) );
+    horLayout->addWidget(_textXml);
 
-	setLayout(horLayout);
+    setLayout(horLayout);
 
 	//! @todo Prevent writing for the moment.
 	_textXml->setReadOnly(true);

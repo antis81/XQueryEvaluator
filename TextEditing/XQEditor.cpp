@@ -38,17 +38,15 @@ XQEditor::XQEditor(QWidget *parent)
 {
     Q_INIT_RESOURCE(TextEditing);
 
-	// line numbers
-	TextEditMetaBorder *lineNumbers = new TextEditMetaBorder(_textQuery);
+    QHBoxLayout *horLayout = new QHBoxLayout();
+    horLayout->setMargin(0);
+    horLayout->setSpacing(3);
 
-	QHBoxLayout *horLayout = new QHBoxLayout();
-	horLayout->setMargin(0);
-	horLayout->setSpacing(3);
-	horLayout->addWidget(lineNumbers);
-	horLayout->addWidget(_textQuery);
+    // add line numbers and text edit
+    horLayout->addWidget( new TextEditMetaBorder(_textQuery) );
+    horLayout->addWidget(_textQuery);
 
-	horLayout->setContentsMargins(0,0,0,0);
-	setLayout(horLayout);
+    setLayout(horLayout);
 
 	QCompleter *completer = new QCompleter();
 
