@@ -23,6 +23,7 @@
 #include <QtGui/QScrollBar>
 #include <QtGui/QTextBlock>
 #include <QtGui/QAbstractTextDocumentLayout>
+#include <QtGui/QLayout>
 
 
 TextEditMetaBorder::TextEditMetaBorder(QPlainTextEdit *doc, QWidget *parent)
@@ -32,9 +33,11 @@ TextEditMetaBorder::TextEditMetaBorder(QPlainTextEdit *doc, QWidget *parent)
 {
     const QFontMetrics &fm = doc->fontMetrics();
 
-    // 4 line numbers + space + breakpoint
-    setMinimumWidth(fm.maxWidth() * 10);
-    setFixedWidth(fm.maxWidth() * 10);
+    // set the minimum width to 4 line numbers + space + breakpoint
+    setMinimumWidth(fm.maxWidth() * 6);
+
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+    setFixedWidth(60);
 
     connect( _document, SIGNAL( updateRequest(const QRect &, int) ), this, SLOT( update() ) );
 }
@@ -61,10 +64,13 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
     const QFontMetrics &fm = _document->fontMetrics();
     const int textBaseLine = fm.lineSpacing();
 
-    for ( QTextBlock block = _document->document()->begin();
-        block.isValid(); block = block.next() )
-    {
+    int topMargin = 0;
+    if ( scrollOffset == 0 )
+        topMargin = qRound( _document->document()->documentMargin() );
 
+    for ( QTextBlock block = _document->document()->begin();
+         block.isValid(); block = block.next() )
+    {
         const int count = block.blockNumber() +1;
 
         // don't draw invisible lines
@@ -74,11 +80,12 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
         if ( count > visibleBottom )
             break;
 
-        // calculate pixel position of a text line´s base line
-        const int lineBottom = textBaseLine * (count - scrollOffset) + fm.leading();
+        // calculate pixel position of a text line's base line
+        int lineBottom = textBaseLine * (count - scrollOffset) + topMargin;
 
+        // draw the text at the appropriate position
         const QString txt = QString("%1").arg( count );
-        painter.drawText( width() - fm.width(txt) -3 , lineBottom, txt );
+        painter.drawText( width() - fm.width(txt), lineBottom, txt );
     }
 }
 

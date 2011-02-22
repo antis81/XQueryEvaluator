@@ -41,6 +41,7 @@ public:
     void setXQText(const QString &text);
 
     bool modified() const;
+    void setModified(bool modified);
 
     void autoIndent();
 

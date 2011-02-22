@@ -56,10 +56,10 @@ signals:
     void breakpointChanged(bool bSet);
 
 private:
-//    bool             _bDebugMode;
-//    QSet<int>        _breakpoints;
     QPlainTextEdit *    _document;
 
+//    bool             _bDebugMode;
+//    QSet<int>        _breakpoints;
 //    struct LineInfo
 //    {
 //        int        line;

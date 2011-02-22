@@ -29,32 +29,29 @@
 
 
 XmlEditor::XmlEditor(QWidget *parent)
-	: QWidget(parent)
-	, _textXml(new QPlainTextEdit(this))
+    : QWidget(parent)
+    , _textXml(new QPlainTextEdit(this))
 {
-	_highlighter.setDocument( _textXml->document() );
+    _highlighter.setDocument( _textXml->document() );
 
     const QFontMetrics &fm = fontMetrics();
     _textXml->setTabStopWidth( fm.width(QChar(' ')) * 4 );
 
-	// line numbers
-	TextEditMetaBorder *lineNumbers = new TextEditMetaBorder(_textXml);
-	lineNumbers->setFixedWidth(40);
-	lineNumbers->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+    QHBoxLayout *horLayout = new QHBoxLayout();
+    horLayout->setMargin(0);
+    horLayout->setSpacing(3);
 
-	QHBoxLayout *horLayout = new QHBoxLayout();
-	horLayout->setMargin(0);
-	horLayout->setSpacing(0);
-	horLayout->addWidget(lineNumbers);
-	horLayout->addWidget(_textXml);
+    // add line numbers and text edit
+    horLayout->addWidget( new TextEditMetaBorder(_textXml) );
+    horLayout->addWidget(_textXml);
 
-	setLayout(horLayout);
+    setLayout(horLayout);
 
-	//! @todo Prevent writing for the moment.
-	_textXml->setReadOnly(true);
-	_textXml->setLineWrapMode(QPlainTextEdit::NoWrap);
+    //! @todo Prevent writing for the moment.
+    _textXml->setReadOnly(true);
+    _textXml->setLineWrapMode(QPlainTextEdit::NoWrap);
 
-	readSettings();
+    readSettings();
 }
 
 XmlEditor::~XmlEditor()
@@ -63,12 +60,12 @@ XmlEditor::~XmlEditor()
 
 QString XmlEditor::xml() const
 {
-	return _textXml->toPlainText();
+    return _textXml->toPlainText();
 }
 
 void XmlEditor::setXml(const QString &xml)
 {
-	_textXml->setPlainText(xml);
+    _textXml->setPlainText(xml);
 }
 
 void XmlEditor::readSettings()

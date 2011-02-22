@@ -73,7 +73,7 @@ void XQueryHighlighter::setupHighlightBlocks()
     // XML processing instruction <? ... ?>
     HighlightBlock xmlProcessing;
     xmlProcessing.textFormat.setForeground(QColor(0x40,0x40,0x80));
-    xmlProcessing.startExp = QRegExp("<\\?");
+    xmlProcessing.startExp	= QRegExp("<\\?");
     xmlProcessing.startExp.setMinimal(true);
     xmlProcessing.endExp	= QRegExp("\\?>");
     xmlProcessing.endExp.setMinimal(true);
