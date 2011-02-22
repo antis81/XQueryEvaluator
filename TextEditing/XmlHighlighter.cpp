@@ -20,11 +20,8 @@
 #include "XmlHighlighter.h"
 
 XmlHighlighter::XmlHighlighter(QTextDocument *parent)
-: QSyntaxHighlighter(parent)
+	: QSyntaxHighlighter(parent)
 {
-	//_highlightBlockCalls = 0;
-
-
 	HighlightingRule rule;
 
 	// Textformate fuer die einzelnen Highlightfaelle
@@ -41,22 +38,21 @@ XmlHighlighter::XmlHighlighter(QTextDocument *parent)
 			<< "<[^/>\\s]*[\\s>]"
 			<< "</[^>/]+>"
 			<< "<[^>/]+/>"
-			;
+			   ;
 	addHighlightingRule(tagPatterns, _xmlTagFormat);
 
 	// XML Attribute
-	QStringList	attrPatterns;
-	attrPatterns	<< " [^=</>]*(=[\"'])";
-	addHighlightingRule(attrPatterns, _xmlAttrFormat);
+	addHighlightingRule( QString( " [^=</>]*(=[\"'])" ), _xmlAttrFormat );
 
 	// Tag Anfangs-/Endezeichen
 	QStringList charPatterns;
-	charPatterns	<< "[<>]"
-					<< "=[\"']"
-					<< "[\"']\\s*"
-					<< "</" << "/>"
-					;
-	addHighlightingRule(charPatterns, _keySignFormat);
+	charPatterns
+			<< "[<>]"
+			<< "=[\"']"
+			<< "[\"']\\s*"
+			<< "</" << "/>"
+			   ;
+	addHighlightingRule(charPatterns, keySignFormat);
 
 	// XML Headerstring <? ... ?>
 	_headerStartExp	= QRegExp("<\\?");
@@ -75,14 +71,10 @@ XmlHighlighter::XmlHighlighter(QTextDocument *parent)
 	_commentStartExp.setMinimal(true);
 	_commentEndExp = QRegExp("-->");
 	_commentEndExp.setMinimal(true);
-
-	//qDebug() << "Number of highlighting rules: " << _highlightingRules.count();
 }
 
 XmlHighlighter::~XmlHighlighter()
 {
-    qDeleteAll(_highlightingRules);
-    _highlightingRules.clear();
 }
 
 
@@ -92,16 +84,16 @@ XmlHighlighter::~XmlHighlighter()
 void XmlHighlighter::addHighlightingRule(const QStringList &patterns, const QTextCharFormat &format)
 {
     // Set the text format ...
-    HighlightingRule *rule = new HighlightingRule;
-    rule->format = format;
+    HighlightingRule rule;
+    rule.format = format;
 
 	// ... for the following Patterns
-	for (int i=0; i < patterns.count(); i++)
+	foreach ( const QString &pattern, patterns )
 	{
 		//QString pattern = patterns[i];
-		QRegExp *rx = new QRegExp(patterns[i]);
-		rx->setMinimal(true);
-		rule->patterns.append(rx);
+		QRegExp rx( pattern );
+		rx.setMinimal(true);
+		rule.patterns.append(rx);
 	}
 
 	// Append to rule list
@@ -145,7 +137,7 @@ void XmlHighlighter::highlightBlock(const QString &text)
  * Colors text blocks between start and end tags. E.g. a comment like "<!-- ... text ... -->").
  */
 void XmlHighlighter::colorBlock(int blockState, const QString &text, const QRegExp &startExp,
-                                  const QRegExp &endExp, const QTextCharFormat &fmt)
+                                const QRegExp &endExp, const QTextCharFormat &fmt)
 {
 	// Find start position of highlight block
 	int start = 0;

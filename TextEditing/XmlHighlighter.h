@@ -45,11 +45,11 @@ protected:
 private:
     struct HighlightingRule
     {
-        QList<QRegExp*>      patterns;
-        QTextCharFormat      format;
+        QList<QRegExp>          patterns;
+        QTextCharFormat         format;
     };
 
-    QList<HighlightingRule*>	_highlightingRules;
+    QList<HighlightingRule>     _highlightingRules;
 
     QRegExp                 _commentStartExp;
     QRegExp                 _commentEndExp;
