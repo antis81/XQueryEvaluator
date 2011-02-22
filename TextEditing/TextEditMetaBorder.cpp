@@ -63,10 +63,13 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
     const QFontMetrics &fm = _document->fontMetrics();
     const int textBaseLine = fm.lineSpacing();
 
+    int topMargin = 0;
+    if ( scrollOffset == 0 )
+        topMargin = qRound( _document->document()->documentMargin() );
+
     for ( QTextBlock block = _document->document()->begin();
         block.isValid(); block = block.next() )
     {
-
         const int count = block.blockNumber() +1;
 
         // don't draw invisible lines
@@ -76,9 +79,10 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
         if ( count > visibleBottom )
             break;
 
-        // calculate pixel position of a text line´s base line
-        const int lineBottom = textBaseLine * (count - scrollOffset) + fm.leading();
+        // calculate pixel position of a text line's base line
+        int lineBottom = textBaseLine * (count - scrollOffset) + topMargin;
 
+        // draw the text at the appropriate position
         const QString txt = QString("%1").arg( count );
         painter.drawText( width() - fm.width(txt), lineBottom, txt );
     }
