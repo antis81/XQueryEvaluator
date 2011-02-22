@@ -20,106 +20,96 @@
 #include "XQueryHighlighter.h"
 
 XQueryHighlighter::XQueryHighlighter(QTextDocument *parent)
-	: QSyntaxHighlighter(parent)
+    : QSyntaxHighlighter(parent)
 {
-	HighlightingRule rule;
+    HighlightingRule rule;
 
-	// Textformate fuer die einzelnen Highlightfaelle
-	_keySignFormat.setForeground(Qt::blue);
-	_xmlTagFormat.setForeground(Qt::darkRed);
-	_xmlAttrFormat.setForeground(Qt::red);
+    // textformat for each highlight case
+    QTextCharFormat keySignFormat; keySignFormat.setForeground(Qt::blue);
+    QTextCharFormat keyWordFormat; keyWordFormat.setForeground(Qt::blue);
+    QTextCharFormat xmlTagFormat; xmlTagFormat.setForeground(Qt::darkRed);
+    QTextCharFormat xmlAttrFormat; xmlAttrFormat.setForeground(Qt::red);
+    QTextCharFormat varNameFormat; varNameFormat.setForeground(Qt::darkMagenta);
 
-	// XML Elemente (Tags)
-	QStringList	tagPatterns;
-	tagPatterns
-			<< "<[^/>\\s]*[\\s>]"
-			<< "</[^>/]+>"
-			<< "<[^>/]+/>"
-			;
-	addHighlightingRule(tagPatterns, _xmlTagFormat);
+    // XML Elemente (Tags)
+    QString	tagPattern(
+                "<[^/>\\s]*[\\s>]"
+                "|</[^>/]+>"
+                "|<[^>/]+/>"
+                );
+    addHighlightingRule(tagPattern, xmlTagFormat);
 
-	_keyWordFormat.setForeground(Qt::blue);
-	QStringList keyWordPatterns;
-	keyWordPatterns
-			<< "\\bdeclare\\b"
-			<< "\\bfunction\\b"
-			<< "\\bif\\b"
-			<< "\\bthen\\b"
-			<< "\\belse\\b"
-			<< "\\bfor\\b"
-			<< "\\bin\\b"
-			<< "\\blet\\b"
-			<< "\\bwhere\\b"
-			<< "\\breturn\\b"
-			;
+    QString keyWordPattern(
+                "\\bdeclare\\b"
+                "|\\bfunction\\b"
+                "|\\bif\\b"
+                "|\\bthen\\b"
+                "|\\belse\\b"
+                "|\\bfor\\b"
+                "|\\bat\\b"
+                "|\\bin\\b"
+                "|\\blet\\b"
+                "|\\bwhere\\b"
+                "|\\breturn\\b"
+                );
+    addHighlightingRule( keyWordPattern, keyWordFormat );
 
-	addHighlightingRule(keyWordPatterns, _keyWordFormat);
+    // XML Attribute
+    addHighlightingRule( QString( "\\b\\w+\\s*=\\s*[\"']" ), xmlAttrFormat );
 
-	// XML Attribute
-	QStringList	attrPatterns;
-	attrPatterns
-			<< "\\b\\w+\\s*=\\s*[\"']"
-			;
-	addHighlightingRule(attrPatterns, _xmlAttrFormat);
+    addHighlightingRule( QString( "\\b?\\$([A-Za-z0-9_]+)\\b" ), varNameFormat );
 
-	_varNameFormat.setForeground(Qt::darkMagenta);
-	QStringList varNamePatterns;
-	varNamePatterns
-			<< "\\b?\\$([A-Za-z0-9_]+)\\b"
-			;
-	addHighlightingRule(varNamePatterns, _varNameFormat);
+    // Tag Anfangs-/Endezeichen
+    addHighlightingRule( QString( "[<>]|=[\"']|[\"']\\s*|</|/>" ), keySignFormat );
 
-	// Tag Anfangs-/Endezeichen
-	QStringList charPatterns;
-	charPatterns	<< "[<>]"
-			<< "=[\"']"
-			<< "[\"']\\s*"
-			<< "</" << "/>"
-			;					;
-	addHighlightingRule(charPatterns, _keySignFormat);
+    setupHighlightBlocks();
+}
 
-	// XML processing instruction <? ... ?>
-	HighlightBlock xmlProcessing;
-	xmlProcessing.textFormat.setForeground(QColor(0x40,0x40,0x80));
-	xmlProcessing.startExp	= QRegExp("<\\?");
-	xmlProcessing.startExp.setMinimal(true);
-	xmlProcessing.endExp	= QRegExp("\\?>");
-	xmlProcessing.endExp.setMinimal(true);
-	_blocks.insert("XMLProcessingInstruction", xmlProcessing);
+/**
+Setup highlight blocks (e.g. comment blocks).
+*/
+void XQueryHighlighter::setupHighlightBlocks()
+{
+    // XML processing instruction <? ... ?>
+    HighlightBlock xmlProcessing;
+    xmlProcessing.textFormat.setForeground(QColor(0x40,0x40,0x80));
+    xmlProcessing.startExp = QRegExp("<\\?");
+    xmlProcessing.startExp.setMinimal(true);
+    xmlProcessing.endExp	= QRegExp("\\?>");
+    xmlProcessing.endExp.setMinimal(true);
+    _blocks.insert("XMLProcessingInstruction", xmlProcessing);
 
-	// XML CData <![CDATA[ ... ]]>
-	HighlightBlock xmlCData;
-	xmlCData.startExp	= QRegExp("<!\\[CDATA\\[");
-	xmlCData.startExp.setMinimal(true);
-	xmlCData.endExp= QRegExp("\\]\\]>");
-	xmlCData.endExp.setMinimal(true);
-	xmlCData.textFormat.setForeground(QColor(0xFF,0x80,0x40));
-	_blocks.insert("XMLCData", xmlCData);
+    // XML CData <![CDATA[ ... ]]>
+    HighlightBlock xmlCData;
+    xmlCData.startExp	= QRegExp("<!\\[CDATA\\[");
+    xmlCData.startExp.setMinimal(true);
+    xmlCData.endExp= QRegExp("\\]\\]>");
+    xmlCData.endExp.setMinimal(true);
+    xmlCData.textFormat.setForeground(QColor(0xFF,0x80,0x40));
+    _blocks.insert("XMLCData", xmlCData);
 
-	// XML comment <!-- ... -->
-	HighlightBlock xmlCommentBlock;
-	xmlCommentBlock.startExp = QRegExp("<!--");
-	xmlCommentBlock.startExp.setMinimal(true);
-	xmlCommentBlock.endExp = QRegExp("-->");
-	xmlCommentBlock.endExp.setMinimal(true);
-	xmlCommentBlock.textFormat.setForeground(Qt::gray);
-	_blocks.insert("XMLComment", xmlCommentBlock);
+    // XML comment <!-- ... -->
+    HighlightBlock xmlCommentBlock;
+    xmlCommentBlock.startExp = QRegExp("<!--");
+    xmlCommentBlock.startExp.setMinimal(true);
+    xmlCommentBlock.endExp = QRegExp("-->");
+    xmlCommentBlock.endExp.setMinimal(true);
+    xmlCommentBlock.textFormat.setForeground(Qt::gray);
+    _blocks.insert("XMLComment", xmlCommentBlock);
 
-	// XQuery comment (: ... :)
-	HighlightBlock xqComment;
-	xqComment.startExp = QRegExp("\\(:");
-	xqComment.startExp.setMinimal(true);
-	xqComment.endExp = QRegExp(":\\)");
-	xqComment.endExp.setMinimal(true);
-	xqComment.textFormat.setForeground(Qt::darkGreen);
-	_blocks.insert("XQueryComment", xqComment);
+    // XQuery comment (: ... :)
+    HighlightBlock xqComment;
+    xqComment.startExp = QRegExp("\\(:");
+    xqComment.startExp.setMinimal(true);
+    xqComment.endExp = QRegExp(":\\)");
+    xqComment.endExp.setMinimal(true);
+    xqComment.textFormat.setForeground(Qt::darkGreen);
+    _blocks.insert("XQueryComment", xqComment);
 }
 
 
 XQueryHighlighter::~XQueryHighlighter()
 {
-    qDeleteAll(_highlightingRules);
-    _highlightingRules.clear();
 }
 
 
@@ -129,47 +119,60 @@ XQueryHighlighter::~XQueryHighlighter()
 void XQueryHighlighter::addHighlightingRule(const QStringList &patterns, const QTextCharFormat &format)
 {
     // Set the text format ...
-    HighlightingRule *rule = new HighlightingRule;
-    rule->format = format;
+    HighlightingRule rule;
+    rule.format = format;
 
-	// ... for the following Patterns
-	for (int i=0; i < patterns.count(); i++)
-	{
-		//QString pattern = patterns[i];
-		QRegExp *rx = new QRegExp(patterns[i]);
-		rx->setMinimal(true);
-		rule->patterns.append(rx);
-	}
+    // ... for the following Patterns
+    for (int i=0; i < patterns.count(); ++i)
+    {
+        QRegExp rx(patterns[i]);
+        rx.setMinimal(true);
+        rule.patterns.append(rx);
+    }
 
-	// Append to rule list
-	_highlightingRules.append(rule);
+    // Append to rule list
+    _highlightingRules.append(rule);
 }
 
+/**
+ * Adds a highlighting rule for one pattern (must be RegExp).
+ */
+void XQueryHighlighter::addHighlightingRule(const QString &pattern, const QTextCharFormat &format)
+{
+    // Set the text format ...
+    HighlightingRule rule;
+    rule.format = format;
+
+    QRegExp rx(pattern);
+    rx.setMinimal(true);
+    rule.patterns.append(rx);
+
+    // Append to rule list
+    _highlightingRules.append(rule);
+}
 
 void XQueryHighlighter::highlightBlock(const QString &text)
 {
     //qDebug() << "BEFORE - prev: " << previousBlockState() << "; curr: " << currentBlockState();
 
-    //if ( (previousBlockState() == -1) || (previousBlockState() == 0) )
-    //{
-    for (int i=0; i < _highlightingRules.count(); i++)
+    for (int i=0; i < _highlightingRules.count(); ++i)
     {
-        const HighlightingRule *rule = _highlightingRules[i];
+        const HighlightingRule & rule = _highlightingRules.at(i);
 
         // Search for matching patterns in current textblock
-        for (int j=0; j < rule->patterns.count(); j++)
+        for (int j=0; j < rule.patterns.count(); ++j)
         {
-            const QRegExp *pattern = rule->patterns[j];
-            //int pos = searchPos;
+            const QRegExp & pattern = rule.patterns.at(j);
             int pos = 0;
-            while ( (pos = pattern->indexIn(text, pos)) > -1)
+            while ( (pos = pattern.indexIn(text, pos)) > -1)
             {
-                const int length = pattern->matchedLength();
-                setFormat(pos, length, rule->format);
+                const int length = pattern.matchedLength();
+                setFormat(pos, length, rule.format);
                 pos += length;
             }
         }
     }
+
     setCurrentBlockState(0);
 
     colorBlock(1, text, _blocks.value("XMLProcessingInstruction"));	// XML processing instruction
@@ -184,34 +187,34 @@ void XQueryHighlighter::highlightBlock(const QString &text)
  */
 void XQueryHighlighter::colorBlock(int blockState, const QString &text, const HighlightBlock &blockFormat)
 {
-	// Find start position of highlight block
-	int start = 0;
-	if (previousBlockState() != blockState)
-		start = blockFormat.startExp.indexIn(text); // Neuer Block
+    // Find start position of highlight block
+    int start = 0;
+    if (previousBlockState() != blockState)
+        start = blockFormat.startExp.indexIn(text); // Neuer Block
 
-	// When start pattern found or the current block is within the textblock, highlight it
-	while (start > -1)
-	{
-		int end = blockFormat.endExp.indexIn(text, start);
-		int length = 0;
+    // When start pattern found or the current block is within the textblock, highlight it
+    while (start > -1)
+    {
+        int end = blockFormat.endExp.indexIn(text, start);
+        int length = 0;
 
-		// Search for the end pattern in the current block
-		if (end == -1) {
-			// end pattern not found (=> remain in this block state)
-			length = text.length() - start;
-			setCurrentBlockState(blockState);
-		} else {
-			// end pattern found (=> free block state)
-			length = end - start + blockFormat.endExp.matchedLength();
-			setCurrentBlockState(-1);
-		}
+        // Search for the end pattern in the current block
+        if (end == -1) {
+            // end pattern not found (=> remain in this block state)
+            length = text.length() - start;
+            setCurrentBlockState(blockState);
+        } else {
+            // end pattern found (=> free block state)
+            length = end - start + blockFormat.endExp.matchedLength();
+            setCurrentBlockState(-1);
+        }
 
-		setFormat(start, length, blockFormat.textFormat); // einfaerben
+        setFormat(start, length, blockFormat.textFormat); // einfaerben
 
-		// Search for further textblocks in the current block
-		if (end > -1)
-			start = blockFormat.startExp.indexIn(text, end + blockFormat.endExp.matchedLength());
-		else
-			start = -1;
-	}
+        // Search for further textblocks in the current block
+        if (end > -1)
+            start = blockFormat.startExp.indexIn(text, end + blockFormat.endExp.matchedLength());
+        else
+            start = -1;
+    }
 }

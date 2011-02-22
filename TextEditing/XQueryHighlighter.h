@@ -40,35 +40,26 @@ protected:
     void highlightBlock(const QString &text);
     void colorBlock( int blockState, const QString &text, const HighlightBlock &blockFormat);
     void addHighlightingRule(const QStringList &patterns, const QTextCharFormat &format);
+    void addHighlightingRule(const QString &pattern, const QTextCharFormat &format);
+
+    void setupHighlightBlocks();
 
 private:
     struct HighlightingRule
-        {
-        QList<QRegExp*>      patterns;
-        QTextCharFormat      format;
-        };
+    {
+        QList<QRegExp>      patterns;
+        QTextCharFormat     format;
+    };
 
-    QList<HighlightingRule*>	_highlightingRules;
+    QList<HighlightingRule>         _highlightingRules;
+    QMap<QString, HighlightBlock>   _blocks;
 
-//    QRegExp            _commentStartExp;
-//    QRegExp            _commentEndExp;
-//    QTextCharFormat    _commentFormat;
+//	QTextCharFormat		_keySignFormat;
+//	QTextCharFormat		_xmlTagFormat;
+//	QTextCharFormat		_xmlAttrFormat;
 
-//	QRegExp				_headerStartExp;
-//	QRegExp				_headerEndExp;
-//	QTextCharFormat		_xmlHeadFormat;
-
-//	QRegExp				_cdataStartExp;
-//	QRegExp				_cdataEndExp;
-//	QTextCharFormat		_cdataFormat;
-	QMap<QString, HighlightBlock>		_blocks;
-
-	QTextCharFormat		_keySignFormat;
-	QTextCharFormat		_xmlTagFormat;
-	QTextCharFormat		_xmlAttrFormat;
-
-	QTextCharFormat		_keyWordFormat;
-	QTextCharFormat		_varNameFormat;
+//	QTextCharFormat		_keyWordFormat;
+//	QTextCharFormat		_varNameFormat;
 };
 
 #endif // XQUERYHIGHLIGHTER_H
