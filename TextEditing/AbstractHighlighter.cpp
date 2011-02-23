@@ -62,7 +62,21 @@ void AbstractHighlighter::addHighlightingRule(const QString &pattern, const QTex
     _highlightingRules.append(rule);
 }
 
+void AbstractHighlighter::addHighlightBlock(const AbstractHighlighter::HighlightBlock &block)
+{
+    _blocks.append( block );
+}
+
 void AbstractHighlighter::highlightBlock(const QString &text)
+{
+    if ( (previousBlockState() < 0) || (currentBlockState() < 0) )
+        highlightNormalText(text);
+
+    setCurrentBlockState(-1);
+    highlightTextBlock(text);
+}
+
+void AbstractHighlighter::highlightNormalText(const QString &text)
 {
     for (int i=0; i < _highlightingRules.count(); ++i)
     {
@@ -81,13 +95,14 @@ void AbstractHighlighter::highlightBlock(const QString &text)
             }
         }
     }
+}
 
-    setCurrentBlockState(0);
-
+void AbstractHighlighter::highlightTextBlock(const QString &text)
+{
     // highlight text blocks (like comments etc.)
     for ( int i=0; i < _blocks.count(); ++i )
     {
-        colorBlock( i+1, text, _blocks.at(i) );
+        colorBlock( i, text, _blocks.at(i) );
     }
 }
 
@@ -99,6 +114,7 @@ void AbstractHighlighter::colorBlock(int blockState, const QString &text, const 
 {
     // Find start position of highlight block
     int start = 0;
+
     if (previousBlockState() != blockState)
         start = blockFormat.startExp.indexIn(text); // Neuer Block
 

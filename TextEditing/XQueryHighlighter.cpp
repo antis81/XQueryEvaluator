@@ -47,5 +47,5 @@ void XQueryHighlighter::setupHighlightBlocks()
     xqComment.endExp = QRegExp(":\\)");
     xqComment.endExp.setMinimal(true);
     xqComment.textFormat.setForeground(Qt::darkGreen);
-    _blocks.append( xqComment );
+    addHighlightBlock( xqComment );
 }

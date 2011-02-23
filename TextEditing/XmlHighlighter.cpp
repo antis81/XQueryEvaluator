@@ -54,7 +54,7 @@ void XmlHighlighter::setupHighlightBlocks()
     xmlProcessing.startExp.setMinimal(true);
     xmlProcessing.endExp	= QRegExp("\\?>");
     xmlProcessing.endExp.setMinimal(true);
-    _blocks.append( xmlProcessing );
+    addHighlightBlock( xmlProcessing );
 
     // XML CData <![CDATA[ ... ]]>
     HighlightBlock xmlCData;
@@ -63,7 +63,7 @@ void XmlHighlighter::setupHighlightBlocks()
     xmlCData.endExp= QRegExp("\\]\\]>");
     xmlCData.endExp.setMinimal(true);
     xmlCData.textFormat.setForeground(QColor(0xFF,0x80,0x40));
-    _blocks.append( xmlCData );
+    addHighlightBlock( xmlCData );
 
     // XML comment <!-- ... -->
     HighlightBlock xmlCommentBlock;
@@ -72,5 +72,5 @@ void XmlHighlighter::setupHighlightBlocks()
     xmlCommentBlock.endExp = QRegExp("-->");
     xmlCommentBlock.endExp.setMinimal(true);
     xmlCommentBlock.textFormat.setForeground(Qt::gray);
-    _blocks.append( xmlCommentBlock );
+    addHighlightBlock( xmlCommentBlock );
 }
