@@ -32,28 +32,29 @@ void AutoIndent::indentDocument(QTextDocument *doc)
 {
     int level = 0;
     QRegExp indentRule( "\\{|<[^/][^>]*[^/]>" );
+    indentRule.setMinimal(true);
     QRegExp outdentRule( "\\}|</[^>]*[^/]>" );
+    outdentRule.setMinimal(true);
 
     QString tNew;
     for ( QTextBlock block = doc->firstBlock(); block.isValid(); block = block.next() )
     {
         QString t = block.text().trimmed();
-        const bool foundIndent = indentRule.indexIn( t ) != -1;
-        const bool foundOutdent = outdentRule.indexIn( t ) != -1;
-        if ( foundIndent )
-        {
-            ++level;
-        }
 
-        // outdent on end tag
-        if ( foundOutdent )
-            --level;
+        const int indentCount = matchCount( indentRule, t );
+        level += indentCount;
+
+        const int outdentCount = matchCount( outdentRule, t );
+        level -= outdentCount;
 
         if (level < 0)
             level = 0;
 
         if ( !t.isEmpty() ) // don't indent empty lines
         {
+            const bool foundIndent = (indentCount > 0);
+            const bool foundOutdent = (outdentCount > 0);
+
             if (foundIndent && !foundOutdent)
                 indent(t, level-1); // don't indent start tag (stays on current level)
             else
@@ -68,6 +69,22 @@ void AutoIndent::indentDocument(QTextDocument *doc)
     }
 
     doc->setPlainText(tNew);
+}
+
+int AutoIndent::matchCount( const QRegExp &regExp, const QString &text ) const
+{
+    int count = 0;
+
+    int index = text.indexOf(regExp);
+    while ( index >= 0 )
+    {
+        ++count;
+
+        int length = regExp.matchedLength();
+        index = text.indexOf(regExp, index + length);
+    }
+
+    return count;
 }
 
 /**
