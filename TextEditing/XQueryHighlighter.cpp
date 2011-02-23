@@ -25,25 +25,11 @@ XQueryHighlighter::XQueryHighlighter(QTextDocument *parent)
     HighlightingRule rule;
 
     // textformat for each highlight case
+    QString keyWordPattern( "\\b(declare|function|if|then|else|for|at|in|let|where|return)\\b" );
     QTextCharFormat keyWordFormat; keyWordFormat.setForeground(Qt::blue);
-    QTextCharFormat keySignFormat; keySignFormat.setForeground(Qt::blue);
-    QTextCharFormat varNameFormat; varNameFormat.setForeground(Qt::darkMagenta);
-
-    QString keyWordPattern(
-                "\\bdeclare\\b"
-                "|\\bfunction\\b"
-                "|\\bif\\b"
-                "|\\bthen\\b"
-                "|\\belse\\b"
-                "|\\bfor\\b"
-                "|\\bat\\b"
-                "|\\bin\\b"
-                "|\\blet\\b"
-                "|\\bwhere\\b"
-                "|\\breturn\\b"
-                );
     addHighlightingRule( keyWordPattern, keyWordFormat );
 
+    QTextCharFormat varNameFormat; varNameFormat.setForeground(Qt::darkMagenta);
     addHighlightingRule( QString( "\\b?\\$([A-Za-z0-9_]+)\\b" ), varNameFormat );
 
     setupHighlightBlocks();
