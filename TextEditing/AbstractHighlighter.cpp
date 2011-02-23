@@ -62,6 +62,11 @@ void AbstractHighlighter::addHighlightingRule(const QString &pattern, const QTex
     _highlightingRules.append(rule);
 }
 
+void AbstractHighlighter::addHighlightBlock(const AbstractHighlighter::HighlightBlock &block)
+{
+    _blocks.append( block );
+}
+
 void AbstractHighlighter::highlightBlock(const QString &text)
 {
     for (int i=0; i < _highlightingRules.count(); ++i)

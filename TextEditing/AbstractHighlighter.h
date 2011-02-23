@@ -43,16 +43,18 @@ public:
     explicit AbstractHighlighter(QTextDocument *parent = 0);
 
 protected:
+    void addHighlightingRule(const QStringList &patterns, const QTextCharFormat &format);
+    void addHighlightingRule(const QString &pattern, const QTextCharFormat &format);
+    void addHighlightBlock(const AbstractHighlighter::HighlightBlock &block);
+
+    virtual void setupHighlightBlocks() = 0;
+
+private:
     QList<HighlightingRule>     _highlightingRules;
     QList<HighlightBlock>       _blocks;
 
     void highlightBlock(const QString &text);
     void colorBlock( int blockState, const QString &text, const HighlightBlock &blockFormat);
-
-    void addHighlightingRule(const QStringList &patterns, const QTextCharFormat &format);
-    void addHighlightingRule(const QString &pattern, const QTextCharFormat &format);
-
-    virtual void setupHighlightBlocks() = 0;
 };
 
 #endif // ABSTRACTHIGHLIGHTER_H
