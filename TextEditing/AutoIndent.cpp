@@ -31,8 +31,8 @@ AutoIndent::AutoIndent()
 void AutoIndent::indentDocument(QTextDocument *doc)
 {
     int level = 0;
-    QRegExp indentRule( "\\{|<[^/][^>]*[^/]>" );
-    QRegExp outdentRule( "\\}|</[^>]*[^/]>" );
+    QRegExp indentRule( "(\\{|<[^/][^>]*[^/]>)" );
+    QRegExp outdentRule( "(\\}|</[^>]*[^/]>)" );
 
     QString tNew;
     for ( QTextBlock block = doc->firstBlock(); block.isValid(); block = block.next() )
