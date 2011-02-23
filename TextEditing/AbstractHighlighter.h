@@ -54,7 +54,9 @@ private:
     QList<HighlightBlock>       _blocks;
 
     void highlightBlock(const QString &text);
-    void colorBlock( int blockState, const QString &text, const HighlightBlock &blockFormat);
+    void highlightNormalText(const QString &text);
+    void highlightTextBlock(const QString &text);
+    void colorBlock(int blockState, const QString &text, const HighlightBlock &blockFormat);
 };
 
 #endif // ABSTRACTHIGHLIGHTER_H

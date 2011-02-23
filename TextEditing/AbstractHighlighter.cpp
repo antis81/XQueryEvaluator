@@ -69,15 +69,14 @@ void AbstractHighlighter::addHighlightBlock(const AbstractHighlighter::Highlight
 
 void AbstractHighlighter::highlightBlock(const QString &text)
 {
-    const int startPos = highlightTextBlock(text);
+    if ( (previousBlockState() < 0) || (currentBlockState() < 0) )
+        highlightNormalText(text);
 
-    if ( (currentBlockState() < 0) && (startPos < text.count()) )
-        highlightNormalText(text, startPos);
-
-    //setCurrentBlockState(-1);
+    setCurrentBlockState(-1);
+    highlightTextBlock(text);
 }
 
-void AbstractHighlighter::highlightNormalText(const QString &text, int startPos)
+void AbstractHighlighter::highlightNormalText(const QString &text)
 {
     for (int i=0; i < _highlightingRules.count(); ++i)
     {
@@ -87,7 +86,7 @@ void AbstractHighlighter::highlightNormalText(const QString &text, int startPos)
         for (int j=0; j < rule.patterns.count(); ++j)
         {
             const QRegExp & pattern = rule.patterns.at(j);
-            int pos = startPos;
+            int pos = 0;
             while ( (pos = pattern.indexIn(text, pos)) > -1)
             {
                 const int length = pattern.matchedLength();
@@ -98,33 +97,23 @@ void AbstractHighlighter::highlightNormalText(const QString &text, int startPos)
     }
 }
 
-int AbstractHighlighter::highlightTextBlock(const QString &text)
+void AbstractHighlighter::highlightTextBlock(const QString &text)
 {
-    int endPos = 0;
-
     // highlight text blocks (like comments etc.)
     for ( int i=0; i < _blocks.count(); ++i )
     {
-        const int matchedPos = colorBlock( i, text, _blocks.at(i) );
-
-        // remember the text position
-        if ( matchedPos > endPos )
-            endPos = matchedPos;
+        colorBlock( i, text, _blocks.at(i) );
     }
-
-    return endPos;
 }
 
 
 /**
  * Colors whole text blocks between two tags. E.g. an XML comment looks like: "<!-- ... text ... -->").
  */
-int AbstractHighlighter::colorBlock(int blockState, const QString &text, const HighlightBlock &blockFormat)
+void AbstractHighlighter::colorBlock(int blockState, const QString &text, const HighlightBlock &blockFormat)
 {
     // Find start position of highlight block
     int start = 0;
-    int end = 0;
-    int length = 0;
 
     if (previousBlockState() != blockState)
         start = blockFormat.startExp.indexIn(text); // Neuer Block
@@ -132,7 +121,8 @@ int AbstractHighlighter::colorBlock(int blockState, const QString &text, const H
     // When start pattern found or the current block is within the textblock, highlight it
     while (start > -1)
     {
-        end = blockFormat.endExp.indexIn(text, start);
+        int end = blockFormat.endExp.indexIn(text, start);
+        int length = 0;
 
         // Search for the end pattern in the current block
         if (end == -1) {
@@ -153,7 +143,4 @@ int AbstractHighlighter::colorBlock(int blockState, const QString &text, const H
         else
             start = -1;
     }
-
-    // return the next text pos behind a block's end
-    return (end + length);
 }
