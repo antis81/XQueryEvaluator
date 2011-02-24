@@ -31,17 +31,18 @@ AutoIndent::AutoIndent()
 void AutoIndent::indentDocument(QTextDocument *doc)
 {
     int level = 0;
-    QRegExp indentRule( "\\{|<[^/][^>]*[^/]>" );
-    indentRule.setMinimal(true);
-    QRegExp outdentRule( "\\}|</[^>]*[^/]>" );
-    outdentRule.setMinimal(true);
+    QList<QRegExp> indentRules;
+    indentRules.append( QRegExp( "<\\w+[^>]*[^/]>" ) );
+    indentRules.append( QRegExp( "\\{" ) );
+    //indentRules.append( QRegExp( "(for|return)" ) );
+    QRegExp outdentRule( "(\\}|</[^>])" );
 
     QString tNew;
     for ( QTextBlock block = doc->firstBlock(); block.isValid(); block = block.next() )
     {
         QString t = block.text().trimmed();
 
-        const int indentCount = matchCount( indentRule, t );
+        const int indentCount = matchCount( indentRules, t );
         level += indentCount;
 
         const int outdentCount = matchCount( outdentRule, t );
@@ -55,8 +56,8 @@ void AutoIndent::indentDocument(QTextDocument *doc)
             const bool foundIndent = (indentCount > 0);
             const bool foundOutdent = (outdentCount > 0);
 
-            if (foundIndent && !foundOutdent)
-                indent(t, level-1); // don't indent start tag (stays on current level)
+            if ( foundIndent )
+                indent(t, level - indentCount + outdentCount); // don't indent start tag (stays on current level)
             else
                 indent(t, level); // we are in an indent block
         }
@@ -65,7 +66,9 @@ void AutoIndent::indentDocument(QTextDocument *doc)
         if ( block.next().isValid() )
             t += "\n";
 
-        tNew += t; // add to result
+        // add to result
+        tNew += t;
+        //tNew.prepend( QString("[%1 , %2] : ").arg(indentCount, 2).arg(outdentCount, 2);
     }
 
     doc->setPlainText(tNew);
@@ -75,13 +78,25 @@ int AutoIndent::matchCount( const QRegExp &regExp, const QString &text ) const
 {
     int count = 0;
 
-    int index = text.indexOf(regExp);
-    while ( index >= 0 )
+    int pos = 0;
+    while ( (pos = regExp.indexIn(text, pos)) > -1)
     {
         ++count;
 
-        int length = regExp.matchedLength();
-        index = text.indexOf(regExp, index + length);
+        const int length = regExp.matchedLength();
+        pos += length;
+    }
+
+    return count;
+}
+
+int AutoIndent::matchCount( const QList<QRegExp> &expressions, const QString &text ) const
+{
+    int count = 0;
+
+    for (int i=0; i < expressions.count(); ++i)
+    {
+        count += matchCount(expressions.at(i), text);
     }
 
     return count;
