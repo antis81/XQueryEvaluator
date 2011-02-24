@@ -37,7 +37,8 @@ public:
     QCompleter *completer() const { return _completer; }
     void setCompleter(QCompleter *completer);
 
-    void keyPressEvent(QKeyEvent *e);
+protected:
+    virtual void keyPressEvent(QKeyEvent *e);
 
 private slots:
     void insertCompletion(const QString &completion);

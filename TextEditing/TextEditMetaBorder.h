@@ -47,13 +47,14 @@ public:
 //    void setDebugMode(bool bnew) { update(); _bDebugMode=bnew; }
 //    bool debugMode() const { return _bDebugMode; }
 
-    void showEvent(QShowEvent *e);
-    void paintEvent ( QPaintEvent * event ) ;
-    void drawLineNumbers(QPainter & painter);
-//    void mousePressEvent ( QMouseEvent * event ) ;
-
 signals:
     void breakpointChanged(bool bSet);
+
+protected:
+    virtual void showEvent(QShowEvent *e);
+    virtual void paintEvent ( QPaintEvent * event ) ;
+    virtual void drawLineNumbers(QPainter & painter);
+//    void mousePressEvent ( QMouseEvent * event ) ;
 
 private:
     QPlainTextEdit *    _document;
