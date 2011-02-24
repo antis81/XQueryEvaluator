@@ -39,6 +39,7 @@ public:
 
 protected:
     virtual void keyPressEvent(QKeyEvent *e);
+    virtual void paintEvent(QPaintEvent *e);
 
 private slots:
     void insertCompletion(const QString &completion);
