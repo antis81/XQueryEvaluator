@@ -33,7 +33,8 @@ public:
 
 private:
     void indent( QString &text, int level );
-
+    int matchCount( const QRegExp &regExp, const QString &text ) const;
+    int matchCount( const QList<QRegExp> &expressions, const QString &text ) const;
 };
 
 #endif // AUTOINDENT_H

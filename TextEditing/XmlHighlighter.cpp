@@ -20,153 +20,57 @@
 #include "XmlHighlighter.h"
 
 XmlHighlighter::XmlHighlighter(QTextDocument *parent)
-	: QSyntaxHighlighter(parent)
+	: AbstractHighlighter(parent)
 {
 	HighlightingRule rule;
 
-	// Textformate fuer die einzelnen Highlightfaelle
-	_xmlHeadFormat.setForeground(QColor(0x40,0x40,0x80));
-	_keySignFormat.setForeground(Qt::blue);
-	_commentFormat.setForeground(Qt::gray);
-	_cdataFormat.setForeground(QColor(0xFF,0x80,0x40));
-	_xmlTagFormat.setForeground(Qt::darkRed);
-	_xmlAttrFormat.setForeground(Qt::red);
+    // XML Elemente (Tags)
+    QStringList	tagPatterns;
+    tagPatterns
+            << "<[^/>\\s]*[\\s>]"
+            << "</[^>/]+>"
+            << "<[^>/]+/>"
+               ;
+    QTextCharFormat xmlTagFormat;  xmlTagFormat.setForeground(Qt::darkRed);
+    addHighlightingRule(tagPatterns, xmlTagFormat);
 
-	// XML Elemente (Tags)
-	QStringList	tagPatterns;
-	tagPatterns
-			<< "<[^/>\\s]*[\\s>]"
-			<< "</[^>/]+>"
-			<< "<[^>/]+/>"
-			   ;
-	addHighlightingRule(tagPatterns, _xmlTagFormat);
+    // XML Attribute
+    QTextCharFormat xmlAttrFormat; xmlAttrFormat.setForeground(Qt::red);
+    addHighlightingRule( QString( "\\b\\w+\\s*=\\s*[\"']" ), xmlAttrFormat );
 
-	// XML Attribute
-	addHighlightingRule( QString( " [^=</>]*(=[\"'])" ), _xmlAttrFormat );
+    // Tag Anfangs-/Endezeichen
+    QTextCharFormat keySignFormat; keySignFormat.setForeground(Qt::blue);
+    addHighlightingRule( QString( "[<>]|=[\"']|[\"']\\s*|</|/>" ), keySignFormat );
 
-	// Tag Anfangs-/Endezeichen
-	QStringList charPatterns;
-	charPatterns
-			<< "[<>]"
-			<< "=[\"']"
-			<< "[\"']\\s*"
-			<< "</" << "/>"
-			   ;
-	addHighlightingRule(charPatterns, keySignFormat);
-
-	// XML Headerstring <? ... ?>
-	_headerStartExp	= QRegExp("<\\?");
-	_headerStartExp.setMinimal(true);
-	_headerEndExp	= QRegExp("\\?>");
-	_headerEndExp.setMinimal(true);
-
-	// CDATA STRING <![CDATA[ ]]>
-	_cdataStartExp	= QRegExp("<!\\[CDATA\\[");
-	_cdataStartExp.setMinimal(true);
-	_cdataEndExp	= QRegExp("\\]\\]>");
-	_headerEndExp.setMinimal(true);
-
-	// XML Kommentare <!-- ... -->
-	_commentStartExp = QRegExp("<!--");
-	_commentStartExp.setMinimal(true);
-	_commentEndExp = QRegExp("-->");
-	_commentEndExp.setMinimal(true);
+    setupHighlightBlocks();
 }
 
-XmlHighlighter::~XmlHighlighter()
+void XmlHighlighter::setupHighlightBlocks()
 {
-}
+    // XML processing instruction <? ... ?>
+    HighlightBlock xmlProcessing;
+    xmlProcessing.textFormat.setForeground(QColor(0x40,0x40,0x80));
+    xmlProcessing.startExp	= QRegExp("<\\?");
+    xmlProcessing.startExp.setMinimal(true);
+    xmlProcessing.endExp	= QRegExp("\\?>");
+    xmlProcessing.endExp.setMinimal(true);
+    addHighlightBlock( xmlProcessing );
 
+    // XML CData <![CDATA[ ... ]]>
+    HighlightBlock xmlCData;
+    xmlCData.startExp	= QRegExp("<!\\[CDATA\\[");
+    xmlCData.startExp.setMinimal(true);
+    xmlCData.endExp= QRegExp("\\]\\]>");
+    xmlCData.endExp.setMinimal(true);
+    xmlCData.textFormat.setForeground(QColor(0xFF,0x80,0x40));
+    addHighlightBlock( xmlCData );
 
-/**
- * Adds a highlighting rule for multiple patterns (must be RegExp's).
- */
-void XmlHighlighter::addHighlightingRule(const QStringList &patterns, const QTextCharFormat &format)
-{
-    // Set the text format ...
-    HighlightingRule rule;
-    rule.format = format;
-
-	// ... for the following Patterns
-	foreach ( const QString &pattern, patterns )
-	{
-		//QString pattern = patterns[i];
-		QRegExp rx( pattern );
-		rx.setMinimal(true);
-		rule.patterns.append(rx);
-	}
-
-	// Append to rule list
-	_highlightingRules.append(rule);
-}
-
-
-void XmlHighlighter::highlightBlock(const QString &text)
-{
-    //qDebug() << "BEFORE - prev: " << previousBlockState() << "; curr: " << currentBlockState();
-
-    //if ( (previousBlockState() == -1) || (previousBlockState() == 0) )
-    //{
-    for (int i=0; i < _highlightingRules.count(); i++)
-    {
-        const HighlightingRule *rule = _highlightingRules[i];
-
-        // Search for matching patterns in current textblock
-        for (int j=0; j < rule->patterns.count(); j++)
-        {
-            const QRegExp *pattern = rule->patterns[j];
-            //int pos = searchPos;
-            int pos = 0;
-            while ( (pos = pattern->indexIn(text, pos)) > -1)
-            {
-                const int length = pattern->matchedLength();
-                setFormat(pos, length, rule->format);
-                pos += length;
-            }
-        }
-    }
-    setCurrentBlockState(0);
-
-    colorBlock(1, text, _headerStartExp, _headerEndExp, _xmlHeadFormat);	// XML Header
-    colorBlock(2, text, _cdataStartExp, _cdataEndExp, _cdataFormat);	    // CDATA einfaerben
-    colorBlock(3, text, _commentStartExp, _commentEndExp, _commentFormat);	// Kommentare einfaerben
-}
-
-
-/**
- * Colors text blocks between start and end tags. E.g. a comment like "<!-- ... text ... -->").
- */
-void XmlHighlighter::colorBlock(int blockState, const QString &text, const QRegExp &startExp,
-                                const QRegExp &endExp, const QTextCharFormat &fmt)
-{
-	// Find start position of highlight block
-	int start = 0;
-	if (previousBlockState() != blockState)
-		start = startExp.indexIn(text); // Neuer Block
-
-	// When start pattern found or the current block is within the textblock, highlight it
-	while (start > -1)
-	{
-		int end = endExp.indexIn(text, start);
-		int length = 0;
-
-		// Search for the end pattern in the current block
-		if (end == -1) {
-			// end pattern not found (=> remain in this block state)
-			length = text.length() - start;
-			setCurrentBlockState(blockState);
-		} else {
-			// end pattern found (=> free block state)
-			length = end - start + endExp.matchedLength();
-			setCurrentBlockState(-1);
-		}
-
-		setFormat(start, length, fmt); // einfaerben
-
-        // Search for further textblocks in the current block
-        if (end > -1)
-            start = startExp.indexIn(text, end + endExp.matchedLength());
-        else
-            start = -1;
-    }
+    // XML comment <!-- ... -->
+    HighlightBlock xmlCommentBlock;
+    xmlCommentBlock.startExp = QRegExp("<!--");
+    xmlCommentBlock.startExp.setMinimal(true);
+    xmlCommentBlock.endExp = QRegExp("-->");
+    xmlCommentBlock.endExp.setMinimal(true);
+    xmlCommentBlock.textFormat.setForeground(Qt::gray);
+    addHighlightBlock( xmlCommentBlock );
 }

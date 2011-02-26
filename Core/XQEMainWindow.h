@@ -55,6 +55,7 @@ private slots:
     void actionNewQuery();
     void actionOpenQuery();
     void actionSaveQuery();
+//    void actionSaveQueryAs();
 
     void queryLanguageSelected(int comboIndex);
 
@@ -84,7 +85,7 @@ private:
     QString selectSourceFile();
     QString loadSourceFile(const QString &path) const;
 
-    bool saveQuery();
+    bool saveQuery(bool saveAs = false);
     bool queryCanClose();
 };
 

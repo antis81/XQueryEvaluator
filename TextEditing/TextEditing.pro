@@ -17,7 +17,9 @@ HEADERS += \
     XmlHighlighter.h \
     TextEditMetaBorder.h \
     XmlEditor.h \
-    AutoIndent.h
+    AutoIndent.h \
+    AbstractHighlighter.h \
+    CppHighlighter.h
 
 SOURCES += \
     XQueryHighlighter.cpp \
@@ -26,7 +28,9 @@ SOURCES += \
     XmlHighlighter.cpp \
     TextEditMetaBorder.cpp \
     XmlEditor.cpp \
-    AutoIndent.cpp
+    AutoIndent.cpp \
+    AbstractHighlighter.cpp \
+    CppHighlighter.cpp
 
 RESOURCES += \
     resources/TextEditing.qrc
