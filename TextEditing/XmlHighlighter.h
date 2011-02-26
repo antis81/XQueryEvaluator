@@ -36,7 +36,8 @@ public:
     explicit XmlHighlighter(QTextDocument *parent = 0);
 
 protected:
-    virtual void setupHighlightBlocks();
+    void setupHighlightRules();
+    void setupHighlightBlocks();
 };
 
 #endif // LBXMLHIGHLIGHTER_H

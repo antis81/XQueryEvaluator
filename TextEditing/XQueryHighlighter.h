@@ -30,6 +30,7 @@ public:
     explicit XQueryHighlighter(QTextDocument *parent =0);
 
 private:
+    void setupHighlightRules();
     void setupHighlightBlocks();
 
 };
