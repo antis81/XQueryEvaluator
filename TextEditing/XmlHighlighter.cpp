@@ -22,8 +22,11 @@
 XmlHighlighter::XmlHighlighter(QTextDocument *parent)
 	: AbstractHighlighter(parent)
 {
-	HighlightingRule rule;
+	init();
+}
 
+void XmlHighlighter::setupHighlightRules()
+{
     // XML Elemente (Tags)
     QStringList	tagPatterns;
     tagPatterns
@@ -32,17 +35,15 @@ XmlHighlighter::XmlHighlighter(QTextDocument *parent)
             << "<[^>/]+/>"
                ;
     QTextCharFormat xmlTagFormat;  xmlTagFormat.setForeground(Qt::darkRed);
-    addHighlightingRule(tagPatterns, xmlTagFormat);
+    addHighlightRule(tagPatterns, xmlTagFormat);
 
-    // XML Attribute
+    // XML Attributes
     QTextCharFormat xmlAttrFormat; xmlAttrFormat.setForeground(Qt::red);
-    addHighlightingRule( QString( "\\b\\w+\\s*=\\s*[\"']" ), xmlAttrFormat );
+    addHighlightRule( QString( "\\b\\w+\\s*=\\s*[\"']" ), xmlAttrFormat );
 
-    // Tag Anfangs-/Endezeichen
+    // special tag chars
     QTextCharFormat keySignFormat; keySignFormat.setForeground(Qt::blue);
-    addHighlightingRule( QString( "[<>]|=[\"']|[\"']\\s*|</|/>" ), keySignFormat );
-
-    setupHighlightBlocks();
+    addHighlightRule( QString( "[<>]|=[\"']|[\"']\\s*|</|/>" ), keySignFormat );
 }
 
 void XmlHighlighter::setupHighlightBlocks()

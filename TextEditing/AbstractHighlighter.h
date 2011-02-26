@@ -43,10 +43,16 @@ public:
     explicit AbstractHighlighter(QTextDocument *parent = 0);
 
 protected:
-    void addHighlightingRule(const QStringList &patterns, const QTextCharFormat &format);
-    void addHighlightingRule(const QString &pattern, const QTextCharFormat &format);
+    void addHighlightRule(const QStringList & patterns, const QTextCharFormat & format);
+    void addHighlightRule(const QString & pattern, const QTextCharFormat & format);
+    void addHighlightRule(const QStringList & patterns, const QColor & color);
+    void addHighlightRule(const QString & pattern, const QColor & color);
+
     void addHighlightBlock(const AbstractHighlighter::HighlightBlock &block);
 
+    void init();
+
+    virtual void setupHighlightRules() = 0;
     virtual void setupHighlightBlocks() = 0;
 
 private:

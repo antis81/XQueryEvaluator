@@ -22,18 +22,20 @@
 XQueryHighlighter::XQueryHighlighter(QTextDocument *parent)
     : XmlHighlighter(parent)
 {
-    HighlightingRule rule;
-
-    // textformat for each highlight case
-    QString keyWordPattern( "\\b(declare|function|if|then|else|for|at|in|let|where|return)\\b" );
-    QTextCharFormat keyWordFormat; keyWordFormat.setForeground(Qt::blue);
-    addHighlightingRule( keyWordPattern, keyWordFormat );
-
-    QTextCharFormat varNameFormat; varNameFormat.setForeground(Qt::darkMagenta);
-    addHighlightingRule( QString( "\\b?\\$([A-Za-z0-9_]+)\\b" ), varNameFormat );
-
-    setupHighlightBlocks();
+    init();
 }
+
+void XQueryHighlighter::setupHighlightRules()
+{
+    // keywords
+    addHighlightRule(
+                "\\b(declare|function|if|then|else|for|at|in|let|where|return|external|as)\\b"
+                , Qt::blue );
+
+    // variables
+    addHighlightRule( "\\b?\\$([A-Za-z0-9_]+)\\b", Qt::darkMagenta );
+}
+
 
 /**
 Setup highlight blocks (e.g. comment blocks).

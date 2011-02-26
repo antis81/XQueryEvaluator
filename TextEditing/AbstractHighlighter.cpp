@@ -19,15 +19,23 @@
 
 #include "AbstractHighlighter.h"
 
+
 AbstractHighlighter::AbstractHighlighter(QTextDocument *parent) :
     QSyntaxHighlighter(parent)
 {
 }
 
+void AbstractHighlighter::init ()
+{
+    // call the virtual highlight init methods in the right order
+    setupHighlightRules();
+    setupHighlightBlocks();
+}
+
 /**
  * Adds a highlighting rule for multiple patterns (must be RegExp's).
  */
-void AbstractHighlighter::addHighlightingRule(const QStringList &patterns, const QTextCharFormat &format)
+void AbstractHighlighter::addHighlightRule(const QStringList &patterns, const QTextCharFormat &format)
 {
     // Set the text format ...
     HighlightingRule rule;
@@ -48,7 +56,7 @@ void AbstractHighlighter::addHighlightingRule(const QStringList &patterns, const
 /**
  * Adds a highlighting rule for one pattern (must be RegExp).
  */
-void AbstractHighlighter::addHighlightingRule(const QString &pattern, const QTextCharFormat &format)
+void AbstractHighlighter::addHighlightRule(const QString &pattern, const QTextCharFormat &format)
 {
     // Set the text format ...
     HighlightingRule rule;
@@ -60,6 +68,21 @@ void AbstractHighlighter::addHighlightingRule(const QString &pattern, const QTex
 
     // Append to rule list
     _highlightingRules.append(rule);
+}
+
+void AbstractHighlighter::addHighlightRule(const QStringList & patterns, const QColor & color)
+{
+    QTextCharFormat f;
+    f.setForeground(color);
+    addHighlightRule(patterns, f);
+}
+
+void AbstractHighlighter::addHighlightRule(const QString & pattern, const QColor & color)
+{
+    QTextCharFormat f;
+    f.setForeground(color);
+    addHighlightRule(pattern, f);
+
 }
 
 void AbstractHighlighter::addHighlightBlock(const AbstractHighlighter::HighlightBlock &block)
