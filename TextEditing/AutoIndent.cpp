@@ -54,7 +54,7 @@ void AutoIndent::indentDocument(QTextDocument *doc)
         if ( !t.isEmpty() ) // don't indent empty lines
         {
             const bool foundIndent = (indentCount > 0);
-            const bool foundOutdent = (outdentCount > 0);
+            // const bool foundOutdent = (outdentCount > 0);
 
             if ( foundIndent )
                 indent(t, level - indentCount + outdentCount); // don't indent start tag (stays on current level)
