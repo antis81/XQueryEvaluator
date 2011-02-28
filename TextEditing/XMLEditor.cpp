@@ -74,8 +74,13 @@ void XmlEditor::readSettings()
                        QCoreApplication::organizationName(), QCoreApplication::applicationName());
 
     settings.beginGroup("XmlEditor");
-    move( settings.value( "pos", pos() ).toPoint() );
-    resize( settings.value( "size", size() ).toSize() );
+
+    move( settings.value("pos", pos()).toPoint() );
+    resize( settings.value("size", size()).toSize() ) ;
+
+    if ( settings.value("maximized", false).toBool() )
+        setWindowState( windowState() | Qt::WindowMaximized );
+
     settings.endGroup();
 }
 
@@ -85,8 +90,14 @@ void XmlEditor::writeSettings()
                        QCoreApplication::organizationName(), QCoreApplication::applicationName());
 
     settings.beginGroup("XmlEditor");
-    settings.setValue( "pos", pos() );
-    settings.setValue( "size", size() );
+
+    settings.setValue( "maximized", isMaximized() );
+    if ( !isMaximized() )
+    {
+        settings.setValue( "pos", pos() );
+        settings.setValue( "size", size() );
+    }
+
     settings.endGroup();
 }
 
