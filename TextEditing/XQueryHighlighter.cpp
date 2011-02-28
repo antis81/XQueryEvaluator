@@ -29,7 +29,7 @@ void XQueryHighlighter::setupHighlightRules()
 {
     // keywords
     addHighlightRule(
-                "\\b(declare|function|if|then|else|for|at|in|let|where|return|external|as)\\b"
+                "\\b(declare|function|if|then|else|for|at|in|let|where|return|external|variable|as)\\b"
                 , Qt::blue );
 
     // variables
