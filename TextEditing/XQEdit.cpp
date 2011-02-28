@@ -22,6 +22,7 @@
 #include <QtGui/QCompleter>
 #include <QtGui/QAbstractItemView>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QPainter>
 #include <QtGui/QScrollBar>
 
 
@@ -126,5 +127,41 @@ void XQEdit::keyPressEvent(QKeyEvent *e)
                 + _completer->popup()->verticalScrollBar()->sizeHint().width());
 
     _completer->complete(cr); // pop it up!
+}
+
+void XQEdit::paintEvent(QPaintEvent *e)
+{
+    if ( document()->characterCount() > 1)
+    {
+        QPlainTextEdit::paintEvent(e);
+        return;
+    }
+
+    QWidget *w = viewport();
+    QPainter p(w);
+    p.save();
+
+    QRect r( w->contentsRect() );
+    r.adjust( 20, 20, -20, -20);
+
+    QBrush b;
+    b.setColor( QColor(64,64,128) );
+    b.setStyle( Qt::SolidPattern );
+
+    QPainterPath path;
+    path.addRoundedRect(r , 20.0, 20.0);
+    p.fillPath( path, b );
+
+    QString t( tr("Klick here to begin query.") );
+    QFont f("Comic Sans MS");
+    f.setPixelSize(20);
+    p.setFont(f);
+    QPen pen(QColor(200,200,200));
+    p.setPen(pen);
+    QRect textRect( QFontMetrics(f).boundingRect(t) );
+    textRect.moveCenter(r.center());
+    p.drawText( textRect.left(), textRect.bottom(), t );
+
+    p.restore();
 }
 
