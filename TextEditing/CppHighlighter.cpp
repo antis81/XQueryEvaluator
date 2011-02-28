@@ -8,21 +8,21 @@ CppHighlighter::CppHighlighter(QTextDocument *parent)
 void CppHighlighter::setupHighlightRules()
 {
     // declaration keywords
-    addHighlightingRule( "\\b(protected|private|public|signals|slots|class)\\b", Qt::darkMagenta );
+    addHighlightRule( "\\b(protected|private|public|signals|slots|class)\\b", Qt::darkMagenta );
 
     // keywords
-    addHighlightingRule(
+    addHighlightRule(
                 "\\b(for|if|while|static|const|return|void|virtual|explicit|typedef|emit|Q_OBJECT)\\b"
                 , Qt::blue );
 
     // types
-    addHighlightingRule( "\\b(char|int|unsigned|float|double|bool|real|qreal|qint)\\s", Qt::darkBlue );
+    addHighlightRule( "\\b(char|int|unsigned|float|double|bool|real|qreal|qint)\\s", Qt::darkBlue );
 
     // one line comments
-    addHighlightingRule( "([\\s,;()]//.*$)", Qt::darkGreen );
+    addHighlightRule( "([\\s,;()]//.*$)", Qt::darkGreen );
 
     // strings
-    addHighlightingRule( "\".*[^\\\\]\"", Qt::darkRed );
+    addHighlightRule( "\".*[^\\\\]\"", Qt::darkRed );
 }
 
 void CppHighlighter::setupHighlightBlocks()
