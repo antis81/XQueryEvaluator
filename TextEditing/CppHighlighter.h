@@ -6,9 +6,13 @@
 class CppHighlighter : public AbstractHighlighter
 {
     Q_OBJECT
-
 public:
-    CppHighlighter();
+    explicit CppHighlighter(QTextDocument *parent = 0);
+
+protected:
+    virtual void setupHighlightRules();
+    virtual void setupHighlightBlocks();
+
 };
 
 #endif // CPPHIGHLIGHTER_H
