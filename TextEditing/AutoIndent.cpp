@@ -90,6 +90,11 @@ int AutoIndent::matchCount( const QRegExp &regExp, const QString &text ) const
     return count;
 }
 
+/**
+Counts the occurences of a list of regular expressions. Each expression is evaluated independent of other expressions.
+
+@return The total match count is returned.
+*/
 int AutoIndent::matchCount( const QList<QRegExp> &expressions, const QString &text ) const
 {
     int count = 0;
@@ -103,7 +108,7 @@ int AutoIndent::matchCount( const QList<QRegExp> &expressions, const QString &te
 }
 
 /**
-Indents a single text line.
+Indents a single text line by the given level.
 */
 void AutoIndent::indent(QString &text, int level)
 {
