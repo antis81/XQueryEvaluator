@@ -22,9 +22,6 @@
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <widget class="QLineEdit" name="textSourceFile">
-     <property name="placeholderText">
-      <string>XML source file</string>
-     </property>
     </widget>
    </item>
    <item>

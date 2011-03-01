@@ -34,6 +34,9 @@ XmlSource::XmlSource(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //! @todo Workaround for a Qt bug when building with Qt versions prior to 4.7
+    ui->textSourceFile->setProperty( "placeholderText", tr("XML source file") );
+
     QLayout *l = layout();
     if (l == 0)
         l = new QHBoxLayout(this);
