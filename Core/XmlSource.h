@@ -41,6 +41,8 @@ public:
     QWidget * editor() const { return _editor; }
     void setEditor(QWidget *w) { _editor = w; }
 
+    void editSource();
+
 signals:
     void sourceFileAvailable(bool yes);
 
@@ -57,6 +59,8 @@ private:
 
     QString         _sourceFile;
     QWidget *       _editor;
+
+    QString         _externalEditor;
 
     QString selectSourceFile();
 

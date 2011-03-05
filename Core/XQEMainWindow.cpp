@@ -41,6 +41,7 @@
 
 #include <QtCore/QTime>
 #include <QtCore/QSettings>
+#include <QtCore/QProcess>
 
 
 /**
@@ -106,6 +107,11 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
     a = new QAction( QIcon(":/eye.svg"), tr("View Source"), 0 );
     connect( a, SIGNAL(triggered()), this, SLOT(actionViewSource()) );
+    connect( _xmlSource, SIGNAL(sourceFileAvailable(bool)), a, SLOT(setEnabled(bool)) );
+    ui->toolBar->addAction(a);
+
+    a = new QAction( QIcon(":/pen.svg"), tr("Edit Source"), 0 );
+    connect( a, SIGNAL(triggered()), this, SLOT(actionEditSource()) );
     connect( _xmlSource, SIGNAL(sourceFileAvailable(bool)), a, SLOT(setEnabled(bool)) );
     ui->toolBar->addAction(a);
 
@@ -465,6 +471,11 @@ void XQEMainWindow::actionNewQuery()
         _textQuery->setXQText( QString() );
         queryFileNameChanged( QString() );
     }
+}
+
+void XQEMainWindow::actionEditSource()
+{
+    _xmlSource->editSource();
 }
 
 //void XQEMainWindow::actionSaveQueryAs()

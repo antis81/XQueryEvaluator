@@ -21,6 +21,7 @@
 #include "ui_XmlSource.h"
 
 #include <QtCore/QSettings>
+#include <QtCore/QProcess>
 
 #include <QtGui/QMessageBox>
 #include <QtGui/QFileDialog>
@@ -97,6 +98,7 @@ void XmlSource::readSettings()
 
     settings.beginGroup("XmlSource");
     ui->textSourceFile->setText( settings.value("sourceFile", QString()).toString() );
+    _externalEditor = settings.value("externalEditor").toString();
     settings.endGroup();
 }
 
@@ -106,5 +108,24 @@ void XmlSource::writeSettings()
 
     settings.beginGroup("XmlSource");
     settings.setValue( "sourceFile", _sourceFile );
+    settings.setValue( "externalEditor", _externalEditor );
     settings.endGroup();
+}
+
+void XmlSource::editSource()
+{
+    if ( _sourceFile.isEmpty() || _externalEditor.isEmpty() )
+        return;
+
+    QProcess p;
+
+#ifdef Q_WS_MACX
+    QString appString( "open -a %1 %2" );
+#else
+    QString appString( "%1 %2" );
+#endif
+
+    appString = appString.arg(_externalEditor).arg( sourceFile() );
+
+    p.startDetached( appString );
 }

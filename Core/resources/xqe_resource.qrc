@@ -7,5 +7,6 @@
         <file>AppIcon.svg</file>
         <file>down-arrow.svg</file>
         <file>question.png</file>
+        <file>pen.svg</file>
     </qresource>
 </RCC>

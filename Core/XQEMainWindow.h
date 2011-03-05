@@ -51,6 +51,7 @@ private slots:
     void changeFormattedOutput(bool enabled);
 
     void actionViewSource();
+    void actionEditSource();
 
     void actionNewQuery();
     void actionOpenQuery();
