@@ -9,9 +9,9 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 SUBDIRS = \
+    Core \
     Query \
-    TextEditing \
-    Core
+    TextEditing
 
 Core.depends = Query TextEditing
 
