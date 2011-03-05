@@ -286,7 +286,6 @@ bool XQEMainWindow::queryCanClose()
     if ( _textQuery->modified() && !_textQuery->xqText().isEmpty() )
     {
         QMessageBox message;
-        //message.setIconPixmap( pixmapForSvg(":/xqe_resource/question.svg", QSize(32,32)) );
         int btn = message.question( this, tr("Save XQuery?"), tr("Save your query?"),
                                    QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Save );
 

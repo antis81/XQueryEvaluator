@@ -21,8 +21,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QLineEdit" name="textSourceFile">
-    </widget>
+    <widget class="QLineEdit" name="textSourceFile"/>
    </item>
    <item>
     <widget class="QToolButton" name="btnOpenSource">
