@@ -21,12 +21,11 @@
 #define XMLSOURCE_H
 
 #include <QtGui/QWidget>
+#include <QtGui/QComboBox>
+#include <QtGui/QToolButton>
 
 #include <QtCore/QDir>
 
-namespace Ui {
-    class XmlSource;
-}
 
 class XmlSource : public QWidget
 {
@@ -55,11 +54,12 @@ protected:
     void hideEvent(QHideEvent * ev);
 
 private:
-    Ui::XmlSource *ui;
-
+    QComboBox *     _textSourceFile;
     QString         _sourceFile;
-    QWidget *       _editor;
 
+    QToolButton *   _btnOpenSource;
+
+    QWidget *       _editor;
     QString         _externalEditor;
 
     QString selectSourceFile();

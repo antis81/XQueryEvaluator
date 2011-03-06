@@ -13,7 +13,8 @@ QLabel, TextEditMetaBorder
 	color: rgb(204, 204, 204);
 }
 
-QLineEdit#textSourceFile
+/*
+QLineEdit
 {
     border-style: inset;
     border-width: 1px;
@@ -22,12 +23,13 @@ QLineEdit#textSourceFile
     padding-left: 5px;
     min-height: 20px
 }
+*/
 
 QComboBox {
     border: 1px solid gray;
     border-bottom-left-radius: 10px;
-    padding: 1px 18px 1px 3px;
-    min-width: 4em;
+    padding: 1px 23px 1px 3px;
+    margin: 0px 0px 0px 0px;
 }
 
 QComboBox::drop-down
@@ -57,19 +59,20 @@ QToolBar
 	spacing: 3;
 } 
 
-QToolButton#btnOpenSource:pressed
-{
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(128, 128, 128), stop:1 rgb(200, 200, 200));
-}
-
 QToolButton#btnOpenSource
 {
    	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(230, 230, 230), stop:1 rgb(128, 128, 128));
-	border-style: solid;
-	border-width: 1px;
-	border-color: gray;
+	border: 1px solid gray;
+    border-left: none;
     border-top-right-radius: 10px;
-    min-height: 17px
+    height: 17px;
+    padding: 0px 0px 0px 0px;
+    margin: 1px 0px 0px 0px;
+}
+
+QToolButton#btnOpenSource:pressed
+{
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(128, 128, 128), stop:1 rgb(200, 200, 200));
 }
 
 QMessageBox
