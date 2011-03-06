@@ -41,7 +41,6 @@
 
 #include <QtCore/QTime>
 #include <QtCore/QSettings>
-#include <QtCore/QProcess>
 
 
 /**

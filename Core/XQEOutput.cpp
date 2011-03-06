@@ -20,6 +20,7 @@
 #include "XQEOutput.h"
 #include "ui_XQEOutput.h"
 
+
 XQEOutput::XQEOutput(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::XQEOutput)
