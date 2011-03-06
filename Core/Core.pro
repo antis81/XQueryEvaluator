@@ -22,7 +22,7 @@ LIBS += -L$$BIN_BASE \
     -lTextEditing \
     -lQuery
 
-QT += xmlpatterns
+QT += xmlpatterns svg
 
 FORMS    += XQEMainWindow.ui \
     XQEOutput.ui
