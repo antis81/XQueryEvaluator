@@ -11,6 +11,11 @@ build/*
 .DS_Store
 .[Tt]humbs.db
 *.user*
+*.orig
 
 # doxygen generated documentation
 */doxygen/*
+
+# MinGW generated files
+*.Debug
+*.Release
