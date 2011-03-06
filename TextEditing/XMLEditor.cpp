@@ -70,8 +70,7 @@ void XmlEditor::setXml(const QString &xml)
 
 void XmlEditor::readSettings()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope,
-                       QCoreApplication::organizationName(), QCoreApplication::applicationName());
+    QSettings settings;
 
     settings.beginGroup("XmlEditor");
 
@@ -86,8 +85,7 @@ void XmlEditor::readSettings()
 
 void XmlEditor::writeSettings()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope,
-                       QCoreApplication::organizationName(), QCoreApplication::applicationName());
+    QSettings settings;
 
     settings.beginGroup("XmlEditor");
 

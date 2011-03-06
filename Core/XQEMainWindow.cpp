@@ -421,7 +421,7 @@ void XQEMainWindow::actionViewSource()
 
 void XQEMainWindow::readSettings()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, qApp->organizationName(), APP_NAME);
+    QSettings settings;
 
     settings.beginGroup( "MainWindow" );
 
@@ -444,7 +444,7 @@ void XQEMainWindow::readSettings()
 
 void XQEMainWindow::writeSettings()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(), APP_NAME);
+    QSettings settings;
 
     settings.beginGroup( "MainWindow" );
 

@@ -101,8 +101,7 @@ void XmlSource::hideEvent(QHideEvent *ev)
 
 void XmlSource::readSettings()
 {
-    QSettings settings( QSettings::IniFormat, QSettings::UserScope
-                       , QCoreApplication::organizationName(), QCoreApplication::applicationName() );
+    QSettings settings;
 
     settings.beginGroup("XmlSource");
     _textSourceFile->lineEdit()->setText( settings.value("sourceFile", QString()).toString() );
@@ -112,8 +111,7 @@ void XmlSource::readSettings()
 
 void XmlSource::writeSettings()
 {
-    QSettings settings( QSettings::IniFormat, QSettings::UserScope
-                       , QCoreApplication::organizationName(), QCoreApplication::applicationName() );
+    QSettings settings;
 
     settings.beginGroup("XmlSource");
     settings.setValue( "sourceFile", _sourceFile );

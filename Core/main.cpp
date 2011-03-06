@@ -55,6 +55,8 @@ int main(int argc, char *argv[])
     a.setApplicationName( QLatin1String(APP_NAME) );
     a.setApplicationVersion( APP_VERSION );
 
+    QSettings::setDefaultFormat( QSettings::IniFormat );
+
     QStringList args = a.arguments();
 
     // setup style
