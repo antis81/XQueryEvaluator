@@ -49,6 +49,8 @@ TextEditMetaBorder::~TextEditMetaBorder()
 
 void TextEditMetaBorder::paintEvent ( QPaintEvent * event )
 {
+    Q_UNUSED(event);
+
     QPainter p(this);
     p.save();
 

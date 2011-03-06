@@ -1,6 +1,7 @@
 #include "CppHighlighter.h"
 
 CppHighlighter::CppHighlighter(QTextDocument *parent)
+    : AbstractHighlighter(parent)
 {
     init();
 }
