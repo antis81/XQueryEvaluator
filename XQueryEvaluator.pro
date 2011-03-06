@@ -11,7 +11,8 @@ CONFIG += ordered
 SUBDIRS = \
     Core \
     Query \
-    TextEditing
+    TextEditing \
+    #libs
 
 Core.depends = Query TextEditing
 
