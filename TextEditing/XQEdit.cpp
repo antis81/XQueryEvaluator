@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
@@ -26,6 +26,9 @@
 #include <QtGui/QScrollBar>
 
 
+/**
+Creates a XQEdit text editor instance to edit an XQuery/XSLT script.
+*/
 XQEdit::XQEdit(QWidget *parent)
     : QPlainTextEdit(parent)
     , _completer(0)

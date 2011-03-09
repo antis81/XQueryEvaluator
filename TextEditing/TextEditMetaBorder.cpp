@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
@@ -27,7 +27,7 @@
 
 
 /**
-Constructs a meta border instance that takes care of the doc's line numbers.
+Creates a meta border instance that takes care of the doc's line numbers.
 The parent widget is used like any QWidget's parent.
 */
 TextEditMetaBorder::TextEditMetaBorder(QPlainTextEdit *doc, QWidget *parent)

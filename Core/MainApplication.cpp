@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.

@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
@@ -19,6 +19,10 @@
 
 #include "XmlHighlighter.h"
 
+
+/**
+Creates an XML highlighter instance. The highlighter is used on the parent QTextDocument.
+*/
 XmlHighlighter::XmlHighlighter(QTextDocument *parent)
 	: AbstractHighlighter(parent)
 {

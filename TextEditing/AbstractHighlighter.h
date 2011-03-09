@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
@@ -22,11 +22,19 @@
 
 #include <QtGui/QSyntaxHighlighter>
 
+
+/**
+Provides basic highlight functionality for regular expression based highlighters.
+It supports flexible, reliable and fast highlighting even of more complex large text documents.
+
+The highlight format is specified by the inherited highlighter class.
+*/
 class AbstractHighlighter : public QSyntaxHighlighter
 {
     Q_OBJECT
 public:
 
+    //! Structure to define a highlight block over multiple lines with a start and end pattern.
     struct HighlightBlock
     {
         QRegExp startExp;
@@ -34,6 +42,7 @@ public:
         QTextCharFormat textFormat;
     };
 
+    //! Simple highlight rule with a pattern and the format.
     struct HighlightingRule
     {
         QList<QRegExp>      patterns;
@@ -52,7 +61,17 @@ protected:
 
     void init();
 
+    /**
+    Must be implemented in the inherited class to setup highlight rules for words, tags, etc.
+    */
     virtual void setupHighlightRules() = 0;
+
+    /**
+    Must be implemented in the inherited class to setup highlight blocks.
+    Highlight blocks are similar to highlight rules, but are defined with a start and end tag.
+    Everything inbetween will be highlighted, using the same text format.
+    A good example are XML comments like &lt;!-- This is a Higlight block. --&gt;.
+    */
     virtual void setupHighlightBlocks() = 0;
 
 private:

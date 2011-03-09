@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
@@ -24,6 +24,9 @@
 #include <QtGui/QTextLayout>
 
 
+/**
+Creates an AutoIndent instance for automatic text indentation.
+*/
 AutoIndent::AutoIndent()
 {
 }

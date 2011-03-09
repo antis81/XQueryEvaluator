@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
@@ -31,6 +31,9 @@
 #include "TextEditMetaBorder.h"
 
 
+/**
+Creates an XQEditor instance that wraps an XQEdit with a meta border to manage line numbers and additional information.
+*/
 XQEditor::XQEditor(QWidget *parent)
     : QWidget(parent)
     , _textQuery( new XQEdit(this) )

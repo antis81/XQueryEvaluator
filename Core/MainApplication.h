@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
@@ -15,6 +15,10 @@
 **
 **    You should have received a copy of the GNU General Public License
 **    along with XQueryEvaluator.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/**
+The MainApplication class enhances the QApplication class by platform independent functionality.
 */
 
 #ifndef MAINAPPLICATION_H

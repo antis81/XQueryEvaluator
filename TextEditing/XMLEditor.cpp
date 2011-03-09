@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator
@@ -29,7 +29,7 @@
 
 
 /**
-Constructs an XML viewer/editor with a default highlighter.
+Creates an XML viewer/editor instance with a highlighter.
 */
 XmlEditor::XmlEditor(QWidget *parent)
     : QWidget(parent)

@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
@@ -20,11 +20,20 @@
 #include "AbstractHighlighter.h"
 
 
+/**
+Called by the inherited class to create a highlighter instance.
+*/
 AbstractHighlighter::AbstractHighlighter(QTextDocument *parent) :
     QSyntaxHighlighter(parent)
 {
 }
 
+/**
+Initializes the highlighter with highlight rules. Should be called within the constructor of the inherited class.
+
+@see setupHighlightRules
+@see setupHighlightBlocks
+*/
 void AbstractHighlighter::init ()
 {
     // call the virtual highlight init methods in the right order
@@ -33,7 +42,7 @@ void AbstractHighlighter::init ()
 }
 
 /**
-Adds a highlighting rule for multiple patterns (must be RegExp's).
+Adds a highlight rule for a list of regular expression patterns. Sets the rules text format.
 */
 void AbstractHighlighter::addHighlightRule(const QStringList &patterns, const QTextCharFormat &format)
 {
@@ -54,7 +63,7 @@ void AbstractHighlighter::addHighlightRule(const QStringList &patterns, const QT
 }
 
 /**
-Adds a highlighting rule for one pattern (must be RegExp).
+Adds a highlight rule for one regular expression pattern. Sets the rule's text format.
 */
 void AbstractHighlighter::addHighlightRule(const QString &pattern, const QTextCharFormat &format)
 {
@@ -71,7 +80,7 @@ void AbstractHighlighter::addHighlightRule(const QString &pattern, const QTextCh
 }
 
 /**
-Adds a list of regular expression patterns as group of highlight rules with the same foreground color.
+Adds a list of regular expression patterns as group of highlight rules using the same specified foreground color.
 */
 void AbstractHighlighter::addHighlightRule(const QStringList & patterns, const QColor & color)
 {
@@ -81,7 +90,7 @@ void AbstractHighlighter::addHighlightRule(const QStringList & patterns, const Q
 }
 
 /**
-Adds a regular expression pattern as highlight rule with the specified color.
+Adds a highlight rule for one regular expression pattern as highlight rule using the same specified color.
 */
 void AbstractHighlighter::addHighlightRule(const QString & pattern, const QColor & color)
 {
