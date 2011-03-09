@@ -29,6 +29,7 @@
 #include <QtGui/QHideEvent>
 #include <QtGui/QLineEdit>
 
+#include <QDebug>
 
 /**
 Constructs an object to handle XML sources. Currently only one single source file is supported.
@@ -38,7 +39,7 @@ XmlSource::XmlSource(QWidget *parent)
     , _editor(0)
 {
     QLayout *l = new QHBoxLayout(this);
-    l->setSpacing(3);
+    l->setSpacing(0);
     l->setContentsMargins(3, 1, 3, 1);
 
     _textSourceFile = new QComboBox();
