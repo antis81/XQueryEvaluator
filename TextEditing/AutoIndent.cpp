@@ -28,6 +28,11 @@ AutoIndent::AutoIndent()
 {
 }
 
+/**
+Automatically indents the QTextDocument doc by using indent/outdent regular expressions.
+
+@todo The expressions are currently hardcoded and used to indent XQuery, XML and XSLT documents.
+*/
 void AutoIndent::indentDocument(QTextDocument *doc)
 {
     int level = 0;
@@ -74,6 +79,11 @@ void AutoIndent::indentDocument(QTextDocument *doc)
     doc->setPlainText(tNew);
 }
 
+/**
+Counts the occurence of regExp match in text.
+
+@return The matched count is returned.
+*/
 int AutoIndent::matchCount( const QRegExp &regExp, const QString &text ) const
 {
     int count = 0;

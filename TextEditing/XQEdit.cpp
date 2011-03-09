@@ -41,7 +41,9 @@ XQEdit::~XQEdit()
 {
 }
 
-
+/**
+Finds a word under the current text cursor.
+*/
 QString XQEdit::textUnderCursor() const
 {
     QTextCursor tc = textCursor();
@@ -49,6 +51,9 @@ QString XQEdit::textUnderCursor() const
     return tc.selectedText();
 }
 
+/**
+Replaces a partly typed word with a certain completion at the current text cursor position.
+*/
 void XQEdit::insertCompletion(const QString& completion)
 {
     if (_completer->widget() != this)
@@ -62,6 +67,9 @@ void XQEdit::insertCompletion(const QString& completion)
     setTextCursor(tc);
 }
 
+/**
+Sets a QCompleter to the XQEdit, that cares for text completion.
+*/
 void XQEdit::setCompleter(QCompleter *completer)
 {
     if ( _completer )
@@ -77,6 +85,9 @@ void XQEdit::setCompleter(QCompleter *completer)
                      this, SLOT(insertCompletion(QString)));
 }
 
+/**
+When the user types, keyPressEvent is called and completions are checked.
+*/
 void XQEdit::keyPressEvent(QKeyEvent *e)
 {
     if (_completer && _completer->popup()->isVisible())

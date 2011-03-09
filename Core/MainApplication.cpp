@@ -21,12 +21,18 @@
 
 #include <QtGui/QFileOpenEvent>
 
-
+/**
+Constructs a plattform independent QApplication variant.
+*/
 MainApplication::MainApplication(int &argc, char **argv, bool GUIenabled) :
     QApplication(argc, argv, GUIenabled)
 {
 }
 
+/**
+Handles events that are sent to the main application object.
+E.g. on OSX it is used to handle associated file extensions correctly.
+*/
 bool MainApplication::event(QEvent *ev)
 {
     bool eaten = false;

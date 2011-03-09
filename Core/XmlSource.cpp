@@ -30,6 +30,9 @@
 #include <QtGui/QLineEdit>
 
 
+/**
+Constructs an object to handle XML sources. Currently only one single source file is supported.
+*/
 XmlSource::XmlSource(QWidget *parent)
     : QWidget(parent)
     , _editor(0)
@@ -99,6 +102,9 @@ void XmlSource::hideEvent(QHideEvent *ev)
     ev->accept();
 }
 
+/**
+Reads settings from the apropriate settings database and applies it to this XmlSource instance.
+*/
 void XmlSource::readSettings()
 {
     QSettings settings;
@@ -109,6 +115,9 @@ void XmlSource::readSettings()
     settings.endGroup();
 }
 
+/**
+Writes the current XmlSource's settings to the apropriate settings database.
+*/
 void XmlSource::writeSettings()
 {
     QSettings settings;
@@ -121,7 +130,7 @@ void XmlSource::writeSettings()
 
 
 /**
-Starts an external editor for editing the XML source.
+Starts an external editor for editing the XML source. The editor is set in the settings database.
 */
 void XmlSource::editSource()
 {
@@ -137,6 +146,5 @@ void XmlSource::editSource()
 #endif
 
     appString = appString.arg(_externalEditor).arg( sourceFile() );
-
     p.startDetached( appString );
 }

@@ -26,6 +26,10 @@
 #include <QtGui/QLayout>
 
 
+/**
+Constructs a meta border instance that takes care of the doc's line numbers.
+The parent widget is used like any QWidget's parent.
+*/
 TextEditMetaBorder::TextEditMetaBorder(QPlainTextEdit *doc, QWidget *parent)
     : QWidget(parent)
     , _document(doc)
@@ -46,7 +50,9 @@ TextEditMetaBorder::~TextEditMetaBorder()
 {
 }
 
-
+/**
+Called when the line meta border widget needs an update.
+*/
 void TextEditMetaBorder::paintEvent ( QPaintEvent * event )
 {
     Q_UNUSED(event);
@@ -59,6 +65,9 @@ void TextEditMetaBorder::paintEvent ( QPaintEvent * event )
     p.restore();
 }
 
+/**
+Draws the portion of current visible line numbers.
+*/
 void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
 {
     const int scrollOffset = _document->verticalScrollBar()->value();
@@ -120,6 +129,10 @@ void TextEditMetaBorder::drawLineNumbers(QPainter & painter)
 //    }
 //}
 
+/**
+Set the document's font when the widget becomes visible.
+This is a workaround to be sure, the same font as the parent document is used for line numbers.
+*/
 void TextEditMetaBorder::showEvent(QShowEvent *e)
 {
     e->accept();

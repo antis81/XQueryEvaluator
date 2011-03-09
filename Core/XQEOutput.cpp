@@ -21,6 +21,9 @@
 #include "ui_XQEOutput.h"
 
 
+/**
+Constructs an output window to show a query result.
+*/
 XQEOutput::XQEOutput(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::XQEOutput)
@@ -49,18 +52,26 @@ void XQEOutput::changeEvent(QEvent *e)
     }
 }
 
+/**
+Sets an error log's output. Expects HTML formatted output.
+*/
 void XQEOutput::setErrors(const QString &html)
 {
     ui->textErrors->setHtml(html);
 }
 
+/**
+Sets the output text.
+*/
 void XQEOutput::setXml(const QString &xml)
 {
     ui->textOutput->setPlainText(xml);
 }
 
+/**
+Sets the duration in ms.
+*/
 void XQEOutput::setDuration(int duration)
 {
     ui->textDuration->setText(tr("Duration: %1 ms").arg(duration));
 }
-

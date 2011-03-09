@@ -24,7 +24,9 @@
 
 #include <QtCore/QBuffer>
 
-
+/**
+Constructs an evaluator object for parsing queries. By default XQuery is set as query language.
+*/
 XQEvaluator::XQEvaluator()
     : _queryLanguage( QXmlQuery::XQuery10 )
     , _formattedOutput(true)
@@ -35,26 +37,49 @@ XQEvaluator::~XQEvaluator()
 {
 }
 
+/**
+@return The set language for parsing query scripts.
+*/
 QXmlQuery::QueryLanguage XQEvaluator::queryLanguage() const
 {
     return _queryLanguage;
 }
 
+/**
+Set a language for parsing a query script.
+*/
 void XQEvaluator::setQueryLanguage(QXmlQuery::QueryLanguage newVal)
 {
     _queryLanguage = newVal;
 }
 
+/**
+When formatted output is true, the output is indented.
+
+@return Generate formatted output or not.
+*/
 bool XQEvaluator::formattedOutput() const
 {
     return _formattedOutput;
 }
 
+/**
+Setting formatted output to false compresses the result string to a single line.
+
+By default, formatted output is enabled.
+*/
 void XQEvaluator::setFormattedOutput(bool enabled)
 {
     _formattedOutput = enabled;
 }
 
+/**
+Transforms the source XML string to a resulting format using the given query script.
+The resulting string is usually XML, but can vary in other plain text formats depending on the query.
+The parameter err can be used to output error messages during the parsing process.
+
+When formattedOutput is set, the result will be indented.
+*/
 QString XQEvaluator::transform(const QString &source, const QString &query, QString &err)
 {
     QXmlQuery theQuery( _queryLanguage );

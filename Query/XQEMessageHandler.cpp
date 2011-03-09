@@ -34,6 +34,15 @@ XQEMessageHandler::~XQEMessageHandler()
 {
 }
 
+/**
+Handles info, warning and error messages sent by a corresponding object
+(e.g. an XML parser during a parsing process).
+
+The method is general purpose to give information on a process's success.
+Messages are collected in an error log.
+
+See also: @see errLog
+*/
 void XQEMessageHandler::handleMessage(QtMsgType type, const QString &description,
                                       const QUrl &identifier, const QSourceLocation &sourceLocation)
 {

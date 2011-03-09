@@ -44,7 +44,10 @@
 
 
 /**
-The main window´s constructor sets up the user interface.
+The main window's constructor sets up the main user interface.
+
+@todo At present, all toolbar and menu actions are set here.
+This is to be outsourced in seperate functions, maybe an ActionManager class.
 */
 XQEMainWindow::XQEMainWindow(QWidget *parent)
     : QMainWindow( parent )
@@ -123,6 +126,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     m->addAction( QString("About"), this, SLOT(about()) );
     m->addAction( QString("About &Qt"), qApp, SLOT(aboutQt()) );
 
+    // read application settings
     readSettings();
 }
 
@@ -150,7 +154,7 @@ void XQEMainWindow::changeEvent(QEvent *e)
 }
 
 /**
-Starts evaluations of a query.
+Evaluates a query and shows the result in a seperate modal dialog.
 */
 void XQEMainWindow::startQuery()
 {
@@ -285,6 +289,10 @@ void XQEMainWindow::closeEvent(QCloseEvent *e)
         e->ignore();
 }
 
+/**
+@return When true, it is save to overwrite the existing query.
+Called for example when creating a new query or when the applicaiton quits.
+*/
 bool XQEMainWindow::queryCanClose()
 {
     bool mayClose = true;
@@ -419,6 +427,9 @@ void XQEMainWindow::actionViewSource()
     _xmlEditor->show();
 }
 
+/**
+Reads settings from the apropriate settings database and applies it to this XQEMainWindow instance.
+*/
 void XQEMainWindow::readSettings()
 {
     QSettings settings;
@@ -442,6 +453,9 @@ void XQEMainWindow::readSettings()
     settings.endGroup();
 }
 
+/**
+Writes the current XQEMainWindow's settings to the apropriate settings database.
+*/
 void XQEMainWindow::writeSettings()
 {
     QSettings settings;
@@ -463,6 +477,10 @@ void XQEMainWindow::writeSettings()
     settings.endGroup();
 }
 
+/**
+Action to create a new query. An previous query becomes invalid in this and therefore has to be removed
+before the new query can be created.
+*/
 void XQEMainWindow::actionNewQuery()
 {
     if ( queryCanClose() )
@@ -472,6 +490,9 @@ void XQEMainWindow::actionNewQuery()
     }
 }
 
+/**
+Opens the source XML document and forwards it to an editor.
+*/
 void XQEMainWindow::actionEditSource()
 {
     _xmlSource->editSource();

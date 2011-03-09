@@ -28,6 +28,9 @@
 #include "TextEditMetaBorder.h"
 
 
+/**
+Constructs an XML viewer/editor with a default highlighter.
+*/
 XmlEditor::XmlEditor(QWidget *parent)
     : QWidget(parent)
     , _textXml(new QPlainTextEdit(this))
@@ -58,16 +61,25 @@ XmlEditor::~XmlEditor()
 {
 }
 
+/**
+@return A copy of the current set XML string.
+*/
 QString XmlEditor::xml() const
 {
     return _textXml->toPlainText();
 }
 
+/**
+Sets an XML string as plain text.
+*/
 void XmlEditor::setXml(const QString &xml)
 {
     _textXml->setPlainText(xml);
 }
 
+/**
+Reads settings from the apropriate settings database and applies it to this XmlEditor instance.
+*/
 void XmlEditor::readSettings()
 {
     QSettings settings;
@@ -83,6 +95,9 @@ void XmlEditor::readSettings()
     settings.endGroup();
 }
 
+/**
+Writes the current XmlEditor's settings to the apropriate settings database.
+*/
 void XmlEditor::writeSettings()
 {
     QSettings settings;
@@ -99,6 +114,9 @@ void XmlEditor::writeSettings()
     settings.endGroup();
 }
 
+/**
+The XmlEditor becomes invisible.
+*/
 void XmlEditor::hideEvent(QHideEvent *ev)
 {
     writeSettings();

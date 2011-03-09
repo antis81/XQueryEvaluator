@@ -33,8 +33,8 @@ void AbstractHighlighter::init ()
 }
 
 /**
- * Adds a highlighting rule for multiple patterns (must be RegExp's).
- */
+Adds a highlighting rule for multiple patterns (must be RegExp's).
+*/
 void AbstractHighlighter::addHighlightRule(const QStringList &patterns, const QTextCharFormat &format)
 {
     // Set the text format ...
@@ -54,8 +54,8 @@ void AbstractHighlighter::addHighlightRule(const QStringList &patterns, const QT
 }
 
 /**
- * Adds a highlighting rule for one pattern (must be RegExp).
- */
+Adds a highlighting rule for one pattern (must be RegExp).
+*/
 void AbstractHighlighter::addHighlightRule(const QString &pattern, const QTextCharFormat &format)
 {
     // Set the text format ...
@@ -70,6 +70,9 @@ void AbstractHighlighter::addHighlightRule(const QString &pattern, const QTextCh
     _highlightingRules.append(rule);
 }
 
+/**
+Adds a list of regular expression patterns as group of highlight rules with the same foreground color.
+*/
 void AbstractHighlighter::addHighlightRule(const QStringList & patterns, const QColor & color)
 {
     QTextCharFormat f;
@@ -77,6 +80,9 @@ void AbstractHighlighter::addHighlightRule(const QStringList & patterns, const Q
     addHighlightRule(patterns, f);
 }
 
+/**
+Adds a regular expression pattern as highlight rule with the specified color.
+*/
 void AbstractHighlighter::addHighlightRule(const QString & pattern, const QColor & color)
 {
     QTextCharFormat f;
@@ -85,11 +91,17 @@ void AbstractHighlighter::addHighlightRule(const QString & pattern, const QColor
 
 }
 
+/**
+Adds a complete highlight block definition.
+*/
 void AbstractHighlighter::addHighlightBlock(const AbstractHighlighter::HighlightBlock &block)
 {
     _blocks.append( block );
 }
 
+/**
+Called, when Qt wants to highlight a QTextBlock within a QTextDocuement.
+*/
 void AbstractHighlighter::highlightBlock(const QString &text)
 {
     if ( (previousBlockState() < 0) || (currentBlockState() < 0) )
@@ -99,6 +111,9 @@ void AbstractHighlighter::highlightBlock(const QString &text)
     highlightTextBlock(text);
 }
 
+/**
+Highlights text outside a text block using previously defined highlight rules.
+*/
 void AbstractHighlighter::highlightNormalText(const QString &text)
 {
     for (int i=0; i < _highlightingRules.count(); ++i)
@@ -120,6 +135,9 @@ void AbstractHighlighter::highlightNormalText(const QString &text)
     }
 }
 
+/**
+Highlights a text block (e.g. multi line comments) using previously defined HighlightBlock rules.
+*/
 void AbstractHighlighter::highlightTextBlock(const QString &text)
 {
     // highlight text blocks (like comments etc.)
@@ -131,8 +149,8 @@ void AbstractHighlighter::highlightTextBlock(const QString &text)
 
 
 /**
- * Colors whole text blocks between two tags. E.g. an XML comment looks like: "<!-- ... text ... -->").
- */
+Highlights whole text blocks between start and end tags. E.g. an XML comment looks like: "<!-- ... text ... -->").
+*/
 void AbstractHighlighter::colorBlock(int blockState, const QString &text, const HighlightBlock &blockFormat)
 {
     // Find start position of highlight block
