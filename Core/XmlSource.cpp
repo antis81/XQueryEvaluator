@@ -18,7 +18,6 @@
 */
 
 #include "XmlSource.h"
-#include "ui_XmlSource.h"
 
 #include <QtCore/QSettings>
 #include <QtCore/QProcess>
@@ -28,8 +27,6 @@
 #include <QtGui/QFileDialog>
 #include <QtGui/QHideEvent>
 #include <QtGui/QLineEdit>
-
-#include <QDebug>
 
 /**
 Constructs an object to handle XML sources. Currently only one single source file is supported.
