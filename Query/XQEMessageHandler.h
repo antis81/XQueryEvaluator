@@ -24,7 +24,7 @@
 #include <QtCore/QStringList>
 
 /**
-Provides a message handler to handle Error messages
+Provides a message handler to handle Error messages.
 */
 class XQEMessageHandler : public QAbstractMessageHandler
 {

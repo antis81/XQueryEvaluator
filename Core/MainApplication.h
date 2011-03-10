@@ -26,7 +26,11 @@ The MainApplication class enhances the QApplication class by platform independen
 
 #include <QtGui/QApplication>
 
+/**
+Enhances a QApplication class with additional platform independent functionality.
 
+At present this is used associate file types under OSX.
+*/
 class MainApplication : public QApplication
 {
     Q_OBJECT

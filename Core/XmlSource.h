@@ -26,7 +26,9 @@
 
 #include <QtCore/QDir>
 
-
+/**
+Provides functionality for managing XML source documents.
+*/
 class XmlSource : public QWidget
 {
     Q_OBJECT

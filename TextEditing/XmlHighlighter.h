@@ -29,6 +29,9 @@
 
 class QTextDocument;
 
+/**
+An XML text highlighter for QTextDocuments.
+*/
 class XmlHighlighter : public AbstractHighlighter
 {
     Q_OBJECT

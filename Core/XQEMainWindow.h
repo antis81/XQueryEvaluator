@@ -35,6 +35,10 @@ class XQEditor;
 class XmlEditor;
 class QComboBox;
 
+
+/**
+The main user interface of XQueryEvaluator.
+*/
 class XQEMainWindow : public QMainWindow
 {
     Q_OBJECT

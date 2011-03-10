@@ -28,6 +28,9 @@ namespace Ui {
     class XQEOutput;
 }
 
+/**
+Dialog to show a queries result in plain text.
+*/
 class XQEOutput : public QDialog
 {
     Q_OBJECT

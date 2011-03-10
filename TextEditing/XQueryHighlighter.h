@@ -24,6 +24,10 @@
 
 #include <QtCore/QList>
 
+
+/**
+Highlights combined XQuery/XSLT and XML QTextDocuments.
+*/
 class XQueryHighlighter : public XmlHighlighter
 {
 public:

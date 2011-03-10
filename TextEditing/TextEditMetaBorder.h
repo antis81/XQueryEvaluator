@@ -26,6 +26,9 @@
 #include <QtCore/QSet>
 #include <QtGui/QTextBlock>
 
+/**
+A meta border that can be combined with a QPlainTextEdit to display line numbers.
+*/
 class TextEditMetaBorder : public QWidget
 {
     Q_OBJECT

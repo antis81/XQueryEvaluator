@@ -24,6 +24,11 @@
 
 #include "XQEMessageHandler.h"
 
+/**
+Evaluates XQuery oder XSLT queries.
+
+At present transforms the output to XML. In some cases, plain text also works depending on the query.
+*/
 class XQEvaluator
 {
 public:

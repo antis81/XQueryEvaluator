@@ -28,7 +28,9 @@
 class XQEdit;
 class QAbstractItemModel;
 
-
+/**
+Editor widget to edit text in an XQEdit. Adds line numbers.
+*/
 class XQEditor : public QWidget
 {
     Q_OBJECT

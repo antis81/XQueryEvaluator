@@ -22,6 +22,9 @@
 
 #include "AbstractHighlighter.h"
 
+/**
+A C++ highlighter for QTextDocuments.
+*/
 class CppHighlighter : public AbstractHighlighter
 {
     Q_OBJECT

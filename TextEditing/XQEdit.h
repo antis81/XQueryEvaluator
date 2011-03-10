@@ -27,6 +27,9 @@
 
 class QCompleter;
 
+/**
+A text edit field providing XML/XSLT/XQuery highlighting and autocompletion.
+*/
 class XQEdit : public QPlainTextEdit
 {
     Q_OBJECT

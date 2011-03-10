@@ -24,6 +24,9 @@
 
 class QTextDocument;
 
+/**
+Provides auto indentation functionaliy for currently XML, XSLT and XQuery documents.
+*/
 class AutoIndent
 {
 public:

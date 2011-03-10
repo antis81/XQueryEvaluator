@@ -26,6 +26,9 @@
 
 class QPlainTextEdit;
 
+/**
+An XML editor showing highlighted XML text and line numbers. Currently read only.
+*/
 class XmlEditor : public QWidget
 {
     Q_OBJECT
