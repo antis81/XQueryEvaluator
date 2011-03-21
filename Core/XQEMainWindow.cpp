@@ -139,7 +139,7 @@ XQEMainWindow::~XQEMainWindow()
 }
 
 /**
-The application UI´s language changed.
+The application UI's language changed.
 */
 void XQEMainWindow::changeEvent(QEvent *e)
 {
@@ -276,7 +276,7 @@ void XQEMainWindow::queryFileNameChanged(const QString &newFileName)
 
 
 /**
-The main window´s close event.
+The main window's close event.
 */
 void XQEMainWindow::closeEvent(QCloseEvent *e)
 {

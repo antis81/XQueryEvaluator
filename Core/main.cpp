@@ -88,14 +88,14 @@ int main(int argc, char *argv[])
             w.loadQuery(queryFile);
     }
 
-    w.setWindowOpacity(0.0);
+    w.setWindowOpacity( 0.0 );
     w.show();
 
     QPropertyAnimation animation(&w, "windowOpacity");
     animation.setDuration(1000);
 
-    animation.setKeyValueAt(0, 0.0);
-    animation.setKeyValueAt(1, 1.0);
+    animation.setStartValue( w.windowOpacity() );
+    animation.setEndValue( 1.0 );
 
     animation.start();
 
