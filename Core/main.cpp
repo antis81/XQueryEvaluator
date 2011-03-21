@@ -91,8 +91,9 @@ int main(int argc, char *argv[])
     w.setWindowOpacity( 0.0 );
     w.show();
 
+    //! @todo QPropertyAnimation only works on Qt 4.6 upwards. Implement version check!
     QPropertyAnimation animation(&w, "windowOpacity");
-    animation.setDuration(1000);
+    animation.setDuration(500);
 
     animation.setStartValue( w.windowOpacity() );
     animation.setEndValue( 1.0 );
