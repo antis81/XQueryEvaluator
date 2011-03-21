@@ -23,6 +23,7 @@
 #include <QtCore/QLocale>
 #include <QtCore/QLibraryInfo>
 #include <QtCore/QSettings>
+#include <QtCore/QPropertyAnimation>
 
 #include "MainApplication.h"
 
@@ -87,7 +88,16 @@ int main(int argc, char *argv[])
             w.loadQuery(queryFile);
     }
 
+    w.setWindowOpacity(0.0);
     w.show();
+
+    QPropertyAnimation animation(&w, "windowOpacity");
+    animation.setDuration(1000);
+
+    animation.setKeyValueAt(0, 0.0);
+    animation.setKeyValueAt(1, 1.0);
+
+    animation.start();
 
     return a.exec();
 }
