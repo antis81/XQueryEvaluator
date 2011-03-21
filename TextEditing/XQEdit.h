@@ -51,6 +51,8 @@ private:
     XQueryHighlighter   _xqueryHighlighter;
 
     QString textUnderCursor() const;
+
+    QList<int>      _completionKeys;
 };
 
 #endif // XQEDIT_H
