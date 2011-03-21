@@ -30,6 +30,7 @@
 #include "TextEditing/XQEditor.h"
 #include "TextEditing/XQEdit.h"
 #include "TextEditing/XMLEditor.h"
+#include "TextEditing/TextSearch.h"
 
 #include "TextEditing/AutoIndent.h"
 
@@ -120,6 +121,8 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     // -- Edit menu
     m = menuBar()->addMenu( tr("Edit") );
     m->addActions( _textQuery->textEdit()->createStandardContextMenu()->actions() );
+    m->addAction( tr("Search ..."), this, SLOT(actionSearchText()), QKeySequence(Qt::CTRL + Qt::Key_F) );
+
 
     // -- Help menu
     m = menuBar()->addMenu( QString("Help") );
@@ -496,6 +499,18 @@ Opens the source XML document and forwards it to an editor.
 void XQEMainWindow::actionEditSource()
 {
     _xmlSource->editSource();
+}
+
+/**
+Starts a string search in the query text.
+*/
+void XQEMainWindow::actionSearchText()
+{
+    TextSearch * searchDialog = new TextSearch();
+
+    searchDialog->setTextEdit( _textQuery->textEdit() );
+
+    searchDialog->show();
 }
 
 //void XQEMainWindow::actionSaveQueryAs()
