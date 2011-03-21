@@ -4,7 +4,7 @@
 # copy, distribute and modify this script
 
 APPNAME=XQueryEvaluator
-OUTPATH=../build
+OUTPATH=build
 
 ### get system configuration ########################################
 
@@ -48,108 +48,122 @@ fi
 echo "application: $APPNAME"
 echo "bundle:      $BUNDLE"
 
-### query binary for frameworks #####################################
+echo "Add Qt frameworks? (y/N): "
+read userinput
+if [ "$userinput" == "y" ] ; then
 
-echo -n "Using frameworks"
-for n in `otool -L $APPBIN | grep Qt` ; do
-    path=`echo $n | grep Qt`
-    if [ $path ] ; then
-	name=`basename $path`
-	FRAMEWORKS="$FRAMEWORKS $path"
-	echo -n " $name"
-    fi
-done
-echo
+    ### query binary for frameworks #####################################
 
-### make install ####################################################
+    echo -n "Using frameworks"
+    for n in `otool -L $APPBIN | grep Qt` ; do
+        path=`echo $n | grep Qt`
+        if [ $path ] ; then
+    	name=`basename $path`
+    	FRAMEWORKS="$FRAMEWORKS $path"
+    	echo -n " $name"
+        fi
+    done
+    echo
 
-echo "Running make install"
-if [ -e Makefile.Release ] ; then
-    make -f Makefile.Release install
-elif [ -e Makefile ] ; then
-    make install
-else
-    echo "ERROR: Makefile not found. This script requires the macx-g++ makespec"
+    ### make install ####################################################
+
+    #echo "Running make install"
+    #if [ -e Makefile.Release ] ; then
+    #    make -f Makefile.Release install
+    #elif [ -e Makefile ] ; then
+    #    make install
+    #else
+    #    echo "ERROR: Makefile not found. This script requires the macx-g++ makespec"
+    #fi
+    #strip $APPBIN
+
+    ### copy over frameworks ############################################
+
+    mkdir -p $BUNDLE/Contents/Frameworks
+    for path in $FRAMEWORKS ; do
+        name=`basename $path`
+        if [ ! -d "$FWPATH/$name.framework" ] ; then
+            echo "ERROR: cannot find $FWPATH/$name.framework"
+            exit
+        fi
+        echo "Copying $name framework"
+        cp -fR $FWPATH/$name.framework $BUNDLE/Contents/Frameworks
+        # strip libs (-x is max allowable for shared libs)
+        strip -x $BUNDLE/Contents/Frameworks/$name.framework/Versions/4/$name
+    done
+
+    # remove unwanted parts
+    find $BUNDLE/Contents/Frameworks | egrep "debug|Headers" | xargs rm -rf
+
+    ### set the identification names for frameworks #####################
+
+    echo -n "Setting framework IDs..."
+
+    echo -n "Setting framework IDs..."
+
+    for path in $FRAMEWORKS ; do
+        name=`basename $path`
+        echo -n " $name"
+        install_name_tool \
+    	-id @executable_path/../Frameworks/$name.framework/Versions/4/$name \
+            $BUNDLE/Contents/Frameworks/$name.framework/Versions/4/$name
+    done
+    echo
+
+    ### change framework paths ##########################################
+
+    echo -n "Changing framework paths for $APPNAME..."
+    for path in $FRAMEWORKS ; do
+        name=`basename $path`
+        echo -n " $name"
+        install_name_tool \
+    	-change $path \
+            @executable_path/../Frameworks/$name.framework/Versions/4/$name \
+            $APPBIN
+    done
+    echo
+
+    ### change location for bundled frameworks #########################
+
+    echo -n "Fixing bundled frameworks..."
+    for fwpath in $FRAMEWORKS ; do
+        fwname=`basename $fwpath`
+        echo -n " $fwname"
+        framework="$BUNDLE/Contents/Frameworks/$fwname.framework/Versions/4/$fwname"
+        # get framework dependencies
+        deps=""
+        for n in `otool -LX $framework | grep Qt` ; do
+    	dep=`echo $n | grep Qt`
+    	if [ $dep ] ; then
+    	    deps="$deps $dep"
+	    fi
+        done
+        # fix dependency path
+        for path in $deps ; do
+        	name=`basename $path`
+        	if [ "$name" != "$fwname" ] ; then
+    		    install_name_tool \
+        		-change $path \
+        		@executable_path/../Frameworks/$name.framework/Versions/4/$name \
+        		$framework
+    	    fi
+        done
+    done
+    echo
+
+    ### misc cleanup ###############################################
+
+    find $BUNDLE/Contents | egrep "CVS" | xargs rm -rf
+
 fi
-strip $APPBIN
 
-### copy over frameworks ############################################
-
-mkdir -p $BUNDLE/Contents/Frameworks
-for path in $FRAMEWORKS ; do
-    name=`basename $path`
-    if [ ! -d "$FWPATH/$name.framework" ] ; then
-        echo "ERROR: cannot find $FWPATH/$name.framework"
-        exit
-    fi
-    echo "Copying $name framework"
-    cp -fR $FWPATH/$name.framework $BUNDLE/Contents/Frameworks
-    # strip libs (-x is max allowable for shared libs)
-    strip -x $BUNDLE/Contents/Frameworks/$name.framework/Versions/4/$name
-done
-
-# remove unwanted parts
-find $BUNDLE/Contents/Frameworks | egrep "debug|Headers" | xargs rm -rf
-
-### set the identification names for frameworks #####################
-
-echo -n "Setting framework IDs..."
-
-echo -n "Setting framework IDs..."
-
-for path in $FRAMEWORKS ; do
-    name=`basename $path`
-    echo -n " $name"
-    install_name_tool \
-	-id @executable_path/../Frameworks/$name.framework/Versions/4/$name \
-        $BUNDLE/Contents/Frameworks/$name.framework/Versions/4/$name
-done
+### copy languages ###############################################
+echo "Deploying translations ..."
+lrelease $APPNAME.pro
+cp -v translations/*.qm $BUNDLE/Resources/translations
+echo "Removing generated translation binaries ..."
+#rm -f translations/*.qm
 echo
-
-### change framework paths ##########################################
-
-echo -n "Changing framework paths for $APPNAME..."
-for path in $FRAMEWORKS ; do
-    name=`basename $path`
-    echo -n " $name"
-    install_name_tool \
-	-change $path \
-        @executable_path/../Frameworks/$name.framework/Versions/4/$name \
-        $APPBIN
-done
-echo
-
-### change location for bundled frameworks #########################
-
-echo -n "Fixing bundled frameworks..."
-for fwpath in $FRAMEWORKS ; do
-    fwname=`basename $fwpath`
-    echo -n " $fwname"
-    framework="$BUNDLE/Contents/Frameworks/$fwname.framework/Versions/4/$fwname"
-    # get framework dependencies
-    deps=""
-    for n in `otool -LX $framework | grep Qt` ; do
-	dep=`echo $n | grep Qt`
-	if [ $dep ] ; then
-	    deps="$deps $dep"
-	fi
-    done
-    # fix dependency path
-    for path in $deps ; do
-	name=`basename $path`
-	if [ "$name" != "$fwname" ] ; then
-            install_name_tool \
-		-change $path \
-		@executable_path/../Frameworks/$name.framework/Versions/4/$name \
-		$framework
-	fi
-    done
-done
-echo
-
-### misc cleanup ###############################################
-
-find $BUNDLE/Contents | egrep "CVS" | xargs rm -rf
 
 ### create disk image ###############################################
 
