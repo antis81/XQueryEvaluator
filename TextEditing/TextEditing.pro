@@ -19,7 +19,8 @@ HEADERS += \
     XmlEditor.h \
     AutoIndent.h \
     AbstractHighlighter.h \
-    CppHighlighter.h
+    CppHighlighter.h \
+    TextSearch.h
 
 SOURCES += \
     XQueryHighlighter.cpp \
@@ -30,7 +31,11 @@ SOURCES += \
     XmlEditor.cpp \
     AutoIndent.cpp \
     AbstractHighlighter.cpp \
-    CppHighlighter.cpp
+    CppHighlighter.cpp \
+    TextSearch.cpp
 
 RESOURCES += \
     resources/TextEditing.qrc
+
+FORMS += \
+    TextSearch.ui

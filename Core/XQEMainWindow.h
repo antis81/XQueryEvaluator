@@ -62,6 +62,8 @@ private slots:
     void actionSaveQuery();
 //    void actionSaveQueryAs();
 
+    void actionSearchText();
+
     void queryLanguageSelected(int comboIndex);
 
     void queryFileNameChanged(const QString & newFileName);
