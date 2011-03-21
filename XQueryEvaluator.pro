@@ -14,8 +14,6 @@ SUBDIRS = \
     Core \
     #libs
 
-Core.depends = Query TextEditing
-
 TRANSLATIONS += \
     translations/xqeval_cs.ts \
     translations/xqeval_de.ts
