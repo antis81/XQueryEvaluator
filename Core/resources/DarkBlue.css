@@ -3,7 +3,7 @@ QPlainTextEdit
 	font: 12px Menlo;
 }
 
-QMainWindow, XQEOutput, QMessageBox, XmlEditor
+QMainWindow, XQEOutput, QMessageBox, XmlEditor, TextSearch
 {
 	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(42, 59, 93), stop:1 rgb(0, 0, 0));
 }

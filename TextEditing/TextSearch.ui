@@ -15,12 +15,23 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Search:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLineEdit" name="textSearch"/>
    </item>
    <item>
     <widget class="QToolButton" name="btnBack">
      <property name="text">
       <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../Core/resources/xqe_resource.qrc">
+       <normaloff>:/left-arrow.svg</normaloff>:/left-arrow.svg</iconset>
      </property>
     </widget>
    </item>
@@ -29,10 +40,16 @@
      <property name="text">
       <string>...</string>
      </property>
+     <property name="icon">
+      <iconset resource="../Core/resources/xqe_resource.qrc">
+       <normaloff>:/right-arrow.svg</normaloff>:/right-arrow.svg</iconset>
+     </property>
     </widget>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../Core/resources/xqe_resource.qrc"/>
+ </resources>
  <connections/>
 </ui>
