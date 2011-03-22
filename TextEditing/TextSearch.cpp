@@ -43,7 +43,7 @@ void TextSearch::on_btnForward_clicked()
 
 void TextSearch::on_btnBack_clicked()
 {
-    find( ui->textSearch->text(), QTextDocument::FindBackward );
+    find( ui->textSearch->text(), false, QTextDocument::FindBackward );
 }
 
 /**
@@ -59,7 +59,7 @@ Searches occurences of a string in the _textEdit.
 */
 void TextSearch::find(const QString &search, bool fromStart, QTextDocument::FindFlags options)
 {
-    if (!_textEdit)
+    if (!_textEdit || search.isEmpty())
         return;
 
     if ( fromStart )

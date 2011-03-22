@@ -8,5 +8,7 @@
         <file>down-arrow.svg</file>
         <file>question.png</file>
         <file>pen.svg</file>
+        <file>left-arrow.svg</file>
+        <file>right-arrow.svg</file>
     </qresource>
 </RCC>
