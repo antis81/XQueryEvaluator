@@ -32,6 +32,7 @@ Creates a XQEdit text editor instance to edit an XQuery/XSLT script.
 XQEdit::XQEdit(QWidget *parent)
     : QPlainTextEdit(parent)
     , _completer(0)
+    , _eow( "~!@#$%^&*()_+{}|:\"<>?,./;'[]\\=" )
 {
     _xqueryHighlighter.setDocument( document() );
 
@@ -39,15 +40,24 @@ XQEdit::XQEdit(QWidget *parent)
     setTabStopWidth( fm.width(QChar(' ')) * 4 );
     setLineWrapMode(QPlainTextEdit::NoWrap);
 
-    // setup completion keys
-    _completionKeys << Qt::Key_Enter << Qt::Key_Return
-                    << Qt::Key_Escape
-                    << Qt::Key_Tab << Qt::Key_Backtab
-                       ;
+    setupKeys();
 }
 
 XQEdit::~XQEdit()
 {
+}
+
+/**
+Setup keyboard keys that are used in eventKeyPressed().
+*/
+void XQEdit::setupKeys()
+{
+    // ignore the following keys while the completion dialog is visible
+    _ignoreKeysOnCpl
+            << Qt::Key_Enter << Qt::Key_Return
+            << Qt::Key_Escape
+            << Qt::Key_Tab << Qt::Key_Backtab
+               ;
 }
 
 /**
@@ -107,32 +117,29 @@ void XQEdit::keyPressEvent(QKeyEvent *e)
         return;
     }
 
-    // The _completionKeys are forwarded by the completer to the widget
-    if ( _completer->popup()->isVisible() && _completionKeys.contains( e->key() ) )
+    if ( _completer->popup()->isVisible() && _ignoreKeysOnCpl.contains( e->key() ) )
     {
-        // the completer does the default behaviour
+        // let the completer do default behavior
         e->ignore();
         return;
     }
 
-    bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space);
-
-    // do not process the shortcut when we have a completer
+    // ignore the shortcut when completer is already visible
+    const bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_Space);
     if ( !isShortcut )
         QPlainTextEdit::keyPressEvent(e);
 
     const bool ctrlOrShift = e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier);
-    if ( (ctrlOrShift && e->text().isEmpty()) )
+    if ( ctrlOrShift && e->text().isEmpty() )
         return;
 
-    static QString eow("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\="); // end of word
     bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
     QString completionPrefix = textUnderCursor();
 
     if ( !isShortcut &&
             ( hasModifier || e->text().isEmpty()
-             || completionPrefix.length() < 3
-             || eow.contains(e->text().right(1)) ) )
+             || completionPrefix.length() < 2
+             || _eow.contains(e->text().right(1)) ) )
     {
         _completer->popup()->hide();
         return;

@@ -21,6 +21,7 @@
 #define XQEDIT_H
 
 #include <QtGui/QPlainTextEdit>
+#include <QtCore/QString>
 
 #include "XQueryHighlighter.h"
 
@@ -47,8 +48,13 @@ private slots:
     void insertCompletion(const QString &completion);
 
 private:
-    QCompleter *        _completer;
     XQueryHighlighter   _xqueryHighlighter;
+    QCompleter *        _completer;
+    QList<int>          _ignoreKeysOnCpl;
+
+    const QString       _eow; //!< End Of Word
+
+    void setupKeys();
 
     QString textUnderCursor() const;
 
