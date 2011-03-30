@@ -333,7 +333,6 @@ bool XQEMainWindow::saveQuery(bool saveAs)
         QFileDialog fd( 0, tr("Save query file ..."), startPath );
         fd.setAcceptMode(QFileDialog::AcceptSave);
         fd.setDefaultSuffix(ext);
-        fd.setFileMode(QFileDialog::ExistingFile);
         connect( &fd, SIGNAL( fileSelected(const QString &) ), SLOT(queryFileNameChanged(const QString &)) );
 
         if ( fd.exec() == 0 )
