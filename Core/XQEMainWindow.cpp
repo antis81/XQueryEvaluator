@@ -39,6 +39,7 @@
 #include <QtGui/QToolBar>
 #include <QtGui/QComboBox>
 #include <QtGui/QCloseEvent>
+#include <QtGui/QDockWidget>
 
 #include <QtCore/QTime>
 #include <QtCore/QSettings>
@@ -58,6 +59,8 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     , _xmlEditor( new XmlEditor )
 {
     ui->setupUi(this);
+
+    setDockOptions( QMainWindow::AnimatedDocks );
 
     setWindowTitle( QString("%1 (%2)").arg( qApp->applicationName() ).arg( qApp->applicationVersion() ) );
     qApp->setWindowIcon( QIcon(":/AppIcon.svg") );
@@ -349,7 +352,6 @@ bool XQEMainWindow::saveQuery(bool saveAs)
         QFileDialog fd( 0, tr("Save query file ..."), startPath );
         fd.setAcceptMode(QFileDialog::AcceptSave);
         fd.setDefaultSuffix(ext);
-        fd.setFileMode(QFileDialog::ExistingFile);
         connect( &fd, SIGNAL( fileSelected(const QString &) ), SLOT(queryFileNameChanged(const QString &)) );
 
         if ( fd.exec() == 0 )
@@ -506,11 +508,20 @@ Starts a string search in the query text.
 */
 void XQEMainWindow::actionSearchText()
 {
-    TextSearch * searchDialog = new TextSearch();
+    QDockWidget *   dwSearch = new QDockWidget( 0 );
+    dwSearch->setFeatures( QDockWidget::NoDockWidgetFeatures );
+    dwSearch->setTitleBarWidget( new QWidget() );
 
+    QLayout * l = dwSearch->layout();
+    if (l != 0)
+        l->setContentsMargins(0,0,0,0);
+
+    TextSearch * searchDialog = new TextSearch();
     searchDialog->setTextEdit( _textQuery->textEdit() );
 
-    searchDialog->show();
+    dwSearch->setWidget( searchDialog );
+
+    addDockWidget(Qt::TopDockWidgetArea, dwSearch, Qt::Horizontal);
 }
 
 //void XQEMainWindow::actionSaveQueryAs()
