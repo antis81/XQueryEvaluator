@@ -46,6 +46,11 @@ void TextSearch::on_btnBack_clicked()
     find( ui->textSearch->text(), false, QTextDocument::FindBackward );
 }
 
+void TextSearch::on_btnClose_clicked()
+{
+    close();
+}
+
 /**
 Called when search string changes.
 */
