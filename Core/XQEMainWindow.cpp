@@ -508,20 +508,23 @@ Starts a string search in the query text.
 */
 void XQEMainWindow::actionSearchText()
 {
-    QDockWidget *   dwSearch = new QDockWidget( 0 );
+    QDockWidget *   dwSearch = new QDockWidget();
     dwSearch->setFeatures( QDockWidget::NoDockWidgetFeatures );
     dwSearch->setTitleBarWidget( new QWidget() );
 
     QLayout * l = dwSearch->layout();
     if (l != 0)
         l->setContentsMargins(0,0,0,0);
+    else
+        dwSearch->setContentsMargins(0,0,0,0);
 
     TextSearch * searchDialog = new TextSearch();
     searchDialog->setTextEdit( _textQuery->textEdit() );
 
     dwSearch->setWidget( searchDialog );
+    connect( searchDialog, SLOT(close()), dwSearch, SLOT(close()) );
 
-    addDockWidget(Qt::TopDockWidgetArea, dwSearch, Qt::Horizontal);
+    addDockWidget(Qt::TopDockWidgetArea, dwSearch, Qt::Vertical);
 }
 
 //void XQEMainWindow::actionSaveQueryAs()
