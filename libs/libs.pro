@@ -1,5 +1,3 @@
-include(../xqeval.pri)
-
 message ("Building $$TARGET with Qt Version $$[QT_VERSION]")
 
 TEMPLATE = subdirs
@@ -7,7 +5,9 @@ CONFIG += ordered
 
 SUBDIRS = \
     #3rdparty \
-    ui
+    ui \
+    Query \
+    TextEditing
 
 # TRANSLATIONS += \
 #     translations/xqeval_cs.ts \

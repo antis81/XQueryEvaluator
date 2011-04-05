@@ -1,4 +1,4 @@
-include(../xqeval.pri)
+include(../../xqeval.pri)
 
 TEMPLATE = lib
 CONFIG += staticlib

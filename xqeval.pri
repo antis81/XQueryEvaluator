@@ -15,4 +15,4 @@ UI_DIR  = $$PWD/GeneratedFiles/ui
 RCC_DIR = $$PWD/GeneratedFiles/rcc
 OBJECTS_DIR = $$PWD/GeneratedFiles/obj
 
-INCLUDEPATH += $$PWD libs libs/3rdparty
+INCLUDEPATH += $$PWD $$PWD/libs $$PWD/libs/3rdparty

@@ -1,14 +1,12 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2011-04-05T14:36:49
-#
-#-------------------------------------------------
+include(../../xqeval.pri)
 
 TARGET = ui
+DESTDIR = $$BIN_BASE
 TEMPLATE = lib
 CONFIG += staticlib
 
-HEADERS += AbstractWidgetGenerator.h
+HEADERS += AbstractWidgetGenerator.h \
+    DockWidgets.h
 
 unix:!symbian {
     maemo5 {
@@ -18,3 +16,6 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+SOURCES += \
+    DockWidgets.cpp
