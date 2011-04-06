@@ -10,6 +10,11 @@ namespace Ui {
     class TextSearch;
 }
 
+
+/**
+@brief
+Represents a generic text search dialog.
+*/
 class TextSearch : public QWidget
 {
     Q_OBJECT
