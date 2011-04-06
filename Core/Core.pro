@@ -19,6 +19,7 @@ macx {
 DESTDIR = $$BIN_BASE
 
 LIBS += -L$$BIN_BASE \
+    -lui \
     -lTextEditing \
     -lQuery
 

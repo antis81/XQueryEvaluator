@@ -4,7 +4,10 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 SUBDIRS = \
-    3rdparty
+    #3rdparty \
+    ui \
+    Query \
+    TextEditing
 
 # TRANSLATIONS += \
 #     translations/xqeval_cs.ts \

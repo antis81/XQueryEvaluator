@@ -10,6 +10,11 @@ namespace Ui {
     class TextSearch;
 }
 
+
+/**
+@brief
+Represents a generic text search dialog.
+*/
 class TextSearch : public QWidget
 {
     Q_OBJECT
@@ -24,6 +29,7 @@ public:
 private slots:
     void on_btnForward_clicked();
     void on_btnBack_clicked();
+    void on_btnClose_clicked();
 
     void on_textSearch_textChanged();
 

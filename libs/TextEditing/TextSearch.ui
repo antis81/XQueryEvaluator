@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>764</width>
-    <height>38</height>
+    <height>40</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,6 +43,13 @@
      <property name="icon">
       <iconset resource="../Core/resources/xqe_resource.qrc">
        <normaloff>:/right-arrow.svg</normaloff>:/right-arrow.svg</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QToolButton" name="btnClose">
+     <property name="text">
+      <string>Close</string>
      </property>
     </widget>
    </item>

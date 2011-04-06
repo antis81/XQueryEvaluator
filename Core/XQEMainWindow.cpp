@@ -56,11 +56,22 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     , ui( new Ui::XQEMainWindow )
     , _xmlSource( new XmlSource )
     , _textQuery( new XQEditor )
-    , _xmlEditor( new XmlEditor )
 {
     ui->setupUi(this);
 
     setDockOptions( QMainWindow::AnimatedDocks );
+
+    _fixedDockWidgets.setOwnerWindow(this);
+
+    _fixedDockWidgets.registerDefaultGenerator<QWidget>();
+    //_fixedDockWidgets.registerWidgetGenerator<XmlEditor>( "XmlEditor" );
+
+    _fixedDockWidgets.registerDockWidget(
+                "search", Qt::TopDockWidgetArea
+                , AssignedDockWidget::Options( AssignedDockWidget::CloseOnHide | AssignedDockWidget::Resizable ) );
+    _fixedDockWidgets.registerDockWidget(
+                "xml-edit", "XmlEditor", Qt::BottomDockWidgetArea
+                , AssignedDockWidget::Options( AssignedDockWidget::CloseOnHide | AssignedDockWidget::Resizable ) );
 
     setWindowTitle( QString("%1 (%2)").arg( qApp->applicationName() ).arg( qApp->applicationVersion() ) );
     qApp->setWindowIcon( QIcon(":/AppIcon.svg") );
@@ -112,7 +123,8 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     ui->toolBar->addWidget( _xmlSource );
 
     a = new QAction( QIcon(":/eye.svg"), tr("View Source"), 0 );
-    connect( a, SIGNAL(triggered()), this, SLOT(actionViewSource()) );
+    a->setCheckable(true);
+    connect( a, SIGNAL(triggered(bool)), this, SLOT(actionViewSource(bool)) );
     connect( _xmlSource, SIGNAL(sourceFileAvailable(bool)), a, SLOT(setEnabled(bool)) );
     ui->toolBar->addAction(a);
 
@@ -139,9 +151,6 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 XQEMainWindow::~XQEMainWindow()
 {
     delete ui;
-
-    if (_xmlEditor)
-        delete _xmlEditor;
 }
 
 /**
@@ -410,10 +419,17 @@ void XQEMainWindow::about()
 /**
 The XML source should be shown.
 */
-void XQEMainWindow::actionViewSource()
+void XQEMainWindow::actionViewSource(bool activate)
 {
-    if ( _xmlEditor == 0 )
+    if (!activate)
+    {
+        //_fixedDockWidgets.hide("xml-edit");
+        AssignedDockWidget *dw = _fixedDockWidgets.dockWidgetForKey("xml-edit");
+        if ( (dw != 0) && (dw->dockWidget()->widget() != 0) )
+            dw->dockWidget()->widget()->close();
+
         return;
+    }
 
     QFile xmlFile( _xmlSource->sourceFile() );
     if ( !xmlFile.open(QIODevice::ReadOnly) || _xmlSource->sourceFile().isEmpty() )
@@ -424,12 +440,23 @@ void XQEMainWindow::actionViewSource()
         return;
     }
 
-    _xmlEditor->setWindowTitle( tr("XML Source File - %1").arg( QFileInfo(xmlFile).fileName() ) );
-    _xmlEditor->setXml( QString::fromUtf8(xmlFile.readAll()) );
+    XmlEditor * xmlEditor = new XmlEditor();
+
+    xmlEditor->setWindowTitle( tr("XML Source File - %1").arg( QFileInfo(xmlFile).fileName() ) );
+    xmlEditor->setXml( QString::fromUtf8(xmlFile.readAll()) );
 
     xmlFile.close();
 
-    _xmlEditor->show();
+    AssignedDockWidget *dw = _fixedDockWidgets.dockWidgetForKey("xml-edit");
+    if ( dw != 0 )
+    {
+//        dw->dockWidget()->setLayout( xmlEditor->layout() );
+        dw->dockWidget()->setWidget( xmlEditor );
+        _fixedDockWidgets.show("xml-edit");
+        return;
+    }
+
+    xmlEditor->show();
 }
 
 /**
@@ -508,20 +535,21 @@ Starts a string search in the query text.
 */
 void XQEMainWindow::actionSearchText()
 {
-    QDockWidget *   dwSearch = new QDockWidget( 0 );
-    dwSearch->setFeatures( QDockWidget::NoDockWidgetFeatures );
-    dwSearch->setTitleBarWidget( new QWidget() );
-
-    QLayout * l = dwSearch->layout();
-    if (l != 0)
-        l->setContentsMargins(0,0,0,0);
-
     TextSearch * searchDialog = new TextSearch();
     searchDialog->setTextEdit( _textQuery->textEdit() );
 
-    dwSearch->setWidget( searchDialog );
+    AssignedDockWidget *dw = _fixedDockWidgets.dockWidgetForKey("search");
 
-    addDockWidget(Qt::TopDockWidgetArea, dwSearch, Qt::Horizontal);
+    if (dw != 0)
+    {
+//        dw->dockWidget()->setLayout( searchDialog->layout() );
+        dw->dockWidget()->setWidget( searchDialog );
+        _fixedDockWidgets.show("search");
+        return;
+    }
+
+    // show as seperate window
+    searchDialog->show();
 }
 
 //void XQEMainWindow::actionSaveQueryAs()

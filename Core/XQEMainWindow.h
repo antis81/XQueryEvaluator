@@ -24,6 +24,7 @@
 #include <QtXmlPatterns/QXmlQuery>
 
 #include "Query/XQEvaluator.h"
+#include "ui/DockWidgets.h"
 
 
 namespace Ui {
@@ -54,7 +55,7 @@ private slots:
     void startQuery();
     void changeFormattedOutput(bool enabled);
 
-    void actionViewSource();
+    void actionViewSource(bool activate);
     void actionEditSource();
 
     void actionNewQuery();
@@ -65,7 +66,6 @@ private slots:
     void actionSearchText();
 
     void queryLanguageSelected(int comboIndex);
-
     void queryFileNameChanged(const QString & newFileName);
 
     void about();
@@ -82,9 +82,10 @@ private:
     QString                     _queryFileName;
     XmlSource *                 _xmlSource;
     XQEditor *                  _textQuery;
-    XmlEditor *                 _xmlEditor;
 
     XQEvaluator                 _xqeval;
+
+    DockWidgets                 _fixedDockWidgets;
 
     void readSettings();
     void writeSettings();
