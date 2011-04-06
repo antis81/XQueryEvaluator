@@ -6,7 +6,9 @@ TEMPLATE = lib
 CONFIG += staticlib
 
 HEADERS += AbstractWidgetGenerator.h \
-    DockWidgets.h
+    DockWidgets.h \
+    WidgetFactory.h \
+    AssignedDockWidget.h
 
 unix:!symbian {
     maemo5 {
@@ -18,4 +20,6 @@ unix:!symbian {
 }
 
 SOURCES += \
-    DockWidgets.cpp
+    DockWidgets.cpp \
+    WidgetFactory.cpp \
+    AssignedDockWidget.cpp

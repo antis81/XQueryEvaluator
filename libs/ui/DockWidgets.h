@@ -1,7 +1,11 @@
 #ifndef DOCKWIDGETS_H
 #define DOCKWIDGETS_H
 
+#include "ui/WidgetFactory.h"
+#include "ui/AssignedDockWidget.h"
+
 class QMainWindow;
+class AbstractWidgetGenerator;
 
 
 /**
@@ -9,34 +13,30 @@ class QMainWindow;
 Controls a set of QDockWidgets in a parent QMainWindow
 by registering assigning them to a fixed QDockWidgetArea.
 */
-class DockWidgets
+class DockWidgets : public WidgetFactory
 {
 public:
-    /**
-    @brief
-    Represents an assigned dock widget.
-    */
-    struct AssignedDockWidget
-    {
-        Qt::DockWidgetArea      area;
-        bool                    closeOnHide;
-        bool                    resizable;
-        QDockWidget *           dockWidget;
-
-        AssignedDockWidget()
-            : area(Qt::NoDockWidgetArea), closeOnHide(true), dockWidget(0) {}
-    };
-
     DockWidgets();
+    DockWidgets( QMainWindow * ownerWindow );
 
-    QMainWindow * parentWindow();
-    void setParentWindow(QMainWindow * window);
+    QMainWindow * ownerWindow() const;
+    void setOwnerWindow(QMainWindow * window);
 
-    registerDockWidget( const QString &id, Qt::DockWidgetArea area );
+    void registerDockWidget(
+        const QString &key, Qt::DockWidgetArea area, AssignedDockWidget::Options options );
+
+    void registerDockWidget(
+        const QString &key, const QString &widgetClassName
+        , Qt::DockWidgetArea area, AssignedDockWidget::Options options );
+
+    void show(const QString &key);
+    void hide(const QString &key);
+
+    AssignedDockWidget * dockWidgetForKey(const QString &key) const;
 
 private:
-    QMainWindow *               _parentWindow;
-    QList<AssignedDockWidget>   _assignedDockWidgets;
+    QMainWindow *                           _ownerWindow;
+    QMap<QString, AssignedDockWidget*>      _assignedDockWidgets;
 };
 
 #endif // DOCKWIDGETS_H
