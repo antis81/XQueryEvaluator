@@ -6,7 +6,6 @@
 AssignedDockWidget::AssignedDockWidget()
     : _privateDW( new QDockWidget() )
     , _area(Qt::NoDockWidgetArea)
-    , _options( CloseOnHide | Resizable )
 {
     _privateDW->setFeatures( QDockWidget::NoDockWidgetFeatures );
     _privateDW->setTitleBarWidget( new QWidget() );
@@ -41,16 +40,6 @@ Qt::DockWidgetArea AssignedDockWidget::area() const
 void AssignedDockWidget::setArea(Qt::DockWidgetArea area)
 {
     _area = area;
-}
-
-AssignedDockWidget::Options AssignedDockWidget::options() const
-{
-    return _options;
-}
-
-void AssignedDockWidget::setOptions(Options options)
-{
-    _options = options;
 }
 
 QDockWidget * AssignedDockWidget::dockWidget() const

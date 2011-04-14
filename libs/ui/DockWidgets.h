@@ -22,12 +22,8 @@ public:
     QMainWindow * ownerWindow() const;
     void setOwnerWindow(QMainWindow * window);
 
-    void registerDockWidget(
-        const QString &key, Qt::DockWidgetArea area, AssignedDockWidget::Options options );
-
-    void registerDockWidget(
-        const QString &key, const QString &widgetClassName
-        , Qt::DockWidgetArea area, AssignedDockWidget::Options options );
+    void registerDockWidget( const QString &key, Qt::DockWidgetArea area );
+    void registerDockWidget( const QString &key, const QString &widgetClassName, Qt::DockWidgetArea area );
 
     void show(const QString &key);
     void hide(const QString &key);
