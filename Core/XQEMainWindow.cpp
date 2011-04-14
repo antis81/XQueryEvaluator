@@ -66,12 +66,8 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     _fixedDockWidgets.registerDefaultGenerator<QWidget>();
     //_fixedDockWidgets.registerWidgetGenerator<XmlEditor>( "XmlEditor" );
 
-    _fixedDockWidgets.registerDockWidget(
-                "search", Qt::TopDockWidgetArea
-                , AssignedDockWidget::Options( AssignedDockWidget::CloseOnHide | AssignedDockWidget::Resizable ) );
-    _fixedDockWidgets.registerDockWidget(
-                "xml-edit", "XmlEditor", Qt::BottomDockWidgetArea
-                , AssignedDockWidget::Options( AssignedDockWidget::CloseOnHide | AssignedDockWidget::Resizable ) );
+    _fixedDockWidgets.registerDockWidget("search", Qt::TopDockWidgetArea );
+    _fixedDockWidgets.registerDockWidget( "xml-edit", "XmlEditor", Qt::BottomDockWidgetArea );
 
     setWindowTitle( QString("%1 (%2)").arg( qApp->applicationName() ).arg( qApp->applicationVersion() ) );
     qApp->setWindowIcon( QIcon(":/AppIcon.svg") );

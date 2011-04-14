@@ -37,23 +37,19 @@ Convenience method to register a dockWidget without a dynamically assigned conte
 The widget can be set by another instance before calling show.
 */
 void DockWidgets::registerDockWidget(
-    const QString &key, Qt::DockWidgetArea area, AssignedDockWidget::Options options )
+    const QString &key, Qt::DockWidgetArea area )
 {
-    registerDockWidget(key, QString(), area, options);
+    registerDockWidget(key, QString(), area );
 }
 
 /**
 Registers a dock widget for a fixed area.
 */
-void DockWidgets::registerDockWidget(
-    const QString &key, const QString &widgetClassName, Qt::DockWidgetArea area
-    , AssignedDockWidget::Options options
-    )
+void DockWidgets::registerDockWidget( const QString &key, const QString &widgetClassName, Qt::DockWidgetArea area )
 {
     AssignedDockWidget * dw = _assignedDockWidgets.insert(key, new AssignedDockWidget()).value();
 
     dw->setArea(area);
-    dw->setOptions(options);
     dw->setWidgetKey(widgetClassName);
 }
 
