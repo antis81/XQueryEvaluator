@@ -25,24 +25,24 @@
     <widget class="QLineEdit" name="textSearch"/>
    </item>
    <item>
-    <widget class="QToolButton" name="btnBack">
-     <property name="text">
-      <string>...</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../Core/resources/xqe_resource.qrc">
-       <normaloff>:/left-arrow.svg</normaloff>:/left-arrow.svg</iconset>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QToolButton" name="btnForward">
      <property name="text">
       <string>...</string>
      </property>
      <property name="icon">
-      <iconset resource="../Core/resources/xqe_resource.qrc">
-       <normaloff>:/right-arrow.svg</normaloff>:/right-arrow.svg</iconset>
+      <iconset resource="../../Core/resources/xqe_resource.qrc">
+       <normaloff>:/down-arrow.svg</normaloff>:/down-arrow.svg</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QToolButton" name="btnBack">
+     <property name="text">
+      <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../Core/resources/xqe_resource.qrc">
+       <normaloff>:/up-arrow.svg</normaloff>:/up-arrow.svg</iconset>
      </property>
     </widget>
    </item>
@@ -56,7 +56,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../Core/resources/xqe_resource.qrc"/>
+  <include location="../../Core/resources/xqe_resource.qrc"/>
  </resources>
  <connections/>
 </ui>
