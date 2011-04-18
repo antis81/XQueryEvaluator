@@ -10,5 +10,6 @@
         <file>pen.svg</file>
         <file>left-arrow.svg</file>
         <file>right-arrow.svg</file>
+        <file>up-arrow.svg</file>
     </qresource>
 </RCC>

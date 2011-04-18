@@ -1,11 +1,11 @@
 #ifndef DOCKWIDGETS_H
 #define DOCKWIDGETS_H
 
-#include "ui/WidgetFactory.h"
-#include "ui/AssignedDockWidget.h"
+#include <QtCore/QObject>
+#include <QtCore/QMap>
 
 class QMainWindow;
-class AbstractWidgetGenerator;
+class AssignedDockWidget;
 
 
 /**
@@ -13,11 +13,11 @@ class AbstractWidgetGenerator;
 Controls a set of QDockWidgets in a parent QMainWindow
 by registering assigning them to a fixed QDockWidgetArea.
 */
-class DockWidgets : public WidgetFactory
+class DockWidgets
 {
 public:
-    DockWidgets();
-    DockWidgets( QMainWindow * ownerWindow );
+    explicit DockWidgets( QMainWindow * ownerWindow = 0);
+    virtual ~DockWidgets();
 
     QMainWindow * ownerWindow() const;
     void setOwnerWindow(QMainWindow * window);
@@ -25,7 +25,7 @@ public:
     void registerDockWidget( const QString &key, Qt::DockWidgetArea area );
     void registerDockWidget( const QString &key, const QString &widgetClassName, Qt::DockWidgetArea area );
 
-    void show(const QString &key);
+    bool show(const QString &key, QWidget * content = 0);
     void hide(const QString &key);
 
     AssignedDockWidget * dockWidgetForKey(const QString &key) const;

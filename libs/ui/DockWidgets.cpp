@@ -2,17 +2,18 @@
 
 #include <QtGui/QMainWindow>
 
+#include "AssignedDockWidget.h"
 
-DockWidgets::DockWidgets()
-    : _ownerWindow(0)
-{
-}
 
 /**
-This is a convenience constructor.
+The constructor should set the owner window, that handles QDockWidgets.
 */
 DockWidgets::DockWidgets(QMainWindow * ownerWindow)
     : _ownerWindow( ownerWindow )
+{
+}
+
+DockWidgets::~DockWidgets()
 {
 }
 
@@ -36,8 +37,7 @@ void DockWidgets::setOwnerWindow(QMainWindow *window)
 Convenience method to register a dockWidget without a dynamically assigned content widget type.
 The widget can be set by another instance before calling show.
 */
-void DockWidgets::registerDockWidget(
-    const QString &key, Qt::DockWidgetArea area )
+void DockWidgets::registerDockWidget( const QString &key, Qt::DockWidgetArea area )
 {
     registerDockWidget(key, QString(), area );
 }
@@ -50,23 +50,31 @@ void DockWidgets::registerDockWidget( const QString &key, const QString &widgetC
     AssignedDockWidget * dw = _assignedDockWidgets.insert(key, new AssignedDockWidget()).value();
 
     dw->setArea(area);
-    dw->setWidgetKey(widgetClassName);
+    dw->setContentWidget(0);
 }
 
 /**
 Show the assigned dock widget for key.
 */
-void DockWidgets::show(const QString &key)
+bool DockWidgets::show(const QString &key, QWidget *content)
 {
     if ( _ownerWindow == 0 )
-        return;
+        return false;
 
-    const AssignedDockWidget * dw = dockWidgetForKey(key);
-    if ( (dw == 0) || dw->dockWidget()->isVisible() )
-        return;
+    AssignedDockWidget * dw = dockWidgetForKey(key);
+    if ( dw == 0 )
+        return false;
+
+    // when a content widget is given, set it
+    if ( content != 0 )
+        dw->setContentWidget(content);
 
     //! @todo Let the user set the orientation (Qt::Horizontal, Qt::Vertical).
     _ownerWindow->addDockWidget( dw->area(), dw->dockWidget() );
+    if ( !dw->dockWidget()->isVisible() )
+        dw->dockWidget()->show();
+
+    return true;
 }
 
 /**

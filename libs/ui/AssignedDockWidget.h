@@ -1,7 +1,6 @@
 #ifndef ASSIGNEDDOCKWIDGET_H
 #define ASSIGNEDDOCKWIDGET_H
 
-#include <QtCore/QFlags>
 #include <QtGui/QDockWidget>
 
 
@@ -9,20 +8,22 @@
 @brief
 Represents an assigned dock widget.
 */
-class AssignedDockWidget
-        Q_FLAGS( Options )
+class AssignedDockWidget : public QObject
 {
 public:
-    explicit AssignedDockWidget();
+    explicit AssignedDockWidget(QObject * parent = 0);
     virtual ~AssignedDockWidget();
 
-    const QString& widgetKey() const;
-    void setWidgetKey(const QString &widgetClassName);
+    QWidget * contentWidget() const;
+    void setContentWidget(QWidget *w);
 
     Qt::DockWidgetArea area() const;
     void setArea(Qt::DockWidgetArea area);
 
     QDockWidget * dockWidget() const;
+
+protected:
+    bool eventFilter(QObject *o, QEvent *e);
 
 private:
     QDockWidget *           _privateDW;

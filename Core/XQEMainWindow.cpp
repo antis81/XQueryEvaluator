@@ -61,13 +61,11 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
     setDockOptions( QMainWindow::AnimatedDocks );
 
+    // setup docking areas
     _fixedDockWidgets.setOwnerWindow(this);
 
-    _fixedDockWidgets.registerDefaultGenerator<QWidget>();
-    //_fixedDockWidgets.registerWidgetGenerator<XmlEditor>( "XmlEditor" );
-
-    _fixedDockWidgets.registerDockWidget("search", Qt::TopDockWidgetArea );
-    _fixedDockWidgets.registerDockWidget( "xml-edit", "XmlEditor", Qt::BottomDockWidgetArea );
+    _fixedDockWidgets.registerDockWidget( "search", Qt::TopDockWidgetArea );
+    _fixedDockWidgets.registerDockWidget( "xml-edit", Qt::LeftDockWidgetArea );
 
     setWindowTitle( QString("%1 (%2)").arg( qApp->applicationName() ).arg( qApp->applicationVersion() ) );
     qApp->setWindowIcon( QIcon(":/AppIcon.svg") );
@@ -419,11 +417,7 @@ void XQEMainWindow::actionViewSource(bool activate)
 {
     if (!activate)
     {
-        //_fixedDockWidgets.hide("xml-edit");
-        AssignedDockWidget *dw = _fixedDockWidgets.dockWidgetForKey("xml-edit");
-        if ( (dw != 0) && (dw->dockWidget()->widget() != 0) )
-            dw->dockWidget()->widget()->close();
-
+        _fixedDockWidgets.hide("xml-edit");
         return;
     }
 
@@ -443,16 +437,11 @@ void XQEMainWindow::actionViewSource(bool activate)
 
     xmlFile.close();
 
-    AssignedDockWidget *dw = _fixedDockWidgets.dockWidgetForKey("xml-edit");
-    if ( dw != 0 )
+    if ( !_fixedDockWidgets.show("xml-edit", xmlEditor) )
     {
-//        dw->dockWidget()->setLayout( xmlEditor->layout() );
-        dw->dockWidget()->setWidget( xmlEditor );
-        _fixedDockWidgets.show("xml-edit");
-        return;
+        // show xml editor as seperate window
+        xmlEditor->show();
     }
-
-    xmlEditor->show();
 }
 
 /**
@@ -534,18 +523,11 @@ void XQEMainWindow::actionSearchText()
     TextSearch * searchDialog = new TextSearch();
     searchDialog->setTextEdit( _textQuery->textEdit() );
 
-    AssignedDockWidget *dw = _fixedDockWidgets.dockWidgetForKey("search");
-
-    if (dw != 0)
+    if ( !_fixedDockWidgets.show("search", searchDialog) )
     {
-//        dw->dockWidget()->setLayout( searchDialog->layout() );
-        dw->dockWidget()->setWidget( searchDialog );
-        _fixedDockWidgets.show("search");
-        return;
+        // show as seperate window
+        searchDialog->show();
     }
-
-    // show as seperate window
-    searchDialog->show();
 }
 
 //void XQEMainWindow::actionSaveQueryAs()
