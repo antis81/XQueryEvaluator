@@ -1,12 +1,15 @@
 #include "AssignedDockWidget.h"
 
+#include <QtCore/QEvent>
 #include <QtGui/QLayout>
 
 
-AssignedDockWidget::AssignedDockWidget()
-    : _privateDW( new QDockWidget() )
+AssignedDockWidget::AssignedDockWidget(QObject * parent)
+    : QObject(parent)
+    , _privateDW( new QDockWidget() )
     , _area(Qt::NoDockWidgetArea)
 {
+    _privateDW->setAttribute(Qt::WA_DeleteOnClose, false);
     _privateDW->setFeatures( QDockWidget::NoDockWidgetFeatures );
     _privateDW->setTitleBarWidget( new QWidget() );
 
@@ -22,14 +25,17 @@ AssignedDockWidget::~AssignedDockWidget()
     delete _privateDW;
 }
 
-const QString & AssignedDockWidget::widgetKey() const
+QWidget * AssignedDockWidget::contentWidget() const
 {
-    return _widgetKey;
+    return _privateDW->widget();
 }
 
-void AssignedDockWidget::setWidgetKey(const QString &widgetClassName)
+void AssignedDockWidget::setContentWidget(QWidget *w)
 {
-    _widgetKey = widgetClassName;
+    _privateDW->setWidget(w);
+
+    if ( w != 0 )
+        w->installEventFilter(this);
 }
 
 Qt::DockWidgetArea AssignedDockWidget::area() const
@@ -45,4 +51,14 @@ void AssignedDockWidget::setArea(Qt::DockWidgetArea area)
 QDockWidget * AssignedDockWidget::dockWidget() const
 {
     return _privateDW;
+}
+
+bool AssignedDockWidget::eventFilter(QObject *o, QEvent *e)
+{
+    e->accept();
+
+    if ( e->type() == QEvent::Close )
+        _privateDW->close();
+
+    return true;
 }
