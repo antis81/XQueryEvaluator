@@ -7,13 +7,22 @@
     <x>0</x>
     <y>0</y>
     <width>764</width>
-    <height>40</height>
+    <height>34</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="margin">
+    <number>6</number>
+   </property>
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
@@ -47,11 +56,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QToolButton" name="btnClose">
-     <property name="text">
-      <string>Close</string>
-     </property>
-    </widget>
+    <widget class="QToolButton" name="btnClose"/>
    </item>
   </layout>
  </widget>

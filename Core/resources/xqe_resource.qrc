@@ -11,5 +11,7 @@
         <file>left-arrow.svg</file>
         <file>right-arrow.svg</file>
         <file>up-arrow.svg</file>
+        <file>close.svg</file>
+        <file>close_pressed.svg</file>
     </qresource>
 </RCC>

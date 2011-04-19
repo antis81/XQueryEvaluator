@@ -37,6 +37,8 @@ SOURCES += main.cpp\
 RESOURCES += \
     resources/xqe_resource.qrc
 
+OTHER_FILES = xqe.rc resources/DarkBlue.css
+
 OTHER_FILES = xqe.rc
 
 win32 {
