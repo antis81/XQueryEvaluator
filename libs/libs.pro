@@ -8,7 +8,3 @@ SUBDIRS = \
     ui \
     Query \
     TextEditing
-
-# TRANSLATIONS += \
-#     translations/xqeval_cs.ts \
-#     translations/xqeval_de.ts

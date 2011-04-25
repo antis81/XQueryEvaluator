@@ -39,14 +39,14 @@ public:
     void setQueryLanguage(QXmlQuery::QueryLanguage newVal);
 
     bool formattedOutput() const;
+    void setFormattedOutput(bool enabled);
 
     QString transform(const QString &source, const QString &query, QString &err);
-
-    void setFormattedOutput(bool enabled);
 
 private:
     QXmlQuery::QueryLanguage    _queryLanguage;
     bool                        _formattedOutput;
+
 };
 
 #endif // XQEVALUATOR_H

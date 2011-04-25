@@ -93,13 +93,5 @@ void TextSearch::find(const QString &search, bool fromStart, QTextDocument::Find
         _textEdit->setTextCursor(crsr);
     }
 
-    QPalette pal = ui->textSearch->palette();
-    if ( _textEdit->find( search, options ) )
-    {
-        pal.setBrush(QPalette::Base, Qt::white);
-        ui->textSearch->setPalette(pal);
-    } else {
-        pal.setBrush(QPalette::Base, QColor(0xFF,0x80,0x80));
-        ui->textSearch->setPalette(pal);
-    }
+    _textEdit->find( search, options );
 }
