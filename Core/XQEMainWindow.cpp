@@ -65,7 +65,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     _fixedDockWidgets.setOwnerWindow(this);
 
     _fixedDockWidgets.registerDockWidget( "search", Qt::TopDockWidgetArea );
-    _fixedDockWidgets.registerDockWidget( "xml-edit", Qt::LeftDockWidgetArea );
+    _fixedDockWidgets.registerDockWidget( "xml-edit", Qt::RightDockWidgetArea );
 
     setWindowTitle( QString("%1 (%2)").arg( qApp->applicationName() ).arg( qApp->applicationVersion() ) );
     qApp->setWindowIcon( QIcon(":/AppIcon.svg") );
