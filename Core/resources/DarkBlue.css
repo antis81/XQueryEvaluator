@@ -28,9 +28,7 @@ QAbstractButton#btnClose
 
 QAbstractButton#btnClose:pressed
 {
-    border-style: none;
     border-image: url(:/close_pressed.svg) 0 0 0 0;
-    color: grey;
 }
 
 TextSearch > QLineEdit
