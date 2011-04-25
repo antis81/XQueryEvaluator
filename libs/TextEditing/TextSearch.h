@@ -26,6 +26,9 @@ public:
     QPlainTextEdit * textEdit();
     void setTextEdit( QPlainTextEdit * edit );
 
+protected:
+    virtual void showEvent(QShowEvent *);
+
 private slots:
     void on_btnForward_clicked();
     void on_btnBack_clicked();

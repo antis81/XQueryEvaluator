@@ -95,3 +95,11 @@ void TextSearch::find(const QString &search, bool fromStart, QTextDocument::Find
 
     _textEdit->find( search, options );
 }
+
+void TextSearch::showEvent(QShowEvent *e)
+{
+    e->accept();
+    ui->textSearch->setFocus();
+
+    QWidget::showEvent(e);
+}
