@@ -370,9 +370,14 @@ bool XQEMainWindow::saveQuery(bool saveAs)
         return false;
     }
 
-    dest.write( _textQuery->xqText().toUtf8() );
+    const QString &content = _textQuery->xqText();
+    qint64 bytesWritten = dest.write( content.toUtf8() );
+    if ( bytesWritten == content.size() )
+        return true;
 
-    return true;
+    QMessageBox::critical( this, tr("Error on writing file"), tr("Error while writing query file %1.").arg(_queryFileName) );
+
+    return false;
 }
 
 /**
