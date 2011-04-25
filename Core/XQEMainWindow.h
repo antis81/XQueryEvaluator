@@ -54,6 +54,7 @@ private slots:
     void autoIndent();
     void startQuery();
     void changeFormattedOutput(bool enabled);
+    void actionOutputToFile(bool yes);
 
     void actionViewSource(bool activate);
     void actionEditSource();
@@ -79,7 +80,9 @@ private:
 
     QComboBox *                 _textQueryType;
 
+    bool                        _outputToFile;
     QString                     _queryFileName;
+    QString                     _outputFilePath;
     XmlSource *                 _xmlSource;
     XQEditor *                  _textQuery;
 
@@ -95,6 +98,8 @@ private:
 
     bool saveQuery(bool saveAs = false);
     bool queryCanClose();
+
+    void saveOutputToFile( const QString &content );
 };
 
 #endif // XQEMAINWINDOW_H

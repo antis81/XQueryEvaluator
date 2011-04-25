@@ -54,6 +54,7 @@ This is to be outsourced in seperate functions, maybe an ActionManager class.
 XQEMainWindow::XQEMainWindow(QWidget *parent)
     : QMainWindow( parent )
     , ui( new Ui::XQEMainWindow )
+    , _outputToFile(false)
     , _xmlSource( new XmlSource )
     , _textQuery( new XQEditor )
 {
@@ -104,6 +105,12 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     a->setCheckable(true);
     a->setChecked( _xqeval.formattedOutput() );
     ui->toolBar->addAction(a);
+
+    a = m->addAction( QIcon(":/toFile.svg"), "Output to file ...", this, SLOT(actionOutputToFile(bool)) );
+    a->setCheckable(true);
+    ui->toolBar->addAction(a);
+
+    m->addSeparator();
 
     a = m->addAction( QIcon(":/start.svg"), tr("Run"), this,
                      SLOT( startQuery() ), QKeySequence( Qt::CTRL + Qt::Key_R ) );
@@ -163,6 +170,7 @@ void XQEMainWindow::changeEvent(QEvent *e)
 
 /**
 Evaluates a query and shows the result in a seperate modal dialog.
+When outputToFile is true, the result is written to the specified file in addition.
 */
 void XQEMainWindow::startQuery()
 {
@@ -175,6 +183,9 @@ void XQEMainWindow::startQuery()
     const QString &out = _xqeval.transform( source, _textQuery->xqText(), errLog );
 
     int duration = stopWatch.elapsed(); // time measurement
+
+    if ( _outputToFile )
+        saveOutputToFile(out);
 
     XQEOutput dlg;
     dlg.setWindowTitle( tr("Query Result") );
@@ -471,6 +482,9 @@ void XQEMainWindow::readSettings()
         _textQueryType->setCurrentIndex( i );
 
     loadQuery( settings.value( "queryFile" ).toString() );
+
+    _outputFilePath = settings.value( "outputFilePath" ).toString();
+
     settings.endGroup();
 }
 
@@ -495,6 +509,7 @@ void XQEMainWindow::writeSettings()
     settings.beginGroup( "Query" );
     settings.setValue( "type", _textQueryType->currentText() );
     settings.setValue( "queryFile", _queryFileName );
+    settings.setValue( "outputFilePath", _outputFilePath );
     settings.endGroup();
 }
 
@@ -538,4 +553,45 @@ void XQEMainWindow::actionSaveQueryAs()
 {
     if ( saveQuery(true) )
         _textQuery->setModified(false);
+}
+
+/**
+Sets an output file to which the query result will be written on executing.
+*/
+void XQEMainWindow::actionOutputToFile(bool yes)
+{
+    _outputToFile = yes;
+    if ( !_outputToFile )
+        return;
+
+    // set a file name
+    QString path = _outputFilePath;
+    if ( path.isEmpty() )
+        path = QDir::homePath();
+
+    path = QFileDialog::getSaveFileName( this, tr("Select an output file."), QFileInfo(path).absoluteFilePath() );
+
+    if ( !path.isEmpty() )
+        _outputFilePath = QFileInfo(path).absoluteFilePath();
+}
+
+void XQEMainWindow::saveOutputToFile(const QString &content)
+{
+    if ( _outputFilePath.isEmpty() || content.isEmpty() )
+        return;
+
+
+    QFile file( _outputFilePath );
+    qint64 bytesWritten = 0;
+    if ( file.open(QIODevice::WriteOnly) )
+    {
+        bytesWritten = file.write( content.toUtf8() );
+        file.close();
+    } else {
+        QMessageBox::critical( this, tr("Unable to open output file"),
+                               tr("Unable to create or open the output file %1.").arg(_outputFilePath) );
+    }
+
+    if ( bytesWritten != content.size() )
+        QMessageBox::critical( this, tr("Write error"), tr("Error while writng the output file %1.").arg(_outputFilePath) );
 }
