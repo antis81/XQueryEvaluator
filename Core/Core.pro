@@ -17,6 +17,14 @@ LIBS += -L$$BIN_BASE \
     -lTextEditing \
     -lQuery
 
+win32-msvc: LIBEXT=lib
+else: LIBEXT=a
+
+PRE_TARGETDEPS += \
+    $$DESTDIR/libui.$${LIBEXT} \
+    $$DESTDIR/libTextEditing.$${LIBEXT} \
+    $$DESTDIR/libQuery.$${LIBEXT}
+
 QT += xmlpatterns svg
 
 FORMS    += XQEMainWindow.ui \
@@ -47,5 +55,5 @@ win32 {
 } else:macx {
     ICON = resources/logo.icns
     QMAKE_INFO_PLIST = '''resources/InfoTemplate.plist'''
-        QMAKE_BUNDLE_DATA += FILETYPES
+    QMAKE_BUNDLE_DATA += FILETYPES
 }
