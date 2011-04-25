@@ -93,8 +93,8 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     a->setToolTip( tr("Open a query file.") );
     a = m->addAction( tr("Save"), this, SLOT(actionSaveQuery()), QKeySequence( Qt::CTRL + Qt::Key_S ) );
     a->setToolTip( tr("Save your query.") );
-//    a = m->addAction( tr("Save as..."), this, SLOT(actionSaveQueryAs()), QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_S ) );
-//    a->setToolTip( tr("Save your query at another location.") );
+    a = m->addAction( tr("Save as..."), this, SLOT(actionSaveQueryAs()), QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_S ) );
+    a->setToolTip( tr("Save your query at another location.") );
 
     m->addSeparator();
 
@@ -131,7 +131,6 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     m = menuBar()->addMenu( tr("Edit") );
     m->addActions( _textQuery->textEdit()->createStandardContextMenu()->actions() );
     m->addAction( tr("Search ..."), this, SLOT(actionSearchText()), QKeySequence(Qt::CTRL + Qt::Key_F) );
-
 
     // -- Help menu
     m = menuBar()->addMenu( QString("Help") );
@@ -240,7 +239,8 @@ Action wrapper for saving a query.
 */
 void XQEMainWindow::actionSaveQuery()
 {
-    saveQuery();
+    if ( saveQuery() )
+        _textQuery->setModified(false);
 }
 
 /**
@@ -363,7 +363,6 @@ bool XQEMainWindow::saveQuery(bool saveAs)
 
     // write to file
     QFile dest(_queryFileName);
-
     if ( !dest.open(QIODevice::WriteOnly) )
     {
         // failed to save
@@ -530,7 +529,8 @@ void XQEMainWindow::actionSearchText()
     }
 }
 
-//void XQEMainWindow::actionSaveQueryAs()
-//{
-//    saveQuery( true );
-//}
+void XQEMainWindow::actionSaveQueryAs()
+{
+    if ( saveQuery(true) )
+        _textQuery->setModified(false);
+}

@@ -61,7 +61,7 @@ private slots:
     void actionNewQuery();
     void actionOpenQuery();
     void actionSaveQuery();
-//    void actionSaveQueryAs();
+    void actionSaveQueryAs();
 
     void actionSearchText();
 
