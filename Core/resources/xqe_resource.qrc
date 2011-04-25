@@ -13,6 +13,10 @@
         <file>up-arrow.svg</file>
         <file>close.svg</file>
         <file>close_pressed.svg</file>
+        <file>light/down-arrow.svg</file>
+        <file>light/left-arrow.svg</file>
+        <file>light/right-arrow.svg</file>
+        <file>light/up-arrow.svg</file>
         <file>toFile.svg</file>
     </qresource>
 </RCC>

@@ -8,7 +8,7 @@ QMainWindow, XQEOutput, QMessageBox, XmlEditor
     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(42, 59, 93), stop:1 rgb(0, 0, 0));
 }
 
-QToolBar, TextSearch
+QToolBar
 {
     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(230, 230, 230), stop:1 rgb(128, 128, 128));
     spacing: 3;
@@ -29,6 +29,11 @@ QAbstractButton#btnClose
 QAbstractButton#btnClose:pressed
 {
     border-image: url(:/close_pressed.svg) 0 0 0 0;
+}
+
+TextSearch > QAbstractButton
+{
+    border-style:none;
 }
 
 TextSearch > QLineEdit

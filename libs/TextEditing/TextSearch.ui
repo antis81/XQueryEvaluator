@@ -40,7 +40,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../Core/resources/xqe_resource.qrc">
-       <normaloff>:/down-arrow.svg</normaloff>:/down-arrow.svg</iconset>
+       <normaloff>:/light/down-arrow.svg</normaloff>:/light/down-arrow.svg</iconset>
      </property>
     </widget>
    </item>
@@ -51,7 +51,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../Core/resources/xqe_resource.qrc">
-       <normaloff>:/up-arrow.svg</normaloff>:/up-arrow.svg</iconset>
+       <normaloff>:/light/up-arrow.svg</normaloff>:/light/up-arrow.svg</iconset>
      </property>
     </widget>
    </item>
