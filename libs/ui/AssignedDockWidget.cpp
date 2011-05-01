@@ -28,15 +28,10 @@ AssignedDockWidget::AssignedDockWidget(QObject * parent)
     , _privateDW( new QDockWidget() )
     , _area(Qt::NoDockWidgetArea)
 {
+    _privateDW->setContentsMargins(0,0,0,0);
     _privateDW->setAttribute(Qt::WA_DeleteOnClose, false);
     _privateDW->setFeatures( QDockWidget::NoDockWidgetFeatures );
     _privateDW->setTitleBarWidget( new QWidget() );
-
-    QLayout * l = _privateDW->layout();
-    if (l != 0)
-        l->setContentsMargins(0,0,0,0);
-    else
-        _privateDW->setContentsMargins(0,0,0,0);
 }
 
 AssignedDockWidget::~AssignedDockWidget()

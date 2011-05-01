@@ -61,7 +61,7 @@ void DockWidgets::registerDockWidget( const QString &key, Qt::DockWidgetArea are
         AssignedDockWidget * dw = _assignedDockWidgets.insert(key, new AssignedDockWidget()).value();
 
         dw->setArea(area);
-        dw->setContentWidget(0);
+        delete dw->contentWidget();
 }
 
 ///**
