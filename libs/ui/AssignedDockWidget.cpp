@@ -46,6 +46,16 @@ QWidget * AssignedDockWidget::contentWidget() const
 
 void AssignedDockWidget::setContentWidget(QWidget *w)
 {
+    // setup a layout, when the widget has none doesn't have one
+    if ( w->layout() == 0 )
+    {
+        QWidget *current = w; // remember the original pointer!
+        w = new QWidget();
+        QLayout * l = new QGridLayout(w);
+        l->setContentsMargins(0,0,0,0);
+        l->addWidget(current);
+    }
+
     _privateDW->setWidget(w);
 
     if ( w != 0 )
