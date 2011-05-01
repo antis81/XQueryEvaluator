@@ -27,8 +27,7 @@
 
 #include "Query/XQEMessageHandler.h"
 
-#include "TextEditing/XQEdit.h"
-#include "TextEditing/XQEdit.h"
+#include "TextEditing/XQEditor.h"
 #include "TextEditing/XMLEditor.h"
 #include "TextEditing/TextSearch.h"
 
@@ -57,7 +56,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     , _modified( false )
     , _outputToFile(false)
     , _xmlSource( new XmlSource )
-    , _textQuery( new XQEdit )
+    , _textQuery( new XQEditor )
 {
     ui->setupUi(this);
 

@@ -33,12 +33,12 @@ class QAbstractItemModel;
 /**
 @brief Represents a text editor providing XML/XSLT/XQuery highlighting and autocompletion.
 */
-class XQEdit : public TextEditBase
+class XQEditor : public TextEditBase
 {
     Q_OBJECT
 public:
-    explicit XQEdit(QWidget *parent = 0);
-    virtual ~XQEdit();
+    explicit XQEditor(QWidget *parent = 0);
+    virtual ~XQEditor();
 
     QCompleter *completer() const { return _completer; }
     void setCompleter(QCompleter *completer);

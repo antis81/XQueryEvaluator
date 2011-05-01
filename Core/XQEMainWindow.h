@@ -32,7 +32,7 @@ namespace Ui {
 }
 
 class XmlSource;
-class XQEdit;
+class XQEditor;
 class XmlEditor;
 class QComboBox;
 
@@ -87,7 +87,7 @@ private:
     QString                     _queryFileName;
     QString                     _outputFilePath;
     XmlSource *                 _xmlSource;
-    XQEdit *                    _textQuery;
+    XQEditor *                    _textQuery;
 
     XQEvaluator                 _xqeval;
 

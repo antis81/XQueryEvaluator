@@ -17,7 +17,7 @@
 **    along with XQueryEvaluator.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "XQEdit.h"
+#include "XQEditor.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QDir>
@@ -35,7 +35,7 @@
 /**
 Creates a XQEdit text editor instance to edit an XQuery/XSLT script.
 */
-XQEdit::XQEdit(QWidget *parent)
+XQEditor::XQEditor(QWidget *parent)
     : TextEditBase(parent)
     , _completer( new QCompleter() )
     , _eow( "~!@#$%^&*()_+{}|:\"<>?,./;'[]\\=" )
@@ -58,13 +58,13 @@ XQEdit::XQEdit(QWidget *parent)
     setupKeys();
 }
 
-XQEdit::~XQEdit()
+XQEditor::~XQEditor()
 {
     delete _completer;
     Q_CLEANUP_RESOURCE( TextEditing );
 }
 
-QAbstractItemModel * XQEdit::modelFromFile(QString fileName)
+QAbstractItemModel * XQEditor::modelFromFile(QString fileName)
 {
     QFile modelFile( QDir::cleanPath(fileName) );
 
@@ -92,7 +92,7 @@ QAbstractItemModel * XQEdit::modelFromFile(QString fileName)
     return new QStringListModel(sl);
 }
 
-void XQEdit::autoIndent()
+void XQEditor::autoIndent()
 {
     AutoIndent ai;
     ai.indentDocument( document() );
@@ -101,7 +101,7 @@ void XQEdit::autoIndent()
 /**
 Setup keyboard keys that are used in eventKeyPressed().
 */
-void XQEdit::setupKeys()
+void XQEditor::setupKeys()
 {
     // ignore the following keys while the completion dialog is visible
     _ignoreKeysOnCpl
@@ -116,7 +116,7 @@ Finds a word under the current text cursor.
 
 @return The found word is returned.
 */
-QString XQEdit::textUnderCursor() const
+QString XQEditor::textUnderCursor() const
 {
     QTextCursor tc = textCursor();
     tc.select(QTextCursor::WordUnderCursor);
@@ -126,7 +126,7 @@ QString XQEdit::textUnderCursor() const
 /**
 Replaces a partly typed word with a certain completion at the current text cursor position.
 */
-void XQEdit::insertCompletion(const QString& completion)
+void XQEditor::insertCompletion(const QString& completion)
 {
     if (_completer->widget() != this)
         return;
@@ -143,7 +143,7 @@ void XQEdit::insertCompletion(const QString& completion)
 /**
 When the user types, keyPressEvent is called and completions are checked.
 */
-void XQEdit::keyPressEvent(QKeyEvent *e)
+void XQEditor::keyPressEvent(QKeyEvent *e)
 {
     if ( _completer == 0 )
     {
