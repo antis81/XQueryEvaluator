@@ -20,58 +20,28 @@
 #ifndef TEXTEDITMETABORDER_H
 #define TEXTEDITMETABORDER_H
 
+#include <QtGui/QWidget>
 
-#include <QtGui/QPlainTextEdit>
-#include <QtGui/QPaintEvent>
-#include <QtCore/QSet>
-#include <QtGui/QTextBlock>
+class TextEditBase;
+
 
 /**
 A meta border that can be combined with a QPlainTextEdit to display line numbers.
 */
 class TextEditMetaBorder : public QWidget
 {
-    Q_OBJECT
-
 public:
+    explicit TextEditMetaBorder(TextEditBase *editor);
+    virtual ~TextEditMetaBorder();
 
-    enum eTextBlockOption
-    {
-        etboBreakPoint= 0x01,
-        etboBookmark  = 0x02
-    };
-
-    explicit TextEditMetaBorder(QPlainTextEdit *doc, QWidget *parent=0);
-    ~TextEditMetaBorder();
-
-//    bool isBreakpoint(int line) { return _breakpoints.contains(line); }
-//    QSet<int> breakpoints() const { return _breakpoints; }
-
-//    void setDebugMode(bool bnew) { update(); _bDebugMode=bnew; }
-//    bool debugMode() const { return _bDebugMode; }
-
-signals:
-    void breakpointChanged(bool bSet);
+    QSize sizeHint() const;
 
 protected:
-    virtual void showEvent(QShowEvent *e);
-    virtual void paintEvent ( QPaintEvent * event ) ;
-    virtual void drawLineNumbers(QPainter & painter);
-//    void mousePressEvent ( QMouseEvent * event ) ;
+    virtual void paintEvent(QPaintEvent *e);
 
 private:
-    QPlainTextEdit *    _document;
+    TextEditBase *      _editor;
 
-//    bool             _bDebugMode;
-//    QSet<int>        _breakpoints;
-//    struct LineInfo
-//    {
-//        int        line;
-//        QTextBlock textblock;
-//        QRectF     rect;
-//    };
-
-//    QList<LineInfo> _visibleLineCache;
 };
 
 #endif // TEXTEDITMETABORDER_H
