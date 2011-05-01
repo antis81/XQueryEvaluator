@@ -30,7 +30,7 @@
 Creates a XQEdit text editor instance to edit an XQuery/XSLT script.
 */
 XQEdit::XQEdit(QWidget *parent)
-    : QPlainTextEdit(parent)
+    : TextEditBase(parent)
     , _completer(0)
     , _eow( "~!@#$%^&*()_+{}|:\"<>?,./;'[]\\=" )
 {

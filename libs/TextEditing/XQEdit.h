@@ -20,10 +20,11 @@
 #ifndef XQEDIT_H
 #define XQEDIT_H
 
-#include <QtGui/QPlainTextEdit>
+//#include <QtGui/QPlainTextEdit>
 #include <QtCore/QString>
 
 #include "XQueryHighlighter.h"
+#include "TextEditBase.h"
 
 
 class QCompleter;
@@ -31,7 +32,7 @@ class QCompleter;
 /**
 A text edit field providing XML/XSLT/XQuery highlighting and autocompletion.
 */
-class XQEdit : public QPlainTextEdit
+class XQEdit : public TextEditBase
 {
     Q_OBJECT
 public:

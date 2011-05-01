@@ -25,56 +25,29 @@
 
 #include <QtCore/QSettings>
 
-#include "TextEditMetaBorder.h"
+#include "TextEditBase.h"
 
 
 /**
 Creates an XML viewer/editor instance with a highlighter.
 */
 XmlEditor::XmlEditor(QWidget *parent)
-    : QWidget(parent)
-    , _textXml(new QPlainTextEdit(this))
+    : TextEditBase(parent)
 {
-    _highlighter.setDocument( _textXml->document() );
+    _highlighter.setDocument( document() );
 
     const QFontMetrics &fm = fontMetrics();
-    _textXml->setTabStopWidth( fm.width(QChar(' ')) * 4 );
-
-    QHBoxLayout *horLayout = new QHBoxLayout();
-    horLayout->setMargin(0);
-    horLayout->setSpacing(3);
-
-    // add line numbers and text edit
-    horLayout->addWidget( new TextEditMetaBorder(_textXml) );
-    horLayout->addWidget(_textXml);
-
-    setLayout(horLayout);
+    setTabStopWidth( fm.width(QChar(' ')) * 4 );
 
     //! @todo Prevent writing for the moment.
-    _textXml->setReadOnly(true);
-    _textXml->setLineWrapMode(QPlainTextEdit::NoWrap);
+    setReadOnly(true);
+    setLineWrapMode(QPlainTextEdit::NoWrap);
 
     readSettings();
 }
 
 XmlEditor::~XmlEditor()
 {
-}
-
-/**
-@return A copy of the current set XML string.
-*/
-QString XmlEditor::xml() const
-{
-    return _textXml->toPlainText();
-}
-
-/**
-Sets an XML string as plain text.
-*/
-void XmlEditor::setXml(const QString &xml)
-{
-    _textXml->setPlainText(xml);
 }
 
 /**

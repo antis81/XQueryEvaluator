@@ -27,7 +27,7 @@
 
 #include "Query/XQEMessageHandler.h"
 
-#include "TextEditing/XQEditor.h"
+#include "TextEditing/XQEdit.h"
 #include "TextEditing/XQEdit.h"
 #include "TextEditing/XMLEditor.h"
 #include "TextEditing/TextSearch.h"
@@ -54,11 +54,14 @@ This is to be outsourced in seperate functions, maybe an ActionManager class.
 XQEMainWindow::XQEMainWindow(QWidget *parent)
     : QMainWindow( parent )
     , ui( new Ui::XQEMainWindow )
+    , _modified( false )
     , _outputToFile(false)
     , _xmlSource( new XmlSource )
-    , _textQuery( new XQEditor )
+    , _textQuery( new XQEdit )
 {
     ui->setupUi(this);
+
+    connect( _textQuery, SIGNAL( modificationChanged(bool) ), this, SLOT( documentModified(bool) ) );
 
     setDockOptions( QMainWindow::AnimatedDocks );
 
@@ -81,7 +84,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     _textQueryType->addItem( "XSLT 2.0", QXmlQuery::XSLT20 );
     connect( _textQueryType, SIGNAL(activated(int)), this, SLOT(queryLanguageSelected(int)) );
 
-    ui->toolBar->addWidget(_textQueryType);
+    ui->toolBar->addWidget( _textQueryType );
 
     // -- Query menu
     QMenu *m = menuBar()->addMenu( tr("Query") );
@@ -136,7 +139,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
     // -- Edit menu
     m = menuBar()->addMenu( tr("Edit") );
-    m->addActions( _textQuery->textEdit()->createStandardContextMenu()->actions() );
+    m->addActions( _textQuery->createStandardContextMenu()->actions() );
     m->addAction( tr("Search ..."), this, SLOT(actionSearchText()), QKeySequence(Qt::CTRL + Qt::Key_F) );
 
     // -- Help menu
@@ -180,7 +183,7 @@ void XQEMainWindow::startQuery()
     stopWatch.start();
 
     QString errLog;
-    const QString &out = _xqeval.transform( source, _textQuery->xqText(), errLog );
+    const QString &out = _xqeval.transform( source, _textQuery->toPlainText(), errLog );
 
     int duration = stopWatch.elapsed(); // time measurement
 
@@ -240,7 +243,7 @@ void XQEMainWindow::loadQuery(QString fileName)
     {
         _queryFileName = fileName; // remember the file name
 
-        _textQuery->setXQText( QString::fromUtf8(queryFile.readAll()) );
+        _textQuery->setPlainText( QString::fromUtf8(queryFile.readAll()) );
         setWindowTitle( QString( "%1 - %2" ).arg( qApp->applicationName() ).arg( QFileInfo(queryFile).fileName() ) );
     }
 }
@@ -251,7 +254,7 @@ Action wrapper for saving a query.
 void XQEMainWindow::actionSaveQuery()
 {
     if ( saveQuery() )
-        _textQuery->setModified(false);
+        _modified = false;
 }
 
 /**
@@ -316,7 +319,7 @@ Called for example when creating a new query or when the applicaiton quits.
 bool XQEMainWindow::queryCanClose()
 {
     bool mayClose = true;
-    if ( _textQuery->modified() && !_textQuery->xqText().isEmpty() )
+    if ( _modified && !_textQuery->toPlainText().isEmpty() )
     {
         QMessageBox message;
         int btn = message.question( this, tr("Save XQuery?"), tr("Save your query?"),
@@ -381,7 +384,7 @@ bool XQEMainWindow::saveQuery(bool saveAs)
         return false;
     }
 
-    const QString &content = _textQuery->xqText();
+    const QString &content = _textQuery->toPlainText();
     qint64 bytesWritten = dest.write( content.toUtf8() );
     if ( bytesWritten == content.size() )
         return true;
@@ -404,9 +407,9 @@ Auto indents the query text.
 */
 void XQEMainWindow::autoIndent()
 {
-    if (!_textQuery->hasFocus())
-        _textQuery->setFocus();
-    _textQuery->autoIndent();
+//    if (!_textQuery->hasFocus())
+//        _textQuery->setFocus();
+//    _textQuery->autoIndent();
 }
 
 /**
@@ -448,7 +451,7 @@ void XQEMainWindow::actionViewSource(bool activate)
     XmlEditor * xmlEditor = new XmlEditor();
 
     xmlEditor->setWindowTitle( tr("XML Source File - %1").arg( QFileInfo(xmlFile).fileName() ) );
-    xmlEditor->setXml( QString::fromUtf8(xmlFile.readAll()) );
+    xmlEditor->setPlainText( QString::fromUtf8(xmlFile.readAll()) );
 
     xmlFile.close();
 
@@ -521,7 +524,7 @@ void XQEMainWindow::actionNewQuery()
 {
     if ( queryCanClose() )
     {
-        _textQuery->setXQText( QString() );
+        _textQuery->setPlainText( QString() );
         queryFileNameChanged( QString() );
     }
 }
@@ -540,7 +543,7 @@ Starts a string search in the query text.
 void XQEMainWindow::actionSearchText()
 {
     TextSearch * searchDialog = new TextSearch();
-    searchDialog->setTextEdit( _textQuery->textEdit() );
+    searchDialog->setTextEdit( _textQuery );
 
     if ( !_fixedDockWidgets.show("search", searchDialog) )
     {
@@ -552,7 +555,7 @@ void XQEMainWindow::actionSearchText()
 void XQEMainWindow::actionSaveQueryAs()
 {
     if ( saveQuery(true) )
-        _textQuery->setModified(false);
+        documentModified(false);
 }
 
 /**
@@ -594,4 +597,9 @@ void XQEMainWindow::saveOutputToFile(const QString &content)
 
     if ( bytesWritten != content.size() )
         QMessageBox::critical( this, tr("Write error"), tr("Error while writng the output file %1.").arg(_outputFilePath) );
+}
+
+void XQEMainWindow::documentModified(bool modified)
+{
+    _modified = modified;
 }

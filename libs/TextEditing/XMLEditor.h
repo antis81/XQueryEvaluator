@@ -23,28 +23,24 @@
 #include <QtGui/QWidget>
 
 #include "XmlHighlighter.h"
+#include "TextEditBase.h"
 
-class QPlainTextEdit;
 
 /**
 An XML editor showing highlighted XML text and line numbers. Currently read only.
 */
-class XmlEditor : public QWidget
+class XmlEditor : public TextEditBase
 {
     Q_OBJECT
 public:
     explicit XmlEditor(QWidget *parent = 0);
-    ~XmlEditor();
-
-    QString xml() const;
-    void setXml(const QString & xml);
+    virtual ~XmlEditor();
 
 protected:
     virtual void hideEvent(QHideEvent * ev);
 
 private:
-    QPlainTextEdit *    _textXml;
-    XmlHighlighter      _highlighter;
+    XmlHighlighter    _highlighter;
 
     void readSettings();
     void writeSettings();

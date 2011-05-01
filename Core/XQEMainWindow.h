@@ -32,7 +32,7 @@ namespace Ui {
 }
 
 class XmlSource;
-class XQEditor;
+class XQEdit;
 class XmlEditor;
 class QComboBox;
 
@@ -66,6 +66,8 @@ private slots:
 
     void actionSearchText();
 
+    void documentModified(bool modified);
+
     void queryLanguageSelected(int comboIndex);
     void queryFileNameChanged(const QString & newFileName);
 
@@ -80,11 +82,12 @@ private:
 
     QComboBox *                 _textQueryType;
 
+    bool                        _modified;
     bool                        _outputToFile;
     QString                     _queryFileName;
     QString                     _outputFilePath;
     XmlSource *                 _xmlSource;
-    XQEditor *                  _textQuery;
+    XQEdit *                    _textQuery;
 
     XQEvaluator                 _xqeval;
 

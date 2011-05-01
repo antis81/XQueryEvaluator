@@ -39,17 +39,15 @@ XQEditor::XQEditor(QWidget *parent)
     , _textQuery( new XQEdit(this) )
     , _modified(false)
 {
-    Q_INIT_RESOURCE(TextEditing);
-
-    QHBoxLayout *horLayout = new QHBoxLayout();
-    horLayout->setMargin(0);
-    horLayout->setSpacing(3);
+//    Q_INIT_RESOURCE(TextEditing);
 
     // add line numbers and text edit
-    horLayout->addWidget( new TextEditMetaBorder(_textQuery) );
-    horLayout->addWidget(_textQuery);
+    delete layout();
 
-    setLayout(horLayout);
+    QGridLayout * l = new QGridLayout(this);
+    l->addWidget(_textQuery);
+
+    setLayout(l);
 
     QCompleter *completer = new QCompleter();
 
@@ -65,7 +63,7 @@ XQEditor::XQEditor(QWidget *parent)
 
 XQEditor::~XQEditor()
 {
-    Q_CLEANUP_RESOURCE(TextEditing);
+//    Q_CLEANUP_RESOURCE(TextEditing);
 }
 
 QString XQEditor::xqText() const
