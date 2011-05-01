@@ -19,6 +19,12 @@
 
 #include "XQEdit.h"
 
+#include <QtCore/QFile>
+#include <QtCore/QDir>
+#include <QtCore/QAbstractItemModel>
+
+#include <QtGui/QStringListModel>
+#include <QtGui/QApplication>
 #include <QtGui/QCompleter>
 #include <QtGui/QAbstractItemView>
 #include <QtGui/QKeyEvent>
@@ -31,9 +37,18 @@ Creates a XQEdit text editor instance to edit an XQuery/XSLT script.
 */
 XQEdit::XQEdit(QWidget *parent)
     : TextEditBase(parent)
-    , _completer(0)
+    , _completer( new QCompleter() )
     , _eow( "~!@#$%^&*()_+{}|:\"<>?,./;'[]\\=" )
 {
+    Q_INIT_RESOURCE( TextEditing );
+    _completer->setModel( modelFromFile(":/CompletionModels/XQuery.cpl") );
+    _completer->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+    _completer->setCaseSensitivity(Qt::CaseInsensitive);
+    _completer->setWrapAround(false);
+    _completer->setCompletionMode(QCompleter::PopupCompletion);
+    _completer->setWidget( this );
+    QObject::connect(_completer, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
+
     _xqueryHighlighter.setDocument( document() );
 
     const QFontMetrics &fm = fontMetrics();
@@ -45,6 +60,42 @@ XQEdit::XQEdit(QWidget *parent)
 
 XQEdit::~XQEdit()
 {
+    delete _completer;
+    Q_CLEANUP_RESOURCE( TextEditing );
+}
+
+QAbstractItemModel * XQEdit::modelFromFile(QString fileName)
+{
+    QFile modelFile( QDir::cleanPath(fileName) );
+
+    if ( !modelFile.open(QIODevice::ReadOnly) )
+        return 0;
+
+#ifndef QT_NO_CURSOR
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+#endif
+    QStringList sl;
+
+    while (!modelFile.atEnd())
+    {
+        QString line = QString::fromUtf8( modelFile.readLine() ).trimmed();
+        if (!line.isEmpty())
+            sl << line;
+    }
+
+    modelFile.close();
+
+#ifndef QT_NO_CURSOR
+    QApplication::restoreOverrideCursor();
+#endif
+
+    return new QStringListModel(sl);
+}
+
+void XQEdit::autoIndent()
+{
+    AutoIndent ai;
+    ai.indentDocument( document() );
 }
 
 /**
@@ -88,23 +139,6 @@ void XQEdit::insertCompletion(const QString& completion)
     setTextCursor(tc);
 }
 
-/**
-Sets a QCompleter to the XQEdit, that cares for text completion.
-*/
-void XQEdit::setCompleter(QCompleter *completer)
-{
-    if ( _completer )
-        QObject::disconnect(_completer, 0, this, 0);
-
-    _completer = completer;
-
-    if ( _completer == 0 )
-        return;
-
-    completer->setWidget( this );
-    QObject::connect(_completer, SIGNAL(activated(QString)),
-                     this, SLOT(insertCompletion(QString)));
-}
 
 /**
 When the user types, keyPressEvent is called and completions are checked.

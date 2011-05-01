@@ -17,20 +17,21 @@
 **    along with XQueryEvaluator.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef XQEDIT_H
-#define XQEDIT_H
+#ifndef XQEDITOR_H
+#define XQEDITOR_H
 
-//#include <QtGui/QPlainTextEdit>
 #include <QtCore/QString>
 
-#include "XQueryHighlighter.h"
 #include "TextEditBase.h"
+#include "XQueryHighlighter.h"
+#include "AutoIndent.h"
 
 
 class QCompleter;
+class QAbstractItemModel;
 
 /**
-A text edit field providing XML/XSLT/XQuery highlighting and autocompletion.
+@brief Represents a text editor providing XML/XSLT/XQuery highlighting and autocompletion.
 */
 class XQEdit : public TextEditBase
 {
@@ -41,6 +42,8 @@ public:
 
     QCompleter *completer() const { return _completer; }
     void setCompleter(QCompleter *completer);
+
+    void autoIndent();
 
 protected:
     virtual void keyPressEvent(QKeyEvent *e);
@@ -55,11 +58,11 @@ private:
 
     const QString       _eow; //!< End Of Word
 
+    QAbstractItemModel * modelFromFile(QString fileName);
+
     void setupKeys();
 
     QString textUnderCursor() const;
-
-    QList<int>      _completionKeys;
 };
 
-#endif // XQEDIT_H
+#endif // XQEDITOR_H

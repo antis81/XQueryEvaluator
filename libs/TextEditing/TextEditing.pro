@@ -12,7 +12,6 @@ DEPENDPATH += .
 
 HEADERS += \
     XQueryHighlighter.h \
-    XQEditor.h \
     XQEdit.h \
     XmlHighlighter.h \
     TextEditMetaBorder.h \
@@ -25,7 +24,6 @@ HEADERS += \
 
 SOURCES += \
     XQueryHighlighter.cpp \
-    XQEditor.cpp \
     XQEdit.cpp \
     XmlHighlighter.cpp \
     TextEditMetaBorder.cpp \
