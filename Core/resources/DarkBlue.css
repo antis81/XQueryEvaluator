@@ -22,13 +22,13 @@ QLabel, TextEditMetaBorder
 QAbstractButton#btnClose
 {
     border-style: none;
-    border-image: url(:/close.svg) 0 0 0 0;
+    border-image: url(:/close.png) 0 0 0 0;
     color: grey;
 }
 
 QAbstractButton#btnClose:pressed
 {
-    border-image: url(:/close_pressed.svg) 0 0 0 0;
+    border-image: url(:/close_pressed.png) 0 0 0 0;
 }
 
 TextSearch > QAbstractButton
