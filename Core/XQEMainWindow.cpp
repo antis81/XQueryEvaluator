@@ -406,9 +406,9 @@ Auto indents the query text.
 */
 void XQEMainWindow::autoIndent()
 {
-//    if (!_textQuery->hasFocus())
-//        _textQuery->setFocus();
-//    _textQuery->autoIndent();
+    if (!_textQuery->hasFocus())
+        _textQuery->setFocus();
+    _textQuery->autoIndent();
 }
 
 /**
