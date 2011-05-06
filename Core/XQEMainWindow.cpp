@@ -266,7 +266,11 @@ QString XQEMainWindow::loadSourceFile(const QString &path) const
 
     QFile f(path);
     if (f.open(QIODevice::ReadOnly))
-        return f.readAll();
+        return QString::fromUtf8( f.readAll() );
+
+    QMessageBox::critical(
+                0, tr("Unable to open XML file"),
+                tr("The source document could not be opened.") );
 
     return QString();
 }
@@ -438,21 +442,10 @@ void XQEMainWindow::actionViewSource(bool activate)
         return;
     }
 
-    QFile xmlFile( _xmlSource->sourceFile() );
-    if ( !xmlFile.open(QIODevice::ReadOnly) || _xmlSource->sourceFile().isEmpty() )
-    {
-        QMessageBox::critical(
-                    this, tr("Unable to open XML file"),
-                    tr("The source document could not be opened.") );
-        return;
-    }
-
     XmlEditor * xmlEditor = new XmlEditor();
 
-    xmlEditor->setWindowTitle( tr("XML Source File - %1").arg( QFileInfo(xmlFile).fileName() ) );
-    xmlEditor->setPlainText( QString::fromUtf8(xmlFile.readAll()) );
-
-    xmlFile.close();
+    xmlEditor->setWindowTitle( tr("XML Source File - %1").arg( QFileInfo(_xmlSource->sourceFile()).fileName() ) );
+    xmlEditor->setPlainText( loadSourceFile( _xmlSource->sourceFile() ) );
 
     if ( !_fixedDockWidgets.show("xml-edit", xmlEditor) )
     {
