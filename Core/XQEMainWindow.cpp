@@ -108,7 +108,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     a->setChecked( _xqeval.formattedOutput() );
     ui->toolBar->addAction(a);
 
-    a = m->addAction( QIcon(":/toFile.svg"), "Output to file ...", this, SLOT(actionOutputToFile(bool)) );
+    a = m->addAction( QIcon(":/toFile.svg"), tr("Output to file ..."), this, SLOT(actionOutputToFile(bool)) );
     a->setCheckable(true);
     ui->toolBar->addAction(a);
 

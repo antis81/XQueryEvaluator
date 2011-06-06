@@ -88,7 +88,7 @@ private:
     QString                     _queryFileName;
     QString                     _outputFilePath;
     XmlSource *                 _xmlSource;
-    XQEditor *                    _textQuery;
+    XQEditor *                  _textQuery;
 
     XQEvaluator                 _xqeval;
 

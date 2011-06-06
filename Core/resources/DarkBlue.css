@@ -16,7 +16,7 @@ QToolBar
 
 QLabel, TextEditMetaBorder
 {
-    color: rgb(204, 204, 204);
+    color: rgb(232, 232, 255);
 }
 
 QAbstractButton#btnClose
