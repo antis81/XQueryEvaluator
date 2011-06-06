@@ -264,7 +264,7 @@ void XQEMainWindow::actionSaveQuery()
 }
 
 /**
-Loads a source XML file and assigns itÂ´s content to a string.
+Loads a source XML file and assigns it´s content to a string.
 */
 QString XQEMainWindow::loadSourceFile(const QString &path) const
 {
@@ -587,7 +587,7 @@ void XQEMainWindow::saveOutputToFile(const QString &content)
     qint64 bytesWritten = 0;
     if ( file.open(QIODevice::WriteOnly) )
     {
-        bytesWritten = file.write( content.toUtf8() );
+        bytesWritten = file.write( content.toLocal8Bit() );
         file.close();
     } else {
         QMessageBox::critical( this, tr("Unable to open output file"),
