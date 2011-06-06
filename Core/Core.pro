@@ -47,8 +47,6 @@ RESOURCES += \
 
 OTHER_FILES = xqe.rc resources/DarkBlue.css
 
-OTHER_FILES = xqe.rc
-
 win32 {
     RC_FILE = xqe.rc
     #INSTALLS += target
