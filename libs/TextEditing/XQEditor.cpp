@@ -78,7 +78,7 @@ QAbstractItemModel * XQEditor::modelFromFile(QString fileName)
 
     while (!modelFile.atEnd())
     {
-        QString line = QString::fromUtf8( modelFile.readLine() ).trimmed();
+        QString line = QString::fromLocal8Bit( modelFile.readLine() ).trimmed();
         if (!line.isEmpty())
             sl << line;
     }

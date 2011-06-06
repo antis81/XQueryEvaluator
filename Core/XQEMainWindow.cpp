@@ -242,7 +242,7 @@ void XQEMainWindow::loadQuery(QString fileName)
     {
         _queryFileName = fileName; // remember the file name
 
-        _textQuery->setPlainText( QString::fromUtf8(queryFile.readAll()) );
+        _textQuery->setPlainText( QString::fromLocal8Bit( queryFile.readAll()) );
         setWindowTitle( QString( "%1 - %2" ).arg( qApp->applicationName() ).arg( QFileInfo(queryFile).fileName() ) );
     }
 }
@@ -266,7 +266,7 @@ QString XQEMainWindow::loadSourceFile(const QString &path) const
 
     QFile f(path);
     if (f.open(QIODevice::ReadOnly))
-        return QString::fromUtf8( f.readAll() );
+        return QString::fromLocal8Bit( f.readAll() );
 
     QMessageBox::critical(
                 0, tr("Unable to open XML file"),
