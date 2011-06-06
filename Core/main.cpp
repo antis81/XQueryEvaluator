@@ -51,6 +51,12 @@
 int main(int argc, char *argv[])
 {
     MainApplication a(argc, argv);
+
+    // setup style
+    QFile f(":/DarkBlue.css");
+    if (f.open(QIODevice::ReadOnly))
+        a.setStyleSheet(f.readAll());
+
     a.setOrganizationName("FenNils");
     a.setApplicationName( QLatin1String(APP_NAME) );
     a.setApplicationVersion( APP_VERSION );
@@ -58,11 +64,6 @@ int main(int argc, char *argv[])
     QSettings::setDefaultFormat( QSettings::IniFormat );
 
     QStringList args = a.arguments();
-
-    // setup style
-    QFile f(":/DarkBlue.css");
-    if (f.open(QIODevice::ReadOnly))
-        a.setStyleSheet(f.readAll());
 
 //    setupTranslators(a);
     const QString locale = QLocale::system().name();
