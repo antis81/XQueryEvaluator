@@ -22,7 +22,7 @@
 #include <QtGui/QFileOpenEvent>
 
 /**
-Constructs a plattform independent QApplication variant.
+Constructs a platform independent QApplication variant.
 */
 MainApplication::MainApplication(int &argc, char **argv, bool GUIenabled) :
     QApplication(argc, argv, GUIenabled)
