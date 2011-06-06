@@ -20,5 +20,6 @@
         <file>toFile.svg</file>
         <file>close_pressed.png</file>
         <file>close.png</file>
+        <file>legacy.svg</file>
     </qresource>
 </RCC>

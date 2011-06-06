@@ -114,6 +114,13 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
     m->addSeparator();
 
+    a = m->addAction( QIcon(":/legacy.svg"), tr("Legacy Mode"), this, SLOT(actionLegacyMode(bool)) );
+    a->setCheckable(true);
+    a->setToolTip("Develop queries for Qt 4.4 using the external variable $inputDocument.");
+    ui->toolBar->addAction(a);
+
+    m->addSeparator();
+
     a = m->addAction( QIcon(":/start.svg"), tr("Run"), this,
                      SLOT( startQuery() ), QKeySequence( Qt::CTRL + Qt::Key_R ) );
 
@@ -594,4 +601,12 @@ void XQEMainWindow::saveOutputToFile(const QString &content)
 void XQEMainWindow::documentModified(bool modified)
 {
     _modified = modified;
+}
+
+/**
+Sets the legacy mode to develop queries for Qt Versions 4.4.x.
+*/
+void XQEMainWindow::actionLegacyMode(bool yes)
+{
+    _xqeval.setLegacyMode(yes);
 }

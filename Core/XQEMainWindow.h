@@ -55,6 +55,7 @@ private slots:
     void startQuery();
     void changeFormattedOutput(bool enabled);
     void actionOutputToFile(bool yes);
+    void actionLegacyMode(bool yes);
 
     void actionViewSource(bool activate);
     void actionEditSource();

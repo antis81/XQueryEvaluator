@@ -30,6 +30,7 @@ Constructs an evaluator object for parsing queries. By default XQuery is set as 
 XQEvaluator::XQEvaluator()
     : _queryLanguage( QXmlQuery::XQuery10 )
     , _formattedOutput(true)
+    , _legacyMode(false)
 {
 }
 
@@ -83,12 +84,22 @@ When formattedOutput is set, the result will be indented.
 QString XQEvaluator::transform(const QString &source, const QString &query, QString &err)
 {
     QXmlQuery theQuery( _queryLanguage );
+
     XQEMessageHandler msgHandler;
     theQuery.setMessageHandler(&msgHandler);
 
-    theQuery.setFocus( source );
+    QBuffer input;
+    if ( _legacyMode )
+    {
+        input.setData(source.toUtf8());
+        input.open(QIODevice::ReadOnly);
+        theQuery.bindVariable("inputDocument", &input);
+    } else {
+        theQuery.setFocus( source );
+    }
 
     theQuery.setQuery( query );
+
 
     QBuffer outBuffer;
     outBuffer.open(QIODevice::WriteOnly);
@@ -107,4 +118,26 @@ QString XQEvaluator::transform(const QString &source, const QString &query, QStr
         err = QObject::tr("<p style=\"background-color:#44FF44;\">Query parsed. Everything Ok.</p>");
 
     return QString::fromUtf8( outBuffer.data() );
+}
+
+bool XQEvaluator::legacyMode() const
+{
+    return _legacyMode;
+}
+
+/**
+Sets the legacy mode to develop queries for Qt versions 4.4.x.
+This declares the source document as an external variable $inputDocument.
+
+Example query:
+@code
+declare variable $inputDocument external;
+
+for $root in doc($inputDocument)
+return <MyXml>{ $root }</MyXml>
+@endcode
+*/
+void XQEvaluator::setLegacyMode(bool enabled)
+{
+    _legacyMode = enabled;
 }

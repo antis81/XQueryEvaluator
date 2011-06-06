@@ -41,11 +41,15 @@ public:
     bool formattedOutput() const;
     void setFormattedOutput(bool enabled);
 
+    bool legacyMode() const;
+    void setLegacyMode(bool enabled);
+
     QString transform(const QString &source, const QString &query, QString &err);
 
 private:
     QXmlQuery::QueryLanguage    _queryLanguage;
     bool                        _formattedOutput;
+    bool                        _legacyMode; //! Use QXmlQuery::bindVariable() instead of QXmlQuery::setFocus()
 
 };
 
