@@ -1,7 +1,7 @@
 /*
 **    Copyright 2011 by Nils Fenner
 **
-**    This file is part of XQueryEvaluator.
+**    This file is part of XQueryEvaluator
 **
 **    XQueryEvaluator is free software: you can redistribute it and/or modify
 **    it under the terms of the GNU General Public License as published by
@@ -14,35 +14,36 @@
 **    GNU General Public License for more details.
 **
 **    You should have received a copy of the GNU General Public License
-**    along with XQueryEvaluator.  If not, see <http://www.gnu.org/licenses/>.
+**    along with XQueryEvaluator. If not, see <http://www.gnu.org/licenses/>.
 */
+
+#ifndef XMLEDITOR_H
+#define XMLEDITOR_H
+
+#include <QtGui/QWidget>
+
+#include "XmlHighlighter.h"
+#include "TextEditBase.h"
+
 
 /**
-The MainApplication class enhances the QApplication class by platform independent functionality.
+An XML editor showing highlighted XML text and line numbers. Currently read only.
 */
-
-#ifndef MAINAPPLICATION_H
-#define MAINAPPLICATION_H
-
-#include <QtGui/QApplication>
-
-/**
-Enhances a QApplication class with additional platform independent functionality.
-
-At present this is used associate file types under OSX.
-*/
-class MainApplication : public QApplication
+class XmlEditor : public TextEditBase
 {
     Q_OBJECT
 public:
-    explicit MainApplication(int &argc, char **argv, bool GUIenabled=true);
+    explicit XmlEditor(QWidget *parent = 0);
+    virtual ~XmlEditor();
 
 protected:
-    bool event(QEvent *ev);
+    virtual void hideEvent(QHideEvent * ev);
 
-signals:
-    void fileOpened(QString fileName);
+private:
+    XmlHighlighter    _highlighter;
 
+    void readSettings();
+    void writeSettings();
 };
 
-#endif // MAINAPPLICATION_H
+#endif // XMLEDITOR_H

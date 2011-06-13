@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
@@ -51,16 +51,19 @@
 int main(int argc, char *argv[])
 {
     MainApplication a(argc, argv);
-    a.setOrganizationName("FenNils");
-    a.setApplicationName( QLatin1String(APP_NAME) );
-    a.setApplicationVersion( APP_VERSION );
-
-    QStringList args = a.arguments();
 
     // setup style
     QFile f(":/DarkBlue.css");
     if (f.open(QIODevice::ReadOnly))
         a.setStyleSheet(f.readAll());
+
+    a.setOrganizationName("FenNils");
+    a.setApplicationName( QLatin1String(APP_NAME) );
+    a.setApplicationVersion( APP_VERSION );
+
+    QSettings::setDefaultFormat( QSettings::IniFormat );
+
+    QStringList args = a.arguments();
 
 //    setupTranslators(a);
     const QString locale = QLocale::system().name();

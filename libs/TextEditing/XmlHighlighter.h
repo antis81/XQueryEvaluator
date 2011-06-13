@@ -1,5 +1,5 @@
 /*
-**    Copyright 2011 by Nils Fenner
+**    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
 **
@@ -17,32 +17,30 @@
 **    along with XQueryEvaluator.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef XMLHIGHLIGHTER_H
+#define XMLHIGHLIGHTER_H
+
+#include "AbstractHighlighter.h"
+
+#include <QtCore/QHash>
+#include <QtCore/QDebug>
+#include <QtGui/QTextCharFormat>
+#include <QtXml/QDomDocument>
+
+class QTextDocument;
+
 /**
-The MainApplication class enhances the QApplication class by platform independent functionality.
+An XML text highlighter for QTextDocuments.
 */
-
-#ifndef MAINAPPLICATION_H
-#define MAINAPPLICATION_H
-
-#include <QtGui/QApplication>
-
-/**
-Enhances a QApplication class with additional platform independent functionality.
-
-At present this is used associate file types under OSX.
-*/
-class MainApplication : public QApplication
+class XmlHighlighter : public AbstractHighlighter
 {
     Q_OBJECT
 public:
-    explicit MainApplication(int &argc, char **argv, bool GUIenabled=true);
+    explicit XmlHighlighter(QTextDocument *parent = 0);
 
 protected:
-    bool event(QEvent *ev);
-
-signals:
-    void fileOpened(QString fileName);
-
+    void setupHighlightRules();
+    void setupHighlightBlocks();
 };
 
-#endif // MAINAPPLICATION_H
+#endif // LBXMLHIGHLIGHTER_H

@@ -1,5 +1,5 @@
 /*
-**    Copyright 2011 by Nils Fenner
+**    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
 **
@@ -17,32 +17,32 @@
 **    along with XQueryEvaluator.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef TEXTEDITMETABORDER_H
+#define TEXTEDITMETABORDER_H
+
+#include <QtGui/QWidget>
+
+class TextEditBase;
+
+
 /**
-The MainApplication class enhances the QApplication class by platform independent functionality.
+A meta border that can be combined with a QPlainTextEdit to display line numbers.
 */
-
-#ifndef MAINAPPLICATION_H
-#define MAINAPPLICATION_H
-
-#include <QtGui/QApplication>
-
-/**
-Enhances a QApplication class with additional platform independent functionality.
-
-At present this is used associate file types under OSX.
-*/
-class MainApplication : public QApplication
+class TextEditMetaBorder : public QWidget
 {
     Q_OBJECT
 public:
-    explicit MainApplication(int &argc, char **argv, bool GUIenabled=true);
+    explicit TextEditMetaBorder(TextEditBase *editor);
+    virtual ~TextEditMetaBorder();
+
+    QSize sizeHint() const;
 
 protected:
-    bool event(QEvent *ev);
+    virtual void paintEvent(QPaintEvent *e);
 
-signals:
-    void fileOpened(QString fileName);
+private:
+    TextEditBase *      _editor;
 
 };
 
-#endif // MAINAPPLICATION_H
+#endif // TEXTEDITMETABORDER_H

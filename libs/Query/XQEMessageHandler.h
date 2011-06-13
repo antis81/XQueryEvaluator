@@ -1,5 +1,5 @@
 /*
-**    Copyright 2011 by Nils Fenner
+**    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
 **
@@ -17,32 +17,30 @@
 **    along with XQueryEvaluator.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-The MainApplication class enhances the QApplication class by platform independent functionality.
-*/
+#ifndef XQEMESSAGEHANDLER_H
+#define XQEMESSAGEHANDLER_H
 
-#ifndef MAINAPPLICATION_H
-#define MAINAPPLICATION_H
-
-#include <QtGui/QApplication>
+#include <QtXmlPatterns/QAbstractMessageHandler>
+#include <QtCore/QStringList>
 
 /**
-Enhances a QApplication class with additional platform independent functionality.
-
-At present this is used associate file types under OSX.
+Provides a message handler to handle Error messages.
 */
-class MainApplication : public QApplication
+class XQEMessageHandler : public QAbstractMessageHandler
 {
-    Q_OBJECT
 public:
-    explicit MainApplication(int &argc, char **argv, bool GUIenabled=true);
+    explicit XQEMessageHandler(QObject *parent=0);
+    virtual ~XQEMessageHandler();
 
-protected:
-    bool event(QEvent *ev);
+    void handleMessage(QtMsgType type, const QString &description, const QUrl &identifier, const QSourceLocation &sourceLocation);
 
-signals:
-    void fileOpened(QString fileName);
+    const QString& errLog() const
+    {
+        return _errLog;
+    }
 
+private:
+    QString     _errLog;
 };
 
-#endif // MAINAPPLICATION_H
+#endif // XQEMESSAGEHANDLER_H

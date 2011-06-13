@@ -1,5 +1,5 @@
 /*
-**    Copyright 2011 by Nils Fenner
+**    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
 **
@@ -17,32 +17,38 @@
 **    along with XQueryEvaluator.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-The MainApplication class enhances the QApplication class by platform independent functionality.
-*/
+#ifndef ASSIGNEDDOCKWIDGET_H
+#define ASSIGNEDDOCKWIDGET_H
 
-#ifndef MAINAPPLICATION_H
-#define MAINAPPLICATION_H
+#include <QtGui/QDockWidget>
 
-#include <QtGui/QApplication>
 
 /**
-Enhances a QApplication class with additional platform independent functionality.
-
-At present this is used associate file types under OSX.
+@brief
+Represents an assigned dock widget.
 */
-class MainApplication : public QApplication
+class AssignedDockWidget : public QObject
 {
-    Q_OBJECT
 public:
-    explicit MainApplication(int &argc, char **argv, bool GUIenabled=true);
+    explicit AssignedDockWidget(QObject * parent = 0);
+    virtual ~AssignedDockWidget();
+
+    QWidget * contentWidget() const;
+    void setContentWidget(QWidget *w);
+
+    Qt::DockWidgetArea area() const;
+    void setArea(Qt::DockWidgetArea area);
+
+    QDockWidget * dockWidget() const;
 
 protected:
-    bool event(QEvent *ev);
+    bool eventFilter(QObject *o, QEvent *e);
 
-signals:
-    void fileOpened(QString fileName);
+private:
+    QDockWidget *           _privateDW;
 
+    QString                 _widgetKey; //!< Class name of the contents widget (CASE SENSITIVE!).
+    Qt::DockWidgetArea      _area;
 };
 
-#endif // MAINAPPLICATION_H
+#endif // ASSIGNEDDOCKWIDGET_H

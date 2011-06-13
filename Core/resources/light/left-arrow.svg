@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   width="16"
+   height="16"
+   id="svg10">
+  <defs
+     id="defs12">
+    <linearGradient
+       id="linearGradient3864">
+      <stop
+         id="stop3866"
+         style="stop-color:#00dc29;stop-opacity:0"
+         offset="0" />
+      <stop
+         id="stop3868"
+         style="stop-color:#ffffff;stop-opacity:0.82300884"
+         offset="1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3853">
+      <stop
+         id="stop3855"
+         style="stop-color:#2a2a2a;stop-opacity:1"
+         offset="0" />
+      <stop
+         id="stop3857"
+         style="stop-color:#989898;stop-opacity:1"
+         offset="1" />
+    </linearGradient>
+    <linearGradient
+       x1="8.3521395"
+       y1="49.010174"
+       x2="41.216969"
+       y2="31.895617"
+       id="linearGradient3859"
+       xlink:href="#linearGradient3853"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       x1="34.490459"
+       y1="43.825573"
+       x2="49.395935"
+       y2="55.155846"
+       id="linearGradient3891"
+       xlink:href="#linearGradient3864"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.1832461,0,0,-1.8333333,-10.106621,113.99208)" />
+  </defs>
+  <metadata
+     id="metadata15">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     d="M 14.990442,15 0.9999999,8.1815015 15,0.9999999 c 0,0 -2.060314,3.8601033 -2.0616,6.9213104 C 12.93711,10.982517 14.990442,15 14.990442,15 z"
+     id="rect3082"
+     style="fill:#acacac;fill-opacity:1;stroke:none" />
+  <g
+     transform="translate(0,-48)"
+     id="layer2" />
+</svg>

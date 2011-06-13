@@ -1,5 +1,5 @@
 /*
-**    Copyright 2011 by Nils Fenner
+**    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
 **
@@ -17,32 +17,35 @@
 **    along with XQueryEvaluator.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-The MainApplication class enhances the QApplication class by platform independent functionality.
-*/
+#include "WidgetFactory.h"
 
-#ifndef MAINAPPLICATION_H
-#define MAINAPPLICATION_H
+#include <QtGui/QWidget>
 
-#include <QtGui/QApplication>
 
-/**
-Enhances a QApplication class with additional platform independent functionality.
-
-At present this is used associate file types under OSX.
-*/
-class MainApplication : public QApplication
+WidgetFactory::WidgetFactory()
+    : _defaultGenerator(0)
 {
-    Q_OBJECT
-public:
-    explicit MainApplication(int &argc, char **argv, bool GUIenabled=true);
+}
 
-protected:
-    bool event(QEvent *ev);
+WidgetFactory::~WidgetFactory()
+{
+    delete _defaultGenerator;
+}
 
-signals:
-    void fileOpened(QString fileName);
 
-};
+QWidget * WidgetFactory::createWidget( const QString &widgetClassName ) const
+{
+    AbstractWidgetGenerator * generator = _widgetGenerators.value( widgetClassName, 0 );
+    if ( generator != 0 )
+        return generator->newInstance();
 
-#endif // MAINAPPLICATION_H
+    return defaultWidget();
+}
+
+QWidget * WidgetFactory::defaultWidget() const
+{
+    if (_defaultGenerator != 0)
+        return _defaultGenerator->newInstance();
+
+    return 0;
+}

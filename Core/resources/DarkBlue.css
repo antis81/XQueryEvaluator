@@ -1,19 +1,42 @@
 QPlainTextEdit
 {
-	font: 12px Menlo;
+    font: 12px Menlo;
 }
 
-QMainWindow, XQEOutput, QMessageBox, XmlEditor
+QMainWindow, XQEOutput, QMessageBox
 {
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(42, 59, 93), stop:1 rgb(0, 0, 0));
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(42, 59, 93), stop:1 rgb(0, 0, 0));
+}
+
+QToolBar
+{
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(230, 230, 230), stop:1 rgb(128, 128, 128));
+    spacing: 3;
 }
 
 QLabel, TextEditMetaBorder
 {
-	color: rgb(204, 204, 204);
+    color: rgb(232, 232, 255);
 }
 
-QLineEdit#textSourceFile
+QAbstractButton#btnClose
+{
+    border-style: none;
+    border-image: url(:/close.png) 0 0 0 0;
+    color: grey;
+}
+
+QAbstractButton#btnClose:pressed
+{
+    border-image: url(:/close_pressed.png) 0 0 0 0;
+}
+
+TextSearch > QAbstractButton
+{
+    border-style:none;
+}
+
+TextSearch > QLineEdit
 {
     border-style: inset;
     border-width: 1px;
@@ -26,8 +49,8 @@ QLineEdit#textSourceFile
 QComboBox {
     border: 1px solid gray;
     border-bottom-left-radius: 10px;
-    padding: 1px 18px 1px 3px;
-    min-width: 4em;
+    padding: 1px 23px 1px 3px;
+    margin: 0px 0px 0px 0px;
 }
 
 QComboBox::drop-down
@@ -43,7 +66,7 @@ QComboBox::drop-down
 
 QComboBox::drop-down:pressed, QComboBox::drop-down:on
 {
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(128, 128, 128), stop:1 rgb(230, 230, 230));
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(128, 128, 128), stop:1 rgb(230, 230, 230));
 }
 
 QComboBox::down-arrow
@@ -51,25 +74,20 @@ QComboBox::down-arrow
     image: url(:/down-arrow.svg) 8px 8px;
 }
 
-QToolBar
+QToolButton#btnOpenSource
 {
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(230, 230, 230), stop:1 rgb(128, 128, 128));
-	spacing: 3;
-} 
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(230, 230, 230), stop:1 rgb(128, 128, 128));
+    border: 1px solid gray;
+    border-left: none;
+    border-top-right-radius: 10px;
+    height: 17px;
+    padding: 0px 0px 0px 0px;
+    margin: 1px 0px 0px 0px;
+}
 
 QToolButton#btnOpenSource:pressed
 {
-	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(128, 128, 128), stop:1 rgb(200, 200, 200));
-}
-
-QToolButton#btnOpenSource
-{
-   	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(230, 230, 230), stop:1 rgb(128, 128, 128));
-	border-style: solid;
-	border-width: 1px;
-	border-color: gray;
-    border-top-right-radius: 10px;
-    min-height: 17px
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0.26601 rgb(128, 128, 128), stop:1 rgb(200, 200, 200));
 }
 
 QMessageBox

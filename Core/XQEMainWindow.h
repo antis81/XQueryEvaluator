@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
@@ -24,6 +24,7 @@
 #include <QtXmlPatterns/QXmlQuery>
 
 #include "Query/XQEvaluator.h"
+#include "ui/DockWidgets.h"
 
 
 namespace Ui {
@@ -35,6 +36,10 @@ class XQEditor;
 class XmlEditor;
 class QComboBox;
 
+
+/**
+The main user interface of XQueryEvaluator.
+*/
 class XQEMainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -49,16 +54,22 @@ private slots:
     void autoIndent();
     void startQuery();
     void changeFormattedOutput(bool enabled);
+    void actionOutputToFile(bool yes);
+    void actionLegacyMode(bool yes);
 
-    void actionViewSource();
+    void actionViewSource(bool activate);
+    void actionEditSource();
 
     void actionNewQuery();
     void actionOpenQuery();
     void actionSaveQuery();
-//    void actionSaveQueryAs();
+    void actionSaveQueryAs();
+
+    void actionSearchText();
+
+    void documentModified(bool modified);
 
     void queryLanguageSelected(int comboIndex);
-
     void queryFileNameChanged(const QString & newFileName);
 
     void about();
@@ -72,12 +83,16 @@ private:
 
     QComboBox *                 _textQueryType;
 
+    bool                        _modified;
+    bool                        _outputToFile;
     QString                     _queryFileName;
+    QString                     _outputFilePath;
     XmlSource *                 _xmlSource;
     XQEditor *                  _textQuery;
-    XmlEditor *                 _xmlEditor;
 
     XQEvaluator                 _xqeval;
+
+    DockWidgets                 _fixedDockWidgets;
 
     void readSettings();
     void writeSettings();
@@ -87,6 +102,8 @@ private:
 
     bool saveQuery(bool saveAs = false);
     bool queryCanClose();
+
+    void saveOutputToFile( const QString &content );
 };
 
 #endif // XQEMAINWINDOW_H

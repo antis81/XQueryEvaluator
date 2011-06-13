@@ -1,7 +1,7 @@
 !isEmpty(XQEVAL_PRI_INCLUDED):error("ignored: xqeval.pri already included")
 XQEVAL_PRI_INCLUDED = 1
 
-XQEVAL_VERSION = 0.5.8.3
+XQEVAL_VERSION = 0.5.9
 message("Building $$TARGET")
 
 PROJECT_BASE = $$PWD
@@ -15,4 +15,4 @@ UI_DIR  = $$PWD/GeneratedFiles/ui
 RCC_DIR = $$PWD/GeneratedFiles/rcc
 OBJECTS_DIR = $$PWD/GeneratedFiles/obj
 
-INCLUDEPATH += $$PWD
+INCLUDEPATH += $$PWD $$PWD/libs $$PWD/libs/3rdparty

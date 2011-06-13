@@ -9,11 +9,8 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 SUBDIRS = \
-    Query \
-    TextEditing \
+    libs \
     Core
-
-Core.depends = Query TextEditing
 
 TRANSLATIONS += \
     translations/xqeval_cs.ts \

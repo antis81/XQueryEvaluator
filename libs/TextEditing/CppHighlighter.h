@@ -1,5 +1,5 @@
 /*
-**    Copyright 2011 by Nils Fenner
+**    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
 **
@@ -17,32 +17,24 @@
 **    along with XQueryEvaluator.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-The MainApplication class enhances the QApplication class by platform independent functionality.
-*/
+#ifndef CPPHIGHLIGHTER_H
+#define CPPHIGHLIGHTER_H
 
-#ifndef MAINAPPLICATION_H
-#define MAINAPPLICATION_H
-
-#include <QtGui/QApplication>
+#include "AbstractHighlighter.h"
 
 /**
-Enhances a QApplication class with additional platform independent functionality.
-
-At present this is used associate file types under OSX.
+A C++ highlighter for QTextDocuments.
 */
-class MainApplication : public QApplication
+class CppHighlighter : public AbstractHighlighter
 {
     Q_OBJECT
 public:
-    explicit MainApplication(int &argc, char **argv, bool GUIenabled=true);
+    explicit CppHighlighter(QTextDocument *parent = 0);
 
 protected:
-    bool event(QEvent *ev);
-
-signals:
-    void fileOpened(QString fileName);
+    virtual void setupHighlightRules();
+    virtual void setupHighlightBlocks();
 
 };
 
-#endif // MAINAPPLICATION_H
+#endif // CPPHIGHLIGHTER_H

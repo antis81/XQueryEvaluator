@@ -1,5 +1,5 @@
 /*
-**    Copyright 2011 by Nils Fenner
+**    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
 **
@@ -17,32 +17,27 @@
 **    along with XQueryEvaluator.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-The MainApplication class enhances the QApplication class by platform independent functionality.
-*/
+#ifndef AUTOINDENT_H
+#define AUTOINDENT_H
 
-#ifndef MAINAPPLICATION_H
-#define MAINAPPLICATION_H
+#include <QtCore/QString>
 
-#include <QtGui/QApplication>
+class QTextDocument;
 
 /**
-Enhances a QApplication class with additional platform independent functionality.
-
-At present this is used associate file types under OSX.
+Provides auto indentation functionaliy for currently XML, XSLT and XQuery documents.
 */
-class MainApplication : public QApplication
+class AutoIndent
 {
-    Q_OBJECT
 public:
-    explicit MainApplication(int &argc, char **argv, bool GUIenabled=true);
+    AutoIndent();
 
-protected:
-    bool event(QEvent *ev);
+    void indentDocument(QTextDocument *doc);
 
-signals:
-    void fileOpened(QString fileName);
-
+private:
+    void indent( QString &text, int level );
+    int matchCount( const QRegExp &regExp, const QString &text ) const;
+    int matchCount( const QList<QRegExp> &expressions, const QString &text ) const;
 };
 
-#endif // MAINAPPLICATION_H
+#endif // AUTOINDENT_H

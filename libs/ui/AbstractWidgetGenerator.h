@@ -1,5 +1,5 @@
 /*
-**    Copyright 2011 by Nils Fenner
+**    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
 **
@@ -17,32 +17,36 @@
 **    along with XQueryEvaluator.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
-The MainApplication class enhances the QApplication class by platform independent functionality.
-*/
+#ifndef ABSTRACTWIDGETGENERATOR_H
+#define ABSTRACTWIDGETGENERATOR_H
 
-#ifndef MAINAPPLICATION_H
-#define MAINAPPLICATION_H
+//#include <QtGui/QWidget>
+class QWidget;
 
-#include <QtGui/QApplication>
 
 /**
-Enhances a QApplication class with additional platform independent functionality.
-
-At present this is used associate file types under OSX.
+@brief
+Abstract widget generator to dynamically register widget types.
 */
-class MainApplication : public QApplication
+class AbstractWidgetGenerator
 {
-    Q_OBJECT
 public:
-    explicit MainApplication(int &argc, char **argv, bool GUIenabled=true);
+    explicit AbstractWidgetGenerator() {}
+    virtual ~AbstractWidgetGenerator() {}
 
-protected:
-    bool event(QEvent *ev);
-
-signals:
-    void fileOpened(QString fileName);
-
+    virtual QWidget * newInstance() const = 0;
 };
 
-#endif // MAINAPPLICATION_H
+/**
+@brief
+Generator class template to create a new widget instance.
+*/
+template<typename T>
+class WidgetGeneratorTemplate : public AbstractWidgetGenerator
+{
+public:
+    QWidget * newInstance() const { return new T(); }
+};
+
+
+#endif // ABSTRACTWIDGETGENERATOR_H

@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
@@ -21,13 +21,14 @@
 #define XMLSOURCE_H
 
 #include <QtGui/QWidget>
+#include <QtGui/QComboBox>
+#include <QtGui/QToolButton>
 
 #include <QtCore/QDir>
 
-namespace Ui {
-    class XmlSource;
-}
-
+/**
+Provides functionality for managing XML source documents.
+*/
 class XmlSource : public QWidget
 {
     Q_OBJECT
@@ -41,6 +42,8 @@ public:
     QWidget * editor() const { return _editor; }
     void setEditor(QWidget *w) { _editor = w; }
 
+    void editSource();
+
 signals:
     void sourceFileAvailable(bool yes);
 
@@ -53,10 +56,13 @@ protected:
     void hideEvent(QHideEvent * ev);
 
 private:
-    Ui::XmlSource *ui;
-
+    QComboBox *     _textSourceFile;
     QString         _sourceFile;
+
+    QToolButton *   _btnOpenSource;
+
     QWidget *       _editor;
+    QString         _externalEditor;
 
     QString selectSourceFile();
 

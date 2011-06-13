@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
@@ -28,6 +28,9 @@ namespace Ui {
     class XQEOutput;
 }
 
+/**
+Dialog to show a queries result in plain text.
+*/
 class XQEOutput : public QDialog
 {
     Q_OBJECT

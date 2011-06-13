@@ -1,4 +1,4 @@
-/**
+/*
 **    Copyright (c) 2011 by Nils Fenner
 **
 **    This file is part of XQueryEvaluator.
@@ -28,8 +28,8 @@
 #include "Query/XQEMessageHandler.h"
 
 #include "TextEditing/XQEditor.h"
-#include "TextEditing/XQEdit.h"
 #include "TextEditing/XMLEditor.h"
+#include "TextEditing/TextSearch.h"
 
 #include "TextEditing/AutoIndent.h"
 
@@ -38,22 +38,37 @@
 #include <QtGui/QToolBar>
 #include <QtGui/QComboBox>
 #include <QtGui/QCloseEvent>
+#include <QtGui/QDockWidget>
 
 #include <QtCore/QTime>
 #include <QtCore/QSettings>
 
 
 /**
-The main window´s constructor sets up the user interface.
+The main window's constructor sets up the main user interface.
+
+@todo At present, all toolbar and menu actions are set here.
+This is to be outsourced in seperate functions, maybe an ActionManager class.
 */
 XQEMainWindow::XQEMainWindow(QWidget *parent)
     : QMainWindow( parent )
     , ui( new Ui::XQEMainWindow )
+    , _modified( false )
+    , _outputToFile(false)
     , _xmlSource( new XmlSource )
     , _textQuery( new XQEditor )
-    , _xmlEditor( new XmlEditor )
 {
     ui->setupUi(this);
+
+    connect( _textQuery, SIGNAL( modificationChanged(bool) ), this, SLOT( documentModified(bool) ) );
+
+    setDockOptions( QMainWindow::AnimatedDocks );
+
+    // setup docking areas
+    _fixedDockWidgets.setOwnerWindow(this);
+
+    _fixedDockWidgets.registerDockWidget( "search", Qt::TopDockWidgetArea );
+    _fixedDockWidgets.registerDockWidget( "xml-edit", Qt::RightDockWidgetArea );
 
     setWindowTitle( QString("%1 (%2)").arg( qApp->applicationName() ).arg( qApp->applicationVersion() ) );
     qApp->setWindowIcon( QIcon(":/AppIcon.svg") );
@@ -68,7 +83,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     _textQueryType->addItem( "XSLT 2.0", QXmlQuery::XSLT20 );
     connect( _textQueryType, SIGNAL(activated(int)), this, SLOT(queryLanguageSelected(int)) );
 
-    ui->toolBar->addWidget(_textQueryType);
+    ui->toolBar->addWidget( _textQueryType );
 
     // -- Query menu
     QMenu *m = menuBar()->addMenu( tr("Query") );
@@ -81,8 +96,8 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     a->setToolTip( tr("Open a query file.") );
     a = m->addAction( tr("Save"), this, SLOT(actionSaveQuery()), QKeySequence( Qt::CTRL + Qt::Key_S ) );
     a->setToolTip( tr("Save your query.") );
-//    a = m->addAction( tr("Save as..."), this, SLOT(actionSaveQueryAs()), QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_S ) );
-//    a->setToolTip( tr("Save your query at another location.") );
+    a = m->addAction( tr("Save as..."), this, SLOT(actionSaveQueryAs()), QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_S ) );
+    a->setToolTip( tr("Save your query at another location.") );
 
     m->addSeparator();
 
@@ -92,6 +107,19 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     a->setCheckable(true);
     a->setChecked( _xqeval.formattedOutput() );
     ui->toolBar->addAction(a);
+
+    a = m->addAction( QIcon(":/toFile.svg"), tr("Output to file ..."), this, SLOT(actionOutputToFile(bool)) );
+    a->setCheckable(true);
+    ui->toolBar->addAction(a);
+
+    m->addSeparator();
+
+    a = m->addAction( QIcon(":/legacy.svg"), tr("Legacy Mode"), this, SLOT(actionLegacyMode(bool)) );
+    a->setCheckable(true);
+    a->setToolTip("Develop queries for Qt 4.4 using the external variable $inputDocument.");
+    ui->toolBar->addAction(a);
+
+    m->addSeparator();
 
     a = m->addAction( QIcon(":/start.svg"), tr("Run"), this,
                      SLOT( startQuery() ), QKeySequence( Qt::CTRL + Qt::Key_R ) );
@@ -105,32 +133,37 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     ui->toolBar->addWidget( _xmlSource );
 
     a = new QAction( QIcon(":/eye.svg"), tr("View Source"), 0 );
-    connect( a, SIGNAL(triggered()), this, SLOT(actionViewSource()) );
+    a->setCheckable(true);
+    connect( a, SIGNAL(triggered(bool)), this, SLOT(actionViewSource(bool)) );
+    connect( _xmlSource, SIGNAL(sourceFileAvailable(bool)), a, SLOT(setEnabled(bool)) );
+    ui->toolBar->addAction(a);
+
+    a = new QAction( QIcon(":/pen.svg"), tr("Edit Source"), 0 );
+    connect( a, SIGNAL(triggered()), this, SLOT(actionEditSource()) );
     connect( _xmlSource, SIGNAL(sourceFileAvailable(bool)), a, SLOT(setEnabled(bool)) );
     ui->toolBar->addAction(a);
 
     // -- Edit menu
     m = menuBar()->addMenu( tr("Edit") );
-    m->addActions( _textQuery->textEdit()->createStandardContextMenu()->actions() );
+    m->addActions( _textQuery->createStandardContextMenu()->actions() );
+    m->addAction( tr("Search ..."), this, SLOT(actionSearchText()), QKeySequence(Qt::CTRL + Qt::Key_F) );
 
     // -- Help menu
     m = menuBar()->addMenu( QString("Help") );
     m->addAction( QString("About"), this, SLOT(about()) );
     m->addAction( QString("About &Qt"), qApp, SLOT(aboutQt()) );
 
+    // read application settings
     readSettings();
 }
 
 XQEMainWindow::~XQEMainWindow()
 {
     delete ui;
-
-    if (_xmlEditor)
-        delete _xmlEditor;
 }
 
 /**
-The application UI´s language changed.
+The application UI's language changed.
 */
 void XQEMainWindow::changeEvent(QEvent *e)
 {
@@ -145,7 +178,8 @@ void XQEMainWindow::changeEvent(QEvent *e)
 }
 
 /**
-Starts evaluations of a query.
+Evaluates a query and shows the result in a seperate modal dialog.
+When outputToFile is true, the result is written to the specified file in addition.
 */
 void XQEMainWindow::startQuery()
 {
@@ -155,9 +189,12 @@ void XQEMainWindow::startQuery()
     stopWatch.start();
 
     QString errLog;
-    const QString &out = _xqeval.transform( source, _textQuery->xqText(), errLog );
+    const QString &out = _xqeval.transform( source, _textQuery->toPlainText(), errLog );
 
     int duration = stopWatch.elapsed(); // time measurement
+
+    if ( _outputToFile )
+        saveOutputToFile(out);
 
     XQEOutput dlg;
     dlg.setWindowTitle( tr("Query Result") );
@@ -212,7 +249,7 @@ void XQEMainWindow::loadQuery(QString fileName)
     {
         _queryFileName = fileName; // remember the file name
 
-        _textQuery->setXQText( QString::fromUtf8(queryFile.readAll()) );
+        _textQuery->setPlainText( QString::fromLocal8Bit( queryFile.readAll()) );
         setWindowTitle( QString( "%1 - %2" ).arg( qApp->applicationName() ).arg( QFileInfo(queryFile).fileName() ) );
     }
 }
@@ -222,11 +259,12 @@ Action wrapper for saving a query.
 */
 void XQEMainWindow::actionSaveQuery()
 {
-    saveQuery();
+    if ( saveQuery() )
+        _modified = false;
 }
 
 /**
-Loads a source XML file and assigns it´s content to a string.
+Loads a source XML file and assigns it�s content to a string.
 */
 QString XQEMainWindow::loadSourceFile(const QString &path) const
 {
@@ -235,7 +273,11 @@ QString XQEMainWindow::loadSourceFile(const QString &path) const
 
     QFile f(path);
     if (f.open(QIODevice::ReadOnly))
-        return f.readAll();
+        return QString::fromLocal8Bit( f.readAll() );
+
+    QMessageBox::critical(
+                0, tr("Unable to open XML file"),
+                tr("The source document could not be opened.") );
 
     return QString();
 }
@@ -267,7 +309,7 @@ void XQEMainWindow::queryFileNameChanged(const QString &newFileName)
 
 
 /**
-The main window´s close event.
+The main window's close event.
 */
 void XQEMainWindow::closeEvent(QCloseEvent *e)
 {
@@ -280,10 +322,14 @@ void XQEMainWindow::closeEvent(QCloseEvent *e)
         e->ignore();
 }
 
+/**
+@return When true, it is save to overwrite the existing query.
+Called for example when creating a new query or when the applicaiton quits.
+*/
 bool XQEMainWindow::queryCanClose()
 {
     bool mayClose = true;
-    if ( _textQuery->modified() && !_textQuery->xqText().isEmpty() )
+    if ( _modified && !_textQuery->toPlainText().isEmpty() )
     {
         QMessageBox message;
         int btn = message.question( this, tr("Save XQuery?"), tr("Save your query?"),
@@ -341,7 +387,6 @@ bool XQEMainWindow::saveQuery(bool saveAs)
 
     // write to file
     QFile dest(_queryFileName);
-
     if ( !dest.open(QIODevice::WriteOnly) )
     {
         // failed to save
@@ -349,9 +394,14 @@ bool XQEMainWindow::saveQuery(bool saveAs)
         return false;
     }
 
-    dest.write( _textQuery->xqText().toUtf8() );
+    const QString &content = _textQuery->toPlainText();
+    qint64 bytesWritten = dest.write( content.toUtf8() );
+    if ( bytesWritten == content.size() )
+        return true;
 
-    return true;
+    QMessageBox::critical( this, tr("Error on writing file"), tr("Error while writing query file %1.").arg(_queryFileName) );
+
+    return false;
 }
 
 /**
@@ -391,31 +441,32 @@ void XQEMainWindow::about()
 /**
 The XML source should be shown.
 */
-void XQEMainWindow::actionViewSource()
+void XQEMainWindow::actionViewSource(bool activate)
 {
-    if ( _xmlEditor == 0 )
-        return;
-
-    QFile xmlFile( _xmlSource->sourceFile() );
-    if ( !xmlFile.open(QIODevice::ReadOnly) || _xmlSource->sourceFile().isEmpty() )
+    if (!activate)
     {
-        QMessageBox::critical(
-                    this, tr("Unable to open XML file"),
-                    tr("The source document could not be opened.") );
+        _fixedDockWidgets.hide("xml-edit");
         return;
     }
 
-    _xmlEditor->setWindowTitle( tr("XML Source File - %1").arg( QFileInfo(xmlFile).fileName() ) );
-    _xmlEditor->setXml( QString::fromUtf8(xmlFile.readAll()) );
+    XmlEditor * xmlEditor = new XmlEditor();
 
-    xmlFile.close();
+    xmlEditor->setWindowTitle( tr("XML Source File - %1").arg( QFileInfo(_xmlSource->sourceFile()).fileName() ) );
+    xmlEditor->setPlainText( loadSourceFile( _xmlSource->sourceFile() ) );
 
-    _xmlEditor->show();
+    if ( !_fixedDockWidgets.show("xml-edit", xmlEditor) )
+    {
+        // show xml editor as seperate window
+        xmlEditor->show();
+    }
 }
 
+/**
+Reads settings from the apropriate settings database and applies it to this XQEMainWindow instance.
+*/
 void XQEMainWindow::readSettings()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, qApp->organizationName(), APP_NAME);
+    QSettings settings;
 
     settings.beginGroup( "MainWindow" );
 
@@ -433,12 +484,18 @@ void XQEMainWindow::readSettings()
         _textQueryType->setCurrentIndex( i );
 
     loadQuery( settings.value( "queryFile" ).toString() );
+
+    _outputFilePath = settings.value( "outputFilePath" ).toString();
+
     settings.endGroup();
 }
 
+/**
+Writes the current XQEMainWindow's settings to the apropriate settings database.
+*/
 void XQEMainWindow::writeSettings()
 {
-    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QCoreApplication::organizationName(), APP_NAME);
+    QSettings settings;
 
     settings.beginGroup( "MainWindow" );
 
@@ -454,19 +511,102 @@ void XQEMainWindow::writeSettings()
     settings.beginGroup( "Query" );
     settings.setValue( "type", _textQueryType->currentText() );
     settings.setValue( "queryFile", _queryFileName );
+    settings.setValue( "outputFilePath", _outputFilePath );
     settings.endGroup();
 }
 
+/**
+Action to create a new query. An previous query becomes invalid in this and therefore has to be removed
+before the new query can be created.
+*/
 void XQEMainWindow::actionNewQuery()
 {
     if ( queryCanClose() )
     {
-        _textQuery->setXQText( QString() );
+        _textQuery->setPlainText( QString() );
         queryFileNameChanged( QString() );
     }
 }
 
-//void XQEMainWindow::actionSaveQueryAs()
-//{
-//    saveQuery( true );
-//}
+/**
+Opens the source XML document and forwards it to an editor.
+*/
+void XQEMainWindow::actionEditSource()
+{
+    _xmlSource->editSource();
+}
+
+/**
+Starts a string search in the query text.
+*/
+void XQEMainWindow::actionSearchText()
+{
+    TextSearch * searchDialog = new TextSearch();
+    searchDialog->setTextEdit( _textQuery );
+
+    if ( !_fixedDockWidgets.show("search", searchDialog) )
+    {
+        // show as seperate window
+        searchDialog->show();
+    }
+}
+
+void XQEMainWindow::actionSaveQueryAs()
+{
+    if ( saveQuery(true) )
+        documentModified(false);
+}
+
+/**
+Sets an output file to which the query result will be written on executing.
+*/
+void XQEMainWindow::actionOutputToFile(bool yes)
+{
+    _outputToFile = yes;
+    if ( !_outputToFile )
+        return;
+
+    // set a file name
+    QString path = _outputFilePath;
+    if ( path.isEmpty() )
+        path = QDir::homePath();
+
+    path = QFileDialog::getSaveFileName( this, tr("Select an output file."), QFileInfo(path).absoluteFilePath() );
+
+    if ( !path.isEmpty() )
+        _outputFilePath = QFileInfo(path).absoluteFilePath();
+}
+
+void XQEMainWindow::saveOutputToFile(const QString &content)
+{
+    if ( _outputFilePath.isEmpty() || content.isEmpty() )
+        return;
+
+
+    QFile file( _outputFilePath );
+    qint64 bytesWritten = 0;
+    if ( file.open(QIODevice::WriteOnly) )
+    {
+        bytesWritten = file.write( content.toLocal8Bit() );
+        file.close();
+    } else {
+        QMessageBox::critical( this, tr("Unable to open output file"),
+                               tr("Unable to create or open the output file %1.").arg(_outputFilePath) );
+    }
+
+    if ( bytesWritten != content.size() )
+        QMessageBox::critical( this, tr("Write error"), tr("Error while writng the output file %1.").arg(_outputFilePath) );
+}
+
+void XQEMainWindow::documentModified(bool modified)
+{
+    _modified = modified;
+}
+
+/**
+Sets the legacy mode to develop queries for Qt Versions 4.4.x.
+*/
+void XQEMainWindow::actionLegacyMode(bool yes)
+{
+    _xqeval.setLegacyMode(yes);
+}
