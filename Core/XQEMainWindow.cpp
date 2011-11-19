@@ -396,7 +396,7 @@ bool XQEMainWindow::saveQuery(bool saveAs)
 
     const QString &content = _textQuery->toPlainText();
     qint64 bytesWritten = dest.write( content.toUtf8() );
-    if ( bytesWritten == content.size() )
+    if ( bytesWritten == content.toUtf8().size() )
         return true;
 
     QMessageBox::critical( this, tr("Error on writing file"), tr("Error while writing query file %1.").arg(_queryFileName) );
@@ -587,14 +587,14 @@ void XQEMainWindow::saveOutputToFile(const QString &content)
     qint64 bytesWritten = 0;
     if ( file.open(QIODevice::WriteOnly) )
     {
-        bytesWritten = file.write( content.toLocal8Bit() );
+        bytesWritten = file.write( content.toUtf8() );
         file.close();
     } else {
         QMessageBox::critical( this, tr("Unable to open output file"),
                                tr("Unable to create or open the output file %1.").arg(_outputFilePath) );
     }
 
-    if ( bytesWritten != content.size() )
+    if ( bytesWritten != content.toUtf8().size() )
         QMessageBox::critical( this, tr("Write error"), tr("Error while writng the output file %1.").arg(_outputFilePath) );
 }
 
