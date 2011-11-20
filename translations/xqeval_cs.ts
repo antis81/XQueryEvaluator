@@ -75,7 +75,7 @@
     <message>
         <location filename="../Core/XQEMainWindow.cpp" line="72"/>
         <source>Select the type of query.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyberte typ dotazu.</translation>
     </message>
     <message>
         <location filename="../Core/XQEMainWindow.cpp" line="80"/>
@@ -85,12 +85,12 @@
     <message>
         <location filename="../Core/XQEMainWindow.cpp" line="83"/>
         <source>Open a query file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít soubor s dotazem.</translation>
     </message>
     <message>
         <location filename="../Core/XQEMainWindow.cpp" line="85"/>
         <source>Save your query.</source>
-        <translation type="unfinished"></translation>
+        <translation>Uložte váš dotaz.</translation>
     </message>
     <message>
         <location filename="../Core/XQEMainWindow.cpp" line="90"/>
@@ -105,22 +105,22 @@
     <message>
         <location filename="../Core/XQEMainWindow.cpp" line="103"/>
         <source>Indent Query</source>
-        <translation type="unfinished"></translation>
+        <translation>Odsadit dotaz</translation>
     </message>
     <message>
         <location filename="../Core/XQEMainWindow.cpp" line="105"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Nápověda</translation>
     </message>
     <message>
         <location filename="../Core/XQEMainWindow.cpp" line="106"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>O</translation>
     </message>
     <message>
         <location filename="../Core/XQEMainWindow.cpp" line="107"/>
         <source>About &amp;Qt</source>
-        <translation type="unfinished"></translation>
+        <translation>O &amp;Qt</translation>
     </message>
     <message>
         <location filename="../Core/XQEMainWindow.cpp" line="149"/>
@@ -175,17 +175,17 @@
     <message>
         <location filename="../Core/XQEMainWindow.cpp" line="372"/>
         <source>Unable to save XQuery file at: %1</source>
-        <translation>Soubor XQuery nelze uložit v: %1</translation>
+        <translation>Soubor s dotazem nelze uložit v: %1</translation>
     </message>
     <message>
         <location filename="../Core/XQEMainWindow.cpp" line="404"/>
         <source>About %1</source>
-        <translation type="unfinished"></translation>
+        <translation>O %1</translation>
     </message>
     <message>
         <location filename="../Core/XQEMainWindow.cpp" line="405"/>
         <source>&lt;h1&gt;%1&lt;/h1&gt;&lt;h2&gt;Version: %2&lt;/h2&gt;&lt;hr/&gt;%1 is a little editor to help writing XQuery scripts. It features highlighting and basic auto completion and error handling. Basic XSLT and XPath support is also included.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h1&gt;%1&lt;/h1&gt;&lt;h2&gt;Verze: %2&lt;/h2&gt;&lt;hr/&gt;%1 je malý editor, který má pomoci psaní skriptů XQuery. Jeho vlastnostmi jsou zvýrazňování a automatické doplňování a nakládání s chybami. Je zahrnuta také podpora XSLT a XPath.</translation>
     </message>
 </context>
 <context>
