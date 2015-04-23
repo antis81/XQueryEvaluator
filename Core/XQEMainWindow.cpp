@@ -118,13 +118,16 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     a = m->addAction( QIcon(":/legacy.svg"), tr("&Legacy Mode"),
                       this, SLOT(actionLegacyMode(bool)) );
     a->setCheckable(true);
-    a->setToolTip("Develop queries for Qt 4.4 using the external variable $inputDocument.");
-    ui->toolBar->addAction(a);
+    a->setToolTip( tr("Write queries for Qt 4.4. Those queries need to declare "
+                      "declare an external variable called $inputDocument. "
+                      "Here's how you declare it:<br/>"
+                      "<b>declare variable $inputDocument external;</b>") );
+    toolBar->addAction(a);
 
     m->addSeparator();
 
-    a = m->addAction( QIcon(":/start.svg"), tr("Run"), this,
-                     SLOT( startQuery() ), QKeySequence( Qt::CTRL + Qt::Key_R ) );
+    a = m->addAction( QIcon(":/start.svg"), tr("&Run"), this,
+                      SLOT(startQuery()), QKeySequence(Qt::CTRL + Qt::Key_R) );
 
     toolBar->addAction(a);
 
