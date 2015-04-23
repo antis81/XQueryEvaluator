@@ -8,6 +8,8 @@ DESTDIR = $$BIN_BASE
 
 VERSION = $$XQEVAL_VERSION
 
+QT += widgets
+
 DEPENDPATH += .
 
 HEADERS += \

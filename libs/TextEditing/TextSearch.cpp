@@ -21,7 +21,7 @@
 #include "TextSearch.h"
 #include "ui_TextSearch.h"
 
-#include <QtGui/QPlainTextEdit>
+#include <QtWidgets/QPlainTextEdit>
 
 /**
 Constructor of TextSearch.

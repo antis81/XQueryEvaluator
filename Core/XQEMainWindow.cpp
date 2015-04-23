@@ -34,16 +34,14 @@
 
 #include "TextEditing/AutoIndent.h"
 
-#include <QtGui/QFileDialog>
-#include <QtGui/QMessageBox>
-#include <QtGui/QToolBar>
-#include <QtGui/QComboBox>
-#include <QtGui/QCloseEvent>
-#include <QtGui/QDockWidget>
-
 #include <QtCore/QTime>
 #include <QtCore/QSettings>
-
+#include <QtGui/QCloseEvent>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QDockWidget>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QToolBar>
 
 /**
 The main window's constructor sets up the main user interface.

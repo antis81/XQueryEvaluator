@@ -21,7 +21,7 @@
 #ifndef TEXTSEARCH_H
 #define TEXTSEARCH_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtGui/QTextDocument>
 
 class QPlainTextEdit;

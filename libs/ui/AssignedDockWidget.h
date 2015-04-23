@@ -21,7 +21,7 @@
 #ifndef ASSIGNEDDOCKWIDGET_H
 #define ASSIGNEDDOCKWIDGET_H
 
-#include <QtGui/QDockWidget>
+#include <QtWidgets/QDockWidget>
 
 
 /**

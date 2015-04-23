@@ -24,13 +24,13 @@
 #include <QtCore/QDir>
 #include <QtCore/QAbstractItemModel>
 
-#include <QtGui/QStringListModel>
-#include <QtGui/QApplication>
-#include <QtGui/QCompleter>
-#include <QtGui/QAbstractItemView>
+#include <QtCore/QStringListModel>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
-#include <QtGui/QScrollBar>
+#include <QtWidgets/QAbstractItemView>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QCompleter>
+#include <QtWidgets/QScrollBar>
 
 
 /**

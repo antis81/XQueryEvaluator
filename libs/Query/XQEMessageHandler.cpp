@@ -20,10 +20,9 @@
 
 #include "XQEMessageHandler.h"
 
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include <QtGui/QTextDocumentFragment>
 #include <QtCore/QtGlobal>
-#include <QtNetwork/QUrlInfo>
 
 
 XQEMessageHandler::XQEMessageHandler(QObject *parent)

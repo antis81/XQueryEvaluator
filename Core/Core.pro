@@ -7,8 +7,8 @@ DESTDIR = $$BIN_BASE
 
 VERSION = $$XQEVAL_VERSION
 DEFINES += \
-    APP_VERSION=\\\"$$XQEVAL_VERSION\\\" \
-    APP_NAME=\\\"$$TARGET\\\"
+    "APP_VERSION=\\\"$$XQEVAL_VERSION\\\"" \
+    "APP_NAME=\"QStringLiteral(\\\"$$TARGET\\\")\""
 
 CONFIG += qt
 

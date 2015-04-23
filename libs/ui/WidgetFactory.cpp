@@ -20,7 +20,7 @@
 
 #include "WidgetFactory.h"
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 
 WidgetFactory::WidgetFactory()

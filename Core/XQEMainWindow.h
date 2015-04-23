@@ -21,7 +21,7 @@
 #ifndef XQEMAINWINDOW_H
 #define XQEMAINWINDOW_H
 
-#include <QtGui/QMainWindow>
+#include <QtWidgets/QMainWindow>
 #include <QtXmlPatterns/QXmlQuery>
 
 #include "Query/XQEvaluator.h"

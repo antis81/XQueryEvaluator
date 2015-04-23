@@ -22,12 +22,11 @@
 
 #include <QtCore/QSettings>
 #include <QtCore/QProcess>
-
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QMessageBox>
-#include <QtGui/QFileDialog>
 #include <QtGui/QHideEvent>
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QMessageBox>
 
 /**
 Constructs an object to handle XML sources. Currently only one single source file is supported.

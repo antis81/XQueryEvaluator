@@ -21,7 +21,7 @@
 #ifndef TEXTEDITBASE_H
 #define TEXTEDITBASE_H
 
-#include <QtGui/QPlainTextEdit>
+#include <QtWidgets/QPlainTextEdit>
 
 class TextEditMetaBorder;
 

@@ -25,7 +25,7 @@ The MainApplication class enhances the QApplication class by platform independen
 #ifndef MAINAPPLICATION_H
 #define MAINAPPLICATION_H
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 /**
 Enhances a QApplication class with additional platform independent functionality.

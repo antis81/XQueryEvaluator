@@ -21,7 +21,7 @@
 #ifndef TEXTEDITMETABORDER_H
 #define TEXTEDITMETABORDER_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 class TextEditBase;
 

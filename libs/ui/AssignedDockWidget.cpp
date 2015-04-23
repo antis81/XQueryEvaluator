@@ -21,7 +21,7 @@
 #include "AssignedDockWidget.h"
 
 #include <QtCore/QEvent>
-#include <QtGui/QLayout>
+#include <QtWidgets/QLayout>
 
 
 AssignedDockWidget::AssignedDockWidget(QObject * parent)

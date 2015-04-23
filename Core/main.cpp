@@ -30,9 +30,9 @@
 #include "XQEMainWindow.h"
 
 #ifdef Q_OS_MAC
-#  define SHARE_PATH "/../Resources"
+#  define SHARE_PATH QStringLiteral("/../Resources")
 #else
-#  define SHARE_PATH "/../share/" APP_NAME
+#  define SHARE_PATH QStringLiteral("/../share/") + APP_NAME
 #endif
 
 //void setupTranslators(QApplication &a)
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
         a.setStyleSheet(f.readAll());
 
     a.setOrganizationName("FenNils");
-    a.setApplicationName( QLatin1String(APP_NAME) );
+    a.setApplicationName( APP_NAME );
     a.setApplicationVersion( APP_VERSION );
 
     QSettings::setDefaultFormat( QSettings::IniFormat );
@@ -69,13 +69,13 @@ int main(int argc, char *argv[])
 //    setupTranslators(a);
     const QString locale = QLocale::system().name();
     QTranslator qtTranslator;
-    qtTranslator.load( QLatin1String("qt_") + locale,
+    qtTranslator.load( QStringLiteral("qt_") + locale,
                       QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
     a.installTranslator( &qtTranslator );
 
     QTranslator translator;
-    translator.load( QLatin1String("xqeval_") + locale
-                    , QDir::cleanPath( QCoreApplication::applicationDirPath() + QLatin1String( SHARE_PATH "/translations" ) ) );
+    translator.load( QStringLiteral("xqeval_") + locale,
+                     QDir::cleanPath(QApplication::applicationDirPath() + SHARE_PATH + QStringLiteral("/translations")) );
     a.installTranslator( &translator );
 
     XQEMainWindow w;

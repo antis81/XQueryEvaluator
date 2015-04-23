@@ -20,7 +20,7 @@
 
 #include "DockWidgets.h"
 
-#include <QtGui/QMainWindow>
+#include <QtWidgets/QMainWindow>
 
 #include "AssignedDockWidget.h"
 

@@ -1,12 +1,14 @@
 message ("Building $$TARGET with Qt Version $$[QT_VERSION]")
 
-contains(QT_VERSION, ^4\\.[0-4]\\..*) {
+contains(QT_VERSION, ^4\\.[0-9][0-9]?\\..*) {
     message("Cannot build $$TARGET with Qt version $${QT_VERSION}.")
-    error("Use at least Qt 4.5.")
+    error("Requires Qt 5.0 or later.")
 }
 
 TEMPLATE = subdirs
 CONFIG += ordered
+
+QT += widgets
 
 SUBDIRS = \
     libs \

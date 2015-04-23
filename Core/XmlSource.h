@@ -21,9 +21,9 @@
 #ifndef XMLSOURCE_H
 #define XMLSOURCE_H
 
-#include <QtGui/QWidget>
-#include <QtGui/QComboBox>
-#include <QtGui/QToolButton>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QToolButton>
 
 #include <QtCore/QDir>
 
