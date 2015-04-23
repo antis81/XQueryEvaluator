@@ -135,6 +135,10 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     a = m->addAction( tr("&Indent Query"), this, SLOT(autoIndent()),
                       QKeySequence( Qt::CTRL + Qt::Key_I ) );
 
+    m->addSeparator();
+    a = m->addAction( tr("&Quit %1").arg(qApp->applicationName()),
+                      this, SLOT(close()), QKeySequence(Qt::CTRL + Qt::Key_Q) );
+
     toolBar->addSeparator();
     toolBar->addWidget( _xmlSource );
 
