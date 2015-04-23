@@ -20,8 +20,6 @@
 
 #include "XQEMainWindow.h"
 
-#include "ui_XQEMainWindow.h"
-
 #include "XQEOutput.h"
 
 #include "XmlSource.h"
@@ -51,13 +49,12 @@ This is to be outsourced in seperate functions, maybe an ActionManager class.
 */
 XQEMainWindow::XQEMainWindow(QWidget *parent)
     : QMainWindow( parent )
-    , ui( new Ui::XQEMainWindow )
     , _modified( false )
     , _outputToFile(false)
     , _xmlSource( new XmlSource )
     , _textQuery( new XQEditor )
 {
-    ui->setupUi(this);
+    setupUi(this);
 
     connect( _textQuery, SIGNAL( modificationChanged(bool) ), this, SLOT( documentModified(bool) ) );
 
@@ -74,7 +71,7 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 
     setCentralWidget( _textQuery );
 
-    ui->toolBar->setIconSize(QSize(21,21));
+    toolBar->setIconSize(QSize(21,21));
 
     _textQueryType = new QComboBox();
     _textQueryType->setToolTip( tr("Select the type of query.") );
@@ -82,38 +79,44 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     _textQueryType->addItem( "XSLT 2.0", QXmlQuery::XSLT20 );
     connect( _textQueryType, SIGNAL(activated(int)), this, SLOT(queryLanguageSelected(int)) );
 
-    ui->toolBar->addWidget( _textQueryType );
+    toolBar->addWidget( _textQueryType );
 
     // -- Query menu
-    QMenu *m = menuBar()->addMenu( tr("Query") );
+    QMenu *m = appMenu->addMenu( tr("Quer&y") );
 
     QAction *a = 0;
 
-    a = m->addAction( tr("New"), this, SLOT(actionNewQuery()), QKeySequence( Qt::CTRL + Qt::Key_N ) );
+    a = m->addAction( tr("&New"), this, SLOT(actionNewQuery()),
+                      QKeySequence( Qt::CTRL + Qt::Key_N ) );
     a->setToolTip( tr("Create a new query.") );
-    a = m->addAction( tr("Open"), this, SLOT(actionOpenQuery()), QKeySequence( Qt::CTRL + Qt::Key_O ) );
+    a = m->addAction( tr("&Open"), this, SLOT(actionOpenQuery()),
+                      QKeySequence( Qt::CTRL + Qt::Key_O ) );
     a->setToolTip( tr("Open a query file.") );
-    a = m->addAction( tr("Save"), this, SLOT(actionSaveQuery()), QKeySequence( Qt::CTRL + Qt::Key_S ) );
+    a = m->addAction( tr("&Save"), this, SLOT(actionSaveQuery()),
+                      QKeySequence( Qt::CTRL + Qt::Key_S ) );
     a->setToolTip( tr("Save your query.") );
-    a = m->addAction( tr("Save as..."), this, SLOT(actionSaveQueryAs()), QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_S ) );
+    a = m->addAction( tr("Save &as..."), this, SLOT(actionSaveQueryAs()),
+                      QKeySequence( Qt::CTRL + Qt::SHIFT + Qt::Key_S ) );
     a->setToolTip( tr("Save your query at another location.") );
 
     m->addSeparator();
 
     // menu action indent output
-    a = m->addAction( QIcon(":/indent.svg"), tr("Indent Output"),
+    a = m->addAction( QIcon(":/indent.svg"), tr("Indent Ou&tput"),
                      this, SLOT(changeFormattedOutput(bool)) );
     a->setCheckable(true);
     a->setChecked( _xqeval.formattedOutput() );
-    ui->toolBar->addAction(a);
+    toolBar->addAction(a);
 
-    a = m->addAction( QIcon(":/toFile.svg"), tr("Output to file ..."), this, SLOT(actionOutputToFile(bool)) );
+    a = m->addAction( QIcon(":/toFile.svg"), tr("Output to &file ..."),
+                      this, SLOT(actionOutputToFile(bool)) );
     a->setCheckable(true);
-    ui->toolBar->addAction(a);
+    toolBar->addAction(a);
 
     m->addSeparator();
 
-    a = m->addAction( QIcon(":/legacy.svg"), tr("Legacy Mode"), this, SLOT(actionLegacyMode(bool)) );
+    a = m->addAction( QIcon(":/legacy.svg"), tr("&Legacy Mode"),
+                      this, SLOT(actionLegacyMode(bool)) );
     a->setCheckable(true);
     a->setToolTip("Develop queries for Qt 4.4 using the external variable $inputDocument.");
     ui->toolBar->addAction(a);
@@ -123,42 +126,38 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
     a = m->addAction( QIcon(":/start.svg"), tr("Run"), this,
                      SLOT( startQuery() ), QKeySequence( Qt::CTRL + Qt::Key_R ) );
 
-    ui->toolBar->addAction(a);
+    toolBar->addAction(a);
 
     m->addSeparator();
-    a = m->addAction( tr("Indent Query"), this, SLOT(autoIndent()), QKeySequence( Qt::CTRL + Qt::Key_I ) );
+    a = m->addAction( tr("&Indent Query"), this, SLOT(autoIndent()),
+                      QKeySequence( Qt::CTRL + Qt::Key_I ) );
 
-    ui->toolBar->addSeparator();
-    ui->toolBar->addWidget( _xmlSource );
+    toolBar->addSeparator();
+    toolBar->addWidget( _xmlSource );
 
     a = new QAction( QIcon(":/eye.svg"), tr("View Source"), 0 );
     a->setCheckable(true);
     connect( a, SIGNAL(triggered(bool)), this, SLOT(actionViewSource(bool)) );
     connect( _xmlSource, SIGNAL(sourceFileAvailable(bool)), a, SLOT(setEnabled(bool)) );
-    ui->toolBar->addAction(a);
+    toolBar->addAction(a);
 
     a = new QAction( QIcon(":/pen.svg"), tr("Edit Source"), 0 );
     connect( a, SIGNAL(triggered()), this, SLOT(actionEditSource()) );
     connect( _xmlSource, SIGNAL(sourceFileAvailable(bool)), a, SLOT(setEnabled(bool)) );
-    ui->toolBar->addAction(a);
+    toolBar->addAction(a);
 
     // -- Edit menu
-    m = menuBar()->addMenu( tr("Edit") );
+    m = appMenu->addMenu( tr("&Edit") );
     m->addActions( _textQuery->createStandardContextMenu()->actions() );
     m->addAction( tr("Search ..."), this, SLOT(actionSearchText()), QKeySequence(Qt::CTRL + Qt::Key_F) );
 
     // -- Help menu
-    m = menuBar()->addMenu( QString("Help") );
-    m->addAction( QString("About"), this, SLOT(about()) );
-    m->addAction( QString("About &Qt"), qApp, SLOT(aboutQt()) );
+    m = appMenu->addMenu( QStringLiteral("&Help") );
+    m->addAction( QStringLiteral("&About"), this, SLOT(about()) );
+    m->addAction( QStringLiteral("About &Qt"), qApp, SLOT(aboutQt()) );
 
     // read application settings
     readSettings();
-}
-
-XQEMainWindow::~XQEMainWindow()
-{
-    delete ui;
 }
 
 /**
@@ -169,7 +168,7 @@ void XQEMainWindow::changeEvent(QEvent *e)
     QMainWindow::changeEvent(e);
     switch (e->type()) {
     case QEvent::LanguageChange:
-        ui->retranslateUi(this);
+        retranslateUi(this);
         break;
     default:
         break;

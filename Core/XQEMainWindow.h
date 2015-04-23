@@ -27,6 +27,7 @@
 #include "Query/XQEvaluator.h"
 #include "ui/DockWidgets.h"
 
+#include "ui_XQEMainWindow.h"
 
 namespace Ui {
     class XQEMainWindow;
@@ -41,12 +42,11 @@ class QComboBox;
 /**
 The main user interface of XQueryEvaluator.
 */
-class XQEMainWindow : public QMainWindow
+class XQEMainWindow : public QMainWindow, Ui::XQEMainWindow
 {
     Q_OBJECT
 public:
     explicit XQEMainWindow(QWidget *parent = 0);
-    ~XQEMainWindow();
 
 public slots:
     void loadQuery(QString fileName);
@@ -80,8 +80,6 @@ protected:
     void closeEvent(QCloseEvent *e);
 
 private:
-    Ui::XQEMainWindow *ui;
-
     QComboBox *                 _textQueryType;
 
     bool                        _modified;
