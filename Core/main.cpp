@@ -84,9 +84,10 @@ int main(int argc, char *argv[])
     //!@todo Need to do it right! (file associations)
     if ( args.count() > 1 )
     {
-        const QString &queryFile = args[1].trimmed();
-        if (!queryFile.startsWith("-"))
+        const QString queryFile( args[1].trimmed() );
+        if ( !queryFile.startsWith(QChar(L'-')) ) {
             w.loadQuery(queryFile);
+        }
     }
 
     w.show();

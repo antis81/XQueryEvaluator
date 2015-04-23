@@ -112,7 +112,7 @@ int TextEditBase::metaBorderWidth() const
         ++digits;
     }
 
-    int space = fontMetrics().width(QLatin1Char('9')) * digits;
+    int space = fontMetrics().width(QChar(L'9')) * digits;
 
     return space;
 }
