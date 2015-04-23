@@ -17,21 +17,25 @@
 **    along with XQueryEvaluator. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef XMLEDITOR_H
-#define XMLEDITOR_H
+#ifndef XQE_XMLEDITOR_H
+#define XQE_XMLEDITOR_H
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "XmlHighlighter.h"
 #include "TextEditBase.h"
 
 
 /**
-An XML editor showing highlighted XML text and line numbers. Currently read only.
+* @class    XmlEditor
+*
+* @brief    An XML editor showing highlighted XML text and line numbers.
+*
+* @todo     Currently XML docs can only be viewed, not edited.
 */
 class XmlEditor : public TextEditBase
 {
-    Q_OBJECT
+//    Q_OBJECT
 public:
     explicit XmlEditor(QWidget *parent = 0);
     virtual ~XmlEditor();
@@ -46,4 +50,4 @@ private:
     void writeSettings();
 };
 
-#endif // XMLEDITOR_H
+#endif

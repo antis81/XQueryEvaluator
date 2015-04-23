@@ -14,24 +14,24 @@ HEADERS += \
     XQueryHighlighter.h \
     XmlHighlighter.h \
     TextEditMetaBorder.h \
-    XmlEditor.h \
     AutoIndent.h \
     AbstractHighlighter.h \
     CppHighlighter.h \
     TextSearch.h \
     TextEditBase.h \
+    XmlEditor.h \
     XQEditor.h
 
 SOURCES += \
     XQueryHighlighter.cpp \
     XmlHighlighter.cpp \
     TextEditMetaBorder.cpp \
-    XmlEditor.cpp \
     AutoIndent.cpp \
     AbstractHighlighter.cpp \
     CppHighlighter.cpp \
     TextSearch.cpp \
     TextEditBase.cpp \
+    XmlEditor.cpp \
     XQEditor.cpp
 
 RESOURCES += \
