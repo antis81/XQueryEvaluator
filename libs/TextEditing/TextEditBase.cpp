@@ -121,7 +121,7 @@ void TextEditBase::updateMetaBorderWidth(int newBlockCount)
 {
     Q_UNUSED( newBlockCount );
 
-    setViewportMargins( metaBorderWidth() + 3, 0, 0, 0);
+    setViewportMargins( metaBorderWidth() + 3, 0, 0, 0 );
 }
 
 void TextEditBase::updateMetaBorder(const QRect & r, int dy)

@@ -42,11 +42,10 @@
 #include <QtWidgets/QToolBar>
 
 /**
-The main window's constructor sets up the main user interface.
-
-@todo At present, all toolbar and menu actions are set here.
-This is to be outsourced in seperate functions, maybe an ActionManager class.
-*/
+ * @brief       The main window's constructor sets up the main user interface.
+ *
+ * @todo        Move initialization of menu actions to an ActionManager class.
+ */
 XQEMainWindow::XQEMainWindow(QWidget *parent)
     : QMainWindow( parent )
     , _modified( false )
@@ -168,8 +167,8 @@ XQEMainWindow::XQEMainWindow(QWidget *parent)
 }
 
 /**
-The application UI's language changed.
-*/
+ * @brief       The application UI's language changed.
+ */
 void XQEMainWindow::changeEvent(QEvent *e)
 {
     QMainWindow::changeEvent(e);
@@ -183,9 +182,11 @@ void XQEMainWindow::changeEvent(QEvent *e)
 }
 
 /**
-Evaluates a query and shows the result in a seperate modal dialog.
-When outputToFile is true, the result is written to the specified file in addition.
-*/
+ * @brief       Evaluates a query and displays the result.
+ *
+ * When @ref outputToFile() is true, the displayed result is written to the
+ * specified file in addition.
+ */
 void XQEMainWindow::startQuery()
 {
     const QString source = loadSourceFile( _xmlSource->sourceFile() );
@@ -211,8 +212,10 @@ void XQEMainWindow::startQuery()
 }
 
 /**
-Wrapper action to open a query file. The file type depends on the selected query language.
-*/
+ * @brief   Show a dialog to open a query file.
+ *
+ * The file type depends on the selected query language.
+ */
 void XQEMainWindow::actionOpenQuery()
 {
     // check for modified query first
@@ -240,8 +243,8 @@ void XQEMainWindow::actionOpenQuery()
 }
 
 /**
-Load a query with the given fileName.
-*/
+ * @brief       Load a query with the given fileName.
+ */
 void XQEMainWindow::loadQuery(QString fileName)
 {
     if ( fileName.isEmpty() )
@@ -259,9 +262,6 @@ void XQEMainWindow::loadQuery(QString fileName)
     }
 }
 
-/**
-Action wrapper for saving a query.
-*/
 void XQEMainWindow::actionSaveQuery()
 {
     if ( saveQuery() )
@@ -269,8 +269,10 @@ void XQEMainWindow::actionSaveQuery()
 }
 
 /**
-Loads a source XML file and assigns it´s content to a string.
-*/
+ * @brief       Load a source XML file.
+ *
+ * @param[in]   path    path to XML file
+ */
 QString XQEMainWindow::loadSourceFile(const QString &path) const
 {
     if (path.isEmpty())
@@ -288,8 +290,10 @@ QString XQEMainWindow::loadSourceFile(const QString &path) const
 }
 
 /**
-Changed the language type of a query.
-*/
+ * @brief       Change the language type of a query.
+ *
+ * @param       comboIndex  the language index from the combo box
+ */
 void XQEMainWindow::queryLanguageSelected(int comboIndex)
 {
     QXmlQuery::QueryLanguage ql =
@@ -299,8 +303,10 @@ void XQEMainWindow::queryLanguageSelected(int comboIndex)
 }
 
 /**
-The queries file name changed.
-*/
+ * @brief       The loaded query file changed.
+ *
+ * @param[in]   newFileName the new file name to show in the main window title
+ */
 void XQEMainWindow::queryFileNameChanged(const QString &newFileName)
 {
     _queryFileName = newFileName;
@@ -314,8 +320,8 @@ void XQEMainWindow::queryFileNameChanged(const QString &newFileName)
 
 
 /**
-The main window's close event.
-*/
+ * @brief       The main window's close event.
+ */
 void XQEMainWindow::closeEvent(QCloseEvent *e)
 {
     if ( queryCanClose() )
@@ -328,9 +334,10 @@ void XQEMainWindow::closeEvent(QCloseEvent *e)
 }
 
 /**
-@return When true, it is save to overwrite the existing query.
-Called for example when creating a new query or when the applicaiton quits.
-*/
+ * @brief       Check, if the currently opened query file can be closed.
+ *
+ * @return      When true, the active query can be closed.
+ */
 bool XQEMainWindow::queryCanClose()
 {
     bool mayClose = true;
@@ -359,10 +366,10 @@ bool XQEMainWindow::queryCanClose()
 }
 
 /**
-  Shows a dialog to save the current shown query.
-
-  @return True if query was saved, otherwise false.
-*/
+ * @brief       Shows a dialog to save the current shown query.
+ *
+ * @return      True if query was saved; false otherwise.
+ */
 bool XQEMainWindow::saveQuery(bool saveAs)
 {
     QString startPath;
