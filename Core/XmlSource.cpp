@@ -53,8 +53,8 @@ XmlSource::XmlSource(QWidget *parent)
     _btnOpenSource->setText("...");
     l->addWidget(_btnOpenSource);
 
-    connect( _btnOpenSource, SIGNAL(clicked()), this, SLOT(on_btnOpenSource_clicked()) );
-    connect( _textSourceFile, SIGNAL(textChanged(QString)), this, SLOT(setSourceFile(QString)) );
+    connect( _btnOpenSource, &QToolButton::clicked, this, &XmlSource::on_btnOpenSource_clicked );
+    connect( _textSourceFile, &QComboBox::currentTextChanged, this, &XmlSource::setSourceFile );
 
     readSettings();
 }
@@ -70,8 +70,9 @@ void XmlSource::on_btnOpenSource_clicked()
 {
     const QString &fileName = selectSourceFile();
 
-    if ( !fileName.isEmpty() )
+    if ( !fileName.isEmpty() ) {
         _textSourceFile->setEditText( fileName );
+    }
 }
 
 /**
@@ -91,7 +92,7 @@ void XmlSource::setSourceFile(QString sourceFile)
 {
     _sourceFile = QDir::cleanPath( sourceFile );
 
-    emit sourceFileAvailable( !_sourceFile.isEmpty() );
+    emit sourceFileAvailable(!_sourceFile.isEmpty());
 }
 
 void XmlSource::hideEvent(QHideEvent *ev)
